@@ -81,6 +81,16 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 Γ ⊢ g : G → Γ ⊢ t g : ℝ^|0| ⊗ ℝ^|1| ⊗ ℝ^|1|
 ```
 
+## Bibliography
+
+* Felix Cherubini. Formalizing Cartan Geometry in Modal Homotopy Type Theory. PhD
+* Daniel R. Licata, Michael Shulman, Mitchell Riley. <a href="https://github.com/mikeshulman/cohesivett">A Fibrational Framework for Substructural and Modal Logics</a>
+* Branislav Jurco, Christian Sämann, Urs Schreiber, Martin Wolf. <a href="https://arxiv.org/pdf/1903.02807">Higher Structures in M-Theory</a>
+* Namdak Tonpa, <a href="https://tonpa.guru/stream/2020/2020-03-24 Modal Homotopy Type Theory.htm">2020-03-24 Modal Homotopy Type Theory</a>
+* Namdak Tonpa, <a href="https://tonpa.guru/stream/2018/2018-06-09 Cohesive Type Theory.htm">2018-06-09 Cohesive Type Theory</a>
+* Namdak Tonpa, <a href="https://tonpa.guru/stream/2019/2019-03-16 Geometry in Modal HoTT.htm">2019-03-16 Geometry in Modal HoTT</a>
+* Namdak Tonpa, <a href="https://urs.groupoid.space">Urs: Equivariant Super Type Theory</a>
+
 ## Author
 
 * Namdak Tonpa
