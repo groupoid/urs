@@ -36,7 +36,7 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Group Action: Γ, g : 𝔾 ⊢ A : Uᵢ^g → Γ ⊢ 𝔾 → A : Uᵢ^g.
 * Super Type Theory: Uᵍᵢ`|` 𝖘 A `|` 𝔾 → A.
 * Super Modality: Γ ⊢ A : Uᵢ^g → Γ ⊢ 𝖘 A : Uᵢ^g.
-* Cohesive Type Theory: `∣`ʃ `∣` ♭ `∣` ♯ `∣` ℑ `|` & `|` ℜ .
+* Cohesive Type Theory: `∣` ʃ `∣` ♭ `∣` ♯ `∣` ℑ `|` & `|` ℜ .
 
 ### Introduction
 
