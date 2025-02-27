@@ -34,9 +34,9 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Graded Universes: ⊢ `Uᵢ^|0|` : `Uᵢ₊₁^|0|`, ⊢ `Uᵢ^|1|` : `Uᵢ₊₁^|0|`.
 * Graded Tensor: Γ ⊢ A : Uᵢ^g₁, Γ ⊢ B : Uᵢ^g₂ → Γ ⊢ A ⊗ B : Uᵢ^(g₁ + g₂) Γ ⊢ a : A, Γ ⊢ b : B → Γ ⊢ a ⊗ b : A ⊗ B Γ ⊢ a : A^g₁, Γ ⊢ b : B^g₂ → Γ ⊢ a ⊗ b = (−1)^(g₁ g₂) b ⊗ a : A ⊗ B.
 * Group Action: Γ, g : 𝔾 ⊢ A : Uᵢ^g → Γ ⊢ 𝔾 → A : Uᵢ^g.
-* Cohesive Type Theory: ... `∣`ʃA `∣` ♭A `∣` ♯A `∣` ℑA `|` &A `|` ....
+* Cohesive Type Theory: ... `∣`ʃ `∣` ♭ `∣` ♯ `∣` ℑ `|` & `|` ....
 * Super Type Theory: Uᵍᵢ`|` 𝖘 A `|` 𝔾 → A.
-* Super Modality: Γ ⊢ A : Uᵢ^g → Γ ⊢ s A : Uᵢ^g.
+* Super Modality: Γ ⊢ A : Uᵢ^g → Γ ⊢ 𝖘 A : Uᵢ^g.
 
 ### Introduction
 
