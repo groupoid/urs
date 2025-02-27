@@ -17,9 +17,9 @@ unifying computation, logic, and structure. This article introduces
 a three-layered type theory that extends Martin-Löf’s intensional
 type theory into a framework capable of capturing homotopy, cohesion, and supergeometry:
 
-* Homotopy Type System (HTS): The base layer, providing a foundation for higher categorical structures via types as ∞-groupoids.
-* Cohesive Modal Type Theory: The middle layer, adding modal operators for geometric cohesion and differential structure.
-* Equivariant Super Type Theory (ESTT): The top layer, introducing graded universes, graded tensors, group actions, and a super modality for supergeometry.
+* Homotopy Type System (HTS): foundation for higher categorical structures via types as ∞-groupoids.
+* Cohesive Modal Type Theory: modal operators for geometric cohesion and differential structure.
+* Equivariant Super Type Theory (ESTT): Thegraded universes/tensors, group actions, and super-modality.
 
 Each layer builds on the previous, culminating in a system tailored to
 formalize superpoints (𝑅ᵖᴵ𐞥), supersymmetry, and equivariant structures,
