@@ -3,7 +3,7 @@
 ## Abstract
 
 We present a layered type theory that integrates three foundational frameworks:
-Homotopy Type Theory (HoTT), de Cohesive Rham Type Theory (dRTT), and Equivariant Super Theory (ESTT).
+Homotopy Type System (HTS), de Cohesive Modal Type Theory (CMTT), and Equivariant Super Type Theory (ESTT).
 This system builds a progressive structure for formalizing
 mathematical and physical concepts, from homotopy and higher categorical
 structures, through geometric cohesion and differential properties,
@@ -17,9 +17,9 @@ unifying computation, logic, and structure. This article introduces
 a three-layered type theory that extends Martin-Löf’s intensional
 type theory into a framework capable of capturing homotopy, cohesion, and supergeometry:
 
-* Homotopy Type Theory (HoTT): The base layer, providing a foundation for higher categorical structures via types as ∞-groupoids.
-* Cohesive Type Theory: The middle layer, adding modal operators for geometric cohesion and differential structure.
-* Schreiber Super Type Theory (SSTT): The top layer, introducing graded universes, graded tensors, group actions, and a super modality for supergeometry.
+* Homotopy Type System (HTS): The base layer, providing a foundation for higher categorical structures via types as ∞-groupoids.
+* Cohesive Modal Type Theory: The middle layer, adding modal operators for geometric cohesion and differential structure.
+* Equivariant Super Type Theory (ESTT): The top layer, introducing graded universes, graded tensors, group actions, and a super modality for supergeometry.
 
 Each layer builds on the previous, culminating in a system tailored to
 formalize superpoints (𝑅ᵖᴵ𐞥), supersymmetry, and equivariant structures,
@@ -71,11 +71,14 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 Γ ⊢ θ₁ : ℝ^|1|, Γ ⊢ θ₂ : ℝ^|1| → Γ ⊢ θ₁ ⊗ θ₂ : ℝ^|1| ⊗ ℝ^|1|
 Γ ⊢ θ₁ : ℝ^|1|, Γ ⊢ θ₂ : ℝ^|1| → Γ ⊢ θ₁ ⊗ θ₂ = (−1)^(|1| |1|) θ₂ ⊗ θ₁ : ℝ^|1| ⊗ ℝ^|1|
 Γ ⊢ θ₁ ⊗ θ₂ = −θ₂ ⊗ θ₁ : ℝ^|1| ⊗ ℝ^|1|
+Γ ⊢ θ₁ ⊗ θ₂ = (−1)^(|1| |1|) θ₂ ⊗ θ₁ = −θ₂ ⊗ θ₁ : ℝ^|1| ⊗
 Γ ⊢ ℝ^|0| : Uᵢ^|0|
 Γ ⊢ ℝ^|1| : Uᵢ^|1|
 Γ ⊢ ℝ^|0| ⊗ ℝ^|1| : Uᵢ^|1|
 |0| + |1| = |1|
 Γ ⊢ x : ℝ^|0| Γ ⊢ θ : ℝ^|1| Γ ⊢ x ⊗ θ : ℝ^|0| ⊗ ℝ^|1|
+Γ, g : G ⊢ a : ℝ^|0| ⊗ ℝ^|1| ⊗ ℝ^|1| → Γ ⊢ λg.a : G → ℝ^|0| ⊗ ℝ^|1| ⊗ ℝ^|1| Γ ⊢ t : G → ℝ^|0| ⊗ ℝ^|1| ⊗ ℝ^|1|,
+Γ ⊢ g : G → Γ ⊢ t g : ℝ^|0| ⊗ ℝ^|1| ⊗ ℝ^|1|
 ```
 
 ## Author
