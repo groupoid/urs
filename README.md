@@ -199,42 +199,34 @@ def fuseFib (τ τ: FibAnyon) : Type ≡ (c, proof) where c : 1 + τ, proof : Id
 def fuseFibState (s₁ s₂ : FibState c) : FibState c := \ (a₁, q₁) (a₂, q₂), (c, fuseQubit(q₁, q₂, c))
 def measureFib : Σ(c : FibAnyon).FibFusionRule a b → FibState Config := (c, qubit_c)
 
-let τ₁ : FibAnyon ≡ τ
-let τ₂ : FibAnyon ≡ τ
-let s₁ : FibState c ≡ (τ₁, q₁)
-let s₂ : FibState c ≡ (τ₂, q₂)
-let fused : Σ(c : FibAnyon).FibFusionRule τ τ ≡ fuseFib τ₁ τ₂
-let resolved : FibState c ≡ measureFib fused
+def τ₁ : FibAnyon :≡ τ
+def τ₂ : FibAnyon :≡ τ
+def s₁ : FibState c :≡ (τ₁, q₁)
+def s₂ : FibState c :≡ (τ₂, q₂)
+def fused : Σ(c : FibAnyon), FibFusionRule τ τ :≡ fuseFib τ₁ τ₂
+def resolved : FibState c :≡ measureFib fused
 ```
 
 Fusion for su(2) k-Anyonic States:
 
 ```
-Su2Anyon : ℕ → Type_{lin}
-⊢ Su2Anyon k ≡ { j : ℝ | 0 ≤ j ≤ k/2 ∧ 2j ∈ ℕ }
-
-Su2FusionRule : ℕ → Su2Anyon k → Su2Anyon k → Type
-⊢ Su2FusionRule k j₁ j₂ ≡ Σ(j : Su2Anyon k).(|j₁ - j₂| ≤ j ≤ min(j₁ + j₂, k - j₁ - j₂))
-
-fuseSu2 : Π(k : ℕ).Π(j₁ : Su2Anyon k).Π(j₂ : Su2Anyon k).Su2FusionRule k j₁ j₂
-
-fuseSu2 k j₁ j₂ ≡ (j, proof)
-where j = choose(|j₁ - j₂|, min(j₁ + j₂, k - j₁ - j₂))
-      proof : Id_{Su2Anyon k}(j, fusionTerm(j₁, j₂))
-
-fuseSu2State : Π(k : ℕ).Π(s₁ : Su2State c k).Π(s₂ : Su2State c k).Su2State c k
-⊢ fuseSu2State k (j₁, q₁) (j₂, q₂) ≡ (j, fuseQubit(q₁, q₂, j))
-
-fuse : Π(k : ℕ).Π(j₁ : Su2Anyon k).Π(j₂ : Su2Anyon k).Σ(j : Su2Anyon k).Id_{Su2Anyon k}(j, fuseRule(j₁, j₂))
-⊢ fuse k j₁ j₂ ≡ (j, proof) where j ∈ {|j₁ - j₂|, ..., min(j₁ + j₂, k - j₁ - j₂)}
-
-braid : Π(k : ℕ).Π(a : Su2Anyon k).Π(b : Su2Anyon k).KU^\tau_G(Config; ℂ)
-⊢ braid k a b ≡ R_{ab} · state(a, b)
-
-j₀ : Su2Anyon 2 ≡ 0
-j₁ : Su2Anyon 2 ≡ 1/2
-state : Su2State c 2 ≡ (j₁, qubit)
-braid 2 j₁ j₁ : KU^\tau_G(c; ℂ)
+def j₀ : Su2Anyon 2 :≡ 0
+def j₁ : Su2Anyon 2 :≡ 1/2
+def state : Su2State c 2 :≡ (j₁, qubit)
+def braid 2 j₁ j₁ : KU^\tau_G(c; ℂ)
+def Su2Anyon : ℕ → Type_{lin}
+def Su2Anyon k :≡ { j : ℝ | 0 ≤ j ≤ k/2 ∧ 2j ∈ ℕ }
+def Su2FusionRule : ℕ → Su2Anyon k → Su2Anyon k → Type
+def Su2FusionRule k j₁ j₂ ≡ Σ(j : Su2Anyon k).(|j₁ - j₂| ≤ j ≤ min(j₁ + j₂, k - j₁ - j₂))
+def braid (k : ℕ) (a b : Su2Anyon k) : KU^\tau_G(Config; ℂ)
+def braid k a b :≡ R_{ab} · state(a, b)
+def fuseSu2State (k : ℕ) (s₁ s₂ : Su2State c k) : Su2State c k
+def fuseSu2State k (j₁, q₁) (j₂, q₂) :≡ (j, fuseQubit(q₁, q₂, j))
+def fuse (k : ℕ) (j₁ j₂ : Su2Anyon k) := Σ(j : Su2Anyon k), Id_{Su2Anyon k}(j, fuseRule(j₁, j₂))
+def fuse k j₁ j₂ :≡ (j, proof) where j ∈ {|j₁ - j₂|, ..., min(j₁ + j₂, k - j₁ - j₂)}
+def fuseSu2 (k : ℕ)(j₁ j₂ : Su2Anyon k) : Su2FusionRule k j₁ j₂
+def fuseSu2 k j₁ j₂ :≡ (j, proof)
+    where j = choose(|j₁ - j₂|, min(j₁ + j₂, k - j₁ - j₂)), proof : Id_{Su2Anyon k}(j, fusionTerm(j₁, j₂))
 ```
 
 Majorana Zero Modes:
