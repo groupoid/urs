@@ -90,11 +90,16 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Branislav Jurco, Christian Sämann, Urs Schreiber, Martin Wolf. <a href="https://arxiv.org/pdf/1903.02807">Higher Structures in M-Theory</a>.
 * Urs Schreiber. <a href="https://arxiv.org/pdf/1310.7930">Differential cohomology in a cohesive ∞-topos</a>.
 * John Huerta, Urs Schreiber. <a href="https://arxiv.org/pdf/1702.01774">M-theory from the Superpoint</a>.
-* Namdak Tonpa, <a href="https://tonpa.guru/stream/2018/2018-06-09 Cohesive Type Theory.htm">2018-06-09 Cohesive Type Theory</a>
-* Namdak Tonpa, <a href="https://tonpa.guru/stream/2019/2019-03-16 Geometry in Modal HoTT.htm">2019-03-16 Geometry in Modal HoTT</a>
-* Namdak Tonpa, <a href="https://tonpa.guru/stream/2020/2020-03-24 Modal Homotopy Type Theory.htm">2020-03-24 Modal Homotopy Type Theory</a>
-* Namdak Tonpa, <a href="https://tonpa.guru/stream/2023/2023-04-04%20%D0%A1%D1%83%D0%BF%D0%B5%D1%80%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%96%D1%80.htm">2023-04-04 Суперпростір</a>
-* Namdak Tonpa, <a href="https://urs.groupoid.space">Urs: Equivariant Super Type Theory</a>
+* Namdak Tonpa, <a href="https://tonpa.guru/stream/2018/2018-06-09 Cohesive Type Theory.htm">2018-06-09 Cohesive Type Theory</a>.
+* Namdak Tonpa, <a href="https://tonpa.guru/stream/2019/2019-03-16 Geometry in Modal HoTT.htm">2019-03-16 Geometry in Modal HoTT</a>.
+* Namdak Tonpa, <a href="https://tonpa.guru/stream/2020/2020-03-24 Modal Homotopy Type Theory.htm">2020-03-24 Modal Homotopy Type Theory</a>.
+* Namdak Tonpa, <a href="https://tonpa.guru/stream/2023/2023-04-04%20%D0%A1%D1%83%D0%BF%D0%B5%D1%80%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%96%D1%80.htm">2023-04-04 Суперпростір</a>.
+* Namdak Tonpa, <a href="https://urs.groupoid.space">Urs: Equivariant Super Type Theory</a>.
+* Kac, V. G. <a href="https://core.ac.uk/download/pdf/81957395.pdf"> Lie Superalgebras</a>.
+* Roček, M., Wadhwa, N. <a href="https://arxiv.org/pdf/hep-th/0408188"> On Calabi-Yau Supermanifolds</a>.
+* Cremonini, C. A., Grassi, P. A. <a href="https://arxiv.org/pdf/2106.11786"> Cohomology of Lie Superalgebras: Forms, Pseudoforms, and Integral Forms</a>.
+* Davis, S. <a href="https://polipapers.upv.es/index.php/AGT/article/view/1623/1735"> Supersymmetry and the Hopf Fibration</a>.
+* Aguilar, M. A., Lopez-Romero, J. M., Socolovsky, M. <a href="https://inspirehep.net/files/72a57b4474bdb1f83e6963d1586050d0">Cohomology and Spectral Sequences in Gauge Theory</a>.
 
 ## Author
 
