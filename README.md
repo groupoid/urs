@@ -226,7 +226,8 @@ def fuse (k : ℕ) (j₁ j₂ : Su2Anyon k) := Σ(j : Su2Anyon k), Id_{Su2Anyon 
 def fuse k j₁ j₂ :≡ (j, proof) where j ∈ {|j₁ - j₂|, ..., min(j₁ + j₂, k - j₁ - j₂)}
 def fuseSu2 (k : ℕ)(j₁ j₂ : Su2Anyon k) : Su2FusionRule k j₁ j₂
 def fuseSu2 k j₁ j₂ :≡ (j, proof)
-    where j = choose(|j₁ - j₂|, min(j₁ + j₂, k - j₁ - j₂)), proof : Id_{Su2Anyon k}(j, fusionTerm(j₁, j₂))
+    where j = choose(|j₁ - j₂|, min(j₁ + j₂, k - j₁ - j₂)),
+    proof : Id_{Su2Anyon k}(j, fusionTerm(j₁, j₂))
 ```
 
 Majorana Zero Modes:
