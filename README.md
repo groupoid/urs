@@ -179,12 +179,12 @@ Tensor Product:
 
 ### TED-K Examples
 
-**Stable Homotopy Primitives**: Fib^n, Susp(A), Trunc^n, Π(x:A).B, Σ(x:A).B, Id_A(u,v), Spec, πₙ^S(A), S⁰[p], Group, A ∧ B, [A, B], Hⁿ(X; G), G ⊗ H, SS(E, r).
-**Cohesive Spectra**: Linear types like H (Hilbert spaces),  PU(H), Fred^0(H).
-**Parameterized Spectra**: X: Type ⊢ E(X):Spec, e.g., KU_G&^τ(X;C).
-**Qubit Type**: KU_G&^τ(Config;C) := [Config,Fred^0(H)].
-**Modalities**: ♭, ♯, ℑ, ◯, with ℑ(Config)≃BB_n (braid group delooping).
-**Key Feature**: KU_G&^τ encodes su(2)-anyonic ground states, with linear types for braiding.
+* **Stable Homotopy Primitives**: Fib^n, Susp(A), Trunc^n, Π(x:A).B, Σ(x:A).B, Id_A(u,v), Spec, πₙ^S(A), S⁰[p], Group, A ∧ B, [A, B], Hⁿ(X; G), G ⊗ H, SS(E, r).
+* **Cohesive Spectra**: Linear types like H (Hilbert spaces),  PU(H), Fred^0(H).
+* **Parameterized Spectra**: X: Type ⊢ E(X):Spec, e.g., KU_G&^τ(X;C).
+* **Qubit Type**: KU_G&^τ(Config;C) := [Config,Fred^0(H)].
+* **Modalities**: ♭, ♯, ℑ, ◯, with ℑ(Config)≃BB_n (braid group delooping).
+* **Key Feature**: KU_G&^τ encodes su(2)-anyonic ground states, with linear types for braiding.
 
 Fibonacci Anions:
 
