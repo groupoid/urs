@@ -177,6 +177,78 @@ Tensor Product:
   ⊢ t : G → ℝ^|0| ⊗ ℝ^|1| ⊗ ℝ^|1|
 ```
 
+### TED-K Examples
+
+**Stable Homotopy Primitives**: Fib^n, Susp(A), Trunc^n, Π(x:A).B, Σ(x:A).B, Id_A(u,v), Spec, πₙ^S(A), S⁰[p], Group, A ∧ B, [A, B], Hⁿ(X; G), G ⊗ H, SS(E, r).
+**Cohesive Spectra**: Linear types like H (Hilbert spaces),  PU(H), Fred^0(H).
+**Parameterized Spectra**: X: Type ⊢ E(X):Spec, e.g., KU_G&^τ(X;C).
+**Qubit Type**: KU_G&^τ(Config;C) := [Config,Fred^0(H)].
+**Modalities**: ♭, ♯, ℑ, ◯, with ℑ(Config)≃BB_n (braid group delooping).
+**Key Feature**: KU_G&^τ encodes su(2)-anyonic ground states, with linear types for braiding.
+
+Fibonacci Anions:
+
+```
+def FibAnyon : Type_{lin} := 1 + τ
+def FibState (c : Config) : Type_{lin} := Σ (a : FibAnyon), KUᶿ(c; ℂ)
+def FibFusionRule : FibAnyon → FibAnyon → Type_{lin}
+def FibFusionRule (1 a : FibAnyon) := Id_{FibAnyon}(a, a)
+def FibFusionRule (τ τ : FibAnyon) := 1 + τ
+def fuseFib (a b: FibAnyon) : Type := Σ (c: FibAnyon), FibFusionRule a b
+def fuseFib (τ τ: FibAnyon) : Type ≡ (c, proof) where c : 1 + τ, proof : Id_{FibAnyon}(c, 1 + τ)
+def fuseFibState (s₁ s₂ : FibState c) : FibState c := \ (a₁, q₁) (a₂, q₂), (c, fuseQubit(q₁, q₂, c))
+def measureFib : Σ(c : FibAnyon).FibFusionRule a b → FibState Config := (c, qubit_c)
+
+let τ₁ : FibAnyon ≡ τ
+let τ₂ : FibAnyon ≡ τ
+let s₁ : FibState c ≡ (τ₁, q₁)
+let s₂ : FibState c ≡ (τ₂, q₂)
+let fused : Σ(c : FibAnyon).FibFusionRule τ τ ≡ fuseFib τ₁ τ₂
+let resolved : FibState c ≡ measureFib fused
+```
+
+Fusion for su(2) k-Anyonic States:
+
+```
+Su2Anyon : ℕ → Type_{lin}
+⊢ Su2Anyon k ≡ { j : ℝ | 0 ≤ j ≤ k/2 ∧ 2j ∈ ℕ }
+
+Su2FusionRule : ℕ → Su2Anyon k → Su2Anyon k → Type
+⊢ Su2FusionRule k j₁ j₂ ≡ Σ(j : Su2Anyon k).(|j₁ - j₂| ≤ j ≤ min(j₁ + j₂, k - j₁ - j₂))
+
+fuseSu2 : Π(k : ℕ).Π(j₁ : Su2Anyon k).Π(j₂ : Su2Anyon k).Su2FusionRule k j₁ j₂
+
+fuseSu2 k j₁ j₂ ≡ (j, proof)
+where j = choose(|j₁ - j₂|, min(j₁ + j₂, k - j₁ - j₂))
+      proof : Id_{Su2Anyon k}(j, fusionTerm(j₁, j₂))
+
+fuseSu2State : Π(k : ℕ).Π(s₁ : Su2State c k).Π(s₂ : Su2State c k).Su2State c k
+⊢ fuseSu2State k (j₁, q₁) (j₂, q₂) ≡ (j, fuseQubit(q₁, q₂, j))
+
+fuse : Π(k : ℕ).Π(j₁ : Su2Anyon k).Π(j₂ : Su2Anyon k).Σ(j : Su2Anyon k).Id_{Su2Anyon k}(j, fuseRule(j₁, j₂))
+⊢ fuse k j₁ j₂ ≡ (j, proof) where j ∈ {|j₁ - j₂|, ..., min(j₁ + j₂, k - j₁ - j₂)}
+
+braid : Π(k : ℕ).Π(a : Su2Anyon k).Π(b : Su2Anyon k).KU^\tau_G(Config; ℂ)
+⊢ braid k a b ≡ R_{ab} · state(a, b)
+
+j₀ : Su2Anyon 2 ≡ 0
+j₁ : Su2Anyon 2 ≡ 1/2
+state : Su2State c 2 ≡ (j₁, qubit)
+braid 2 j₁ j₁ : KU^\tau_G(c; ℂ)
+```
+
+Majorana Zero Modes:
+
+```
+def MZM : Type_{lin} := γ
+def MZMState (c: Config) : Type_{lin} := Σ(m : MZM), KU¹(c; ℂ)
+def fuseMZM (m₁ m₂ : MZM) := Σ (c : FibAnyon), MZMFusionRule m₁ m₂
+def fuseMZM (γ γ : MZM) ≡ (1, refl)
+def resolveMZM : Σ(c : FibAnyon), MZMFusionRule γ γ → FibState Config
+def resolveMZM (1, refl) ≡ (1, qubit_1)
+def fuseMZMState (s₁ s₂ : MZMState c) : FibState c := \ (γ, q₁) (γ, q₂), (1, fuseQubit(q₁, q₂, 1))
+```
+
 ## Bibliography
 
 * Felix Cherubini. <a href="https://d-nb.info/1138708615/34">Formalizing Cartan Geometry in Modal Homotopy Type Theory</a>. PhD.
