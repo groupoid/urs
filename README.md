@@ -270,6 +270,7 @@ def fuseMZMState (s₁ s₂ : MZMState c) : FibState c := \ (γ, q₁) (γ, q₂
 * Cremonini, C. A., Grassi, P. A. <a href="https://arxiv.org/pdf/2106.11786"> Cohomology of Lie Superalgebras: Forms, Pseudoforms, and Integral Forms</a>.
 * Davis, S. <a href="https://polipapers.upv.es/index.php/AGT/article/view/1623/1735"> Supersymmetry and the Hopf Fibration</a>.
 * Aguilar, M. A., Lopez-Romero, J. M., Socolovsky, M. <a href="https://inspirehep.net/files/72a57b4474bdb1f83e6963d1586050d0">Cohomology and Spectral Sequences in Gauge Theory</a>.
+* Hisham Sati, Urs Schreiber. <a href="https://arxiv.org/pdf/2209.08331">Topological Quantum Programming in TED-K</a>.
 
 ## Author
 
