@@ -3,7 +3,7 @@
 ## Abstract
 
 We present a layered type theory that integrates three foundational frameworks:
-Homotopy Type System (HTS), de Cohesive Modal Type Theory (CMTT), and Equivariant Super Type Theory (ESTT).
+Homotopy Type System (HTS), de Rham Cohesive Modal Type Theory (CMTT), and Equivariant Super Type Theory (ESTT).
 This system builds a progressive structure for formalizing
 mathematical and physical concepts, from homotopy and higher categorical
 structures, through geometric cohesion and differential properties,
@@ -36,7 +36,7 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Group Action: Γ, g : 𝔾 ⊢ A : Uᵢ^g → Γ ⊢ 𝔾 → A : Uᵢ^g.
 * Super Type Theory: Uᵍᵢ`|` 𝖘 A `|` 𝔾 → A.
 * Super Modality: Γ ⊢ A : Uᵢ^g → Γ ⊢ 𝖘 A : Uᵢ^g.
-* Cohesive Type Theory: ♭ `|` ♯ `|` ℑ `|` ◯.
+* Cohesive Type Theory: ♭ `|` ♯ `|` ℑ `|` ◯ (four built-in modalities).
 * Flat Codiscrete: Γ ⊢ A : Uᵢ^g → Γ ⊢ ♭ A : Uᵢ^g
 * Sharp Discrete:  Γ ⊢ A : Uᵢ^g → Γ ⊢ ♯ A : Uᵢ^g
 * Bosonic: Γ ⊢ A : Uᵢ⁽ᵍ⁾  →  Γ ⊢ ◯ A : Uᵢ⁽⁰⁾
@@ -47,8 +47,8 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Graded Tensor: Γ ⊢ a : A, Γ ⊢ b : B → Γ ⊢ a ⊗ b : A ⊗ B.
 * Group Action: Γ, g : 𝔾 ⊢ a : A → Γ ⊢ λg.a : 𝔾 → A.
 * Super Modality: Γ ⊢ a : A → Γ ⊢ 𝖘-intro(a) : 𝖘 A.
-* Bosinic: Γ ⊢ a : A  →  Γ ⊢ ◯ a : ◯ A
-* Fermionic: Γ ⊢ a : A  →  Γ ⊢ ℑ a : ℑ A
+* Bosinic: Γ ⊢ a : A  →  Γ ⊢ ◯ a : ◯ A, Γ ⊢ a : A  →  Γ ⊢ ◯ a : ◯ A,  ◯ a := η_◯ a, Γ ⊢ η_◯ : A → ◯ A, Γ ⊢ μ_◯ : ◯ (◯ A) → ◯ A,  μ_◯ ≃ id_◯A
+* Fermionic: Γ ⊢ a : A  →  Γ ⊢ ℑ a : ℑ A, Γ ⊢ a : A  →  Γ ⊢ ℑ a : ℑ A,  ℑ a := η_ℑ a, Γ ⊢ ε_ℑ : ℑ A → A, Γ ⊢ δ_ℑ : ℑ A → ℑ (ℑ A),  δ_ℑ ≃ id_ℑA
 
 ### Elimation
 
@@ -64,12 +64,16 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Graded Commutativity: Γ ⊢ a : A^g₁, Γ ⊢ b : B^g₂ → Γ ⊢ a ⊗ b = (−1)^(g₁ g₂) b ⊗ a : A ⊗ B.
 * Group Action: Γ, g : 𝔾 ⊢ a : A, Γ ⊢ h : 𝔾 → Γ ⊢ (λg.a) h = a[h/g] : A.
 * Super Modality: Γ ⊢ a : A, Γ, x : A ⊢ B : Uᵢ^g, Γ, x : A ⊢ f : B → Γ ⊢ 𝖘-elim(𝖘-intro(a), x.B, f) = f[a/x] : B[a/x], ℑ (A ⊗ B) ≃ ℑ A ⊗ ◯ B ⊕ ◯ A ⊗ ℑ B.
+* Bosonic: Γ ⊢ a : A  →  Γ ⊢ ◯ a = η_◯ a : ◯ A, Γ ⊢ b : ◯ (◯ A)  →  Γ ⊢ μ_◯ b = b : ◯ A
+* Fermionic: Γ ⊢ a : A⁽¹⁾  →  Γ ⊢ ε_ℑ (ℑ a) = a : A, Γ ⊢ d : ℑ A  →  Γ ⊢ δ_ℑ d = d : ℑ A
 
 ### Uniqueness
 
 * Graded Tensor: Γ ⊢ t : A ⊗ B, Γ ⊢ u : A ⊗ B, Γ ⊢ fst(t) = fst(u) : A, snd(t) = snd(u) : B → Γ ⊢ t = u : A ⊗ B.
 * Group Action Γ ⊢ t, u : 𝔾 → A, Γ, g : 𝔾 ⊢ t g = u g : A → Γ ⊢ t = u : 𝔾 → A.
 * Super Modality:  Γ ⊢ t,u : 𝖘 A, Γ ⊢ s-elim(t, x.A, x) = 𝖘-elim(u, x.A, x) : A → Γ ⊢ t = u : 𝖘 A.
+* Bosonic: Γ ⊢ f : ◯ A → B, Γ ⊢ g : ◯ A → B, Γ ⊢ ∀ (a : A), f (η_◯ a) = g (η_◯ a)  →  Γ ⊢ f = g : ◯ A → B
+* Fermionic: Γ ⊢ f : B → ℑ A, Γ ⊢ g : B → ℑ A, Γ ⊢ ∀ (b : B), ε_ℑ (f b) = ε_ℑ (g b)  →  Γ ⊢ f = g : B → ℑ A
 
 ### Coherenses
 
@@ -113,6 +117,26 @@ Hom(◯ (𝖘 ℝ¹|¹), 𝖘 ℝ¹|¹) ≅ Hom(𝖘 ℝ¹|¹, ℑ (𝖘 ℝ¹|�
 
 ## Examples
 
+∫ modality:
+
+```
+Γ ⊢ A : Uᵢ⁽ᵍ⁾  →  Γ ⊢ ∫ A : Uᵢ⁽ᵍ⁾,  ∫ A := Π (X : Uᵢ⁽ᵍ⁾), (♯ X → A) → ♭ X
+Γ ⊢ a : A  →  Γ ⊢ ∫ a : ∫ A,  ∫ a := η_∫ a,  η_∫ a := λ X. λ f. ♭ (f (η_♯ a))
+Γ ⊢ ε_♭ : ∫ (♭ A) → ♭ A
+Γ ⊢ Hom(∫ A, B) ≅ Hom(A, ♭ B)
+Γ ⊢ ∫ (∫ A) ≃ ∫ A
+```
+
+∇ modality:
+
+```
+Γ ⊢ A : Uᵢ⁽ᵍ⁾  →  Γ ⊢ ∇ A : Uᵢ⁽ᵍ⁾,  ∇ A := Σ (X : Uᵢ⁽ᵍ⁾), (A → ♭ X) × (♯ X → A)
+Γ ⊢ a : A  →  Γ ⊢ ∇ a : ∇ A,  ∇ a := η_∇ a,  η_∇ a := (𝟙, λ _ : ♭ 𝟙. ♭ a, λ x : ♯ 𝟙. a)
+Γ ⊢ η_♯ : ♯ A → A
+Γ ⊢ ε_∇ : ♯ (∇ A) → A
+Γ ⊢ ∇ (∇ A) ≃ ∇ A
+```
+
 𝖘 `ℝ¹|¹` lifts `ℝ¹|¹` to a super-context, expected to be isomorphic (𝖘 `ℝ¹|¹` ≃ `ℝ¹|¹`), as it’s already a supertype:
 
 ```
@@ -135,7 +159,7 @@ Tensor Product:
 
 ```
 Γ ⊢ ◯ (𝖘 ℝ¹|¹ ⊗ 𝖘 ℝ¹|¹) : U₀^|0| ≃ ℝ¹ ⊗ ℝ¹ (even part) 
-ℑ (𝖘 ℝ¹|¹) ⊗ ◯ (𝖘 ℝ¹|¹) ⊕ ◯ (𝖘 ℝ¹|¹) ⊗ ℑ (𝖘 ℝ¹|¹) ≃ ℝ⁰|¹ ⊗ ℝ¹ ⊕ ℝ¹ ⊗ ℝ⁰|¹ : U₀^|1| ⊕ U₀^|1|.
+ℑ(𝖘 ℝ¹|¹) ⊗ ◯(𝖘 ℝ¹|¹) ⊕ ◯(𝖘 ℝ¹|¹) ⊗ ℑ(𝖘 ℝ¹|¹) ≃ ℝ⁰|¹ ⊗ ℝ¹ ⊕ ℝ¹ ⊗ ℝ⁰|¹ : U₀^|1| ⊕ U₀^|1|.
 Γ ⊢ θ₁ : ℝ^|1|, Γ ⊢ θ₂ : ℝ^|1| → Γ ⊢ θ₁ ⊗ θ₂ = −θ₂ ⊗ θ₁ : ℝ^|1| ⊗ ℝ^|1|
 Γ ⊢ θ : ℝ^|1| → Γ ⊢ θ ⊗ θ = 0 : ℝ^|1| ⊗ ℝ^|1|
 Γ ⊢ θ₁ : ℝ^|1|, Γ ⊢ θ₂ : ℝ^|1| → Γ ⊢ θ₁ ⊗ θ₂ : ℝ^|1| ⊗ ℝ^|1|
