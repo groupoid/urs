@@ -47,8 +47,8 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Graded Tensor: Γ ⊢ a : A, Γ ⊢ b : B → Γ ⊢ a ⊗ b : A ⊗ B.
 * Group Action: Γ, g : 𝔾 ⊢ a : A → Γ ⊢ λg.a : 𝔾 → A.
 * Super Modality: Γ ⊢ a : A → Γ ⊢ 𝖘-intro(a) : 𝖘 A.
-* Bosinic: Γ ⊢ a : A  →  Γ ⊢ ◯ a : ◯ A
-* Fermionic: Γ ⊢ a : A  →  Γ ⊢ ℑ a : ℑ A
+* Bosinic: Γ ⊢ a : A  →  Γ ⊢ ◯ a : ◯ A, Γ ⊢ a : A  →  Γ ⊢ ◯ a : ◯ A,  ◯ a := η_◯ a, Γ ⊢ η_◯ : A → ◯ A, Γ ⊢ μ_◯ : ◯ (◯ A) → ◯ A,  μ_◯ ≃ id_◯A
+* Fermionic: Γ ⊢ a : A  →  Γ ⊢ ℑ a : ℑ A, Γ ⊢ a : A  →  Γ ⊢ ℑ a : ℑ A,  ℑ a := η_ℑ a, Γ ⊢ ε_ℑ : ℑ A → A, Γ ⊢ δ_ℑ : ℑ A → ℑ (ℑ A),  δ_ℑ ≃ id_ℑA
 
 ### Elimation
 
@@ -64,12 +64,16 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Graded Commutativity: Γ ⊢ a : A^g₁, Γ ⊢ b : B^g₂ → Γ ⊢ a ⊗ b = (−1)^(g₁ g₂) b ⊗ a : A ⊗ B.
 * Group Action: Γ, g : 𝔾 ⊢ a : A, Γ ⊢ h : 𝔾 → Γ ⊢ (λg.a) h = a[h/g] : A.
 * Super Modality: Γ ⊢ a : A, Γ, x : A ⊢ B : Uᵢ^g, Γ, x : A ⊢ f : B → Γ ⊢ 𝖘-elim(𝖘-intro(a), x.B, f) = f[a/x] : B[a/x], ℑ (A ⊗ B) ≃ ℑ A ⊗ ◯ B ⊕ ◯ A ⊗ ℑ B.
+* Bosonic: Γ ⊢ a : A  →  Γ ⊢ ◯ a = η_◯ a : ◯ A, Γ ⊢ b : ◯ (◯ A)  →  Γ ⊢ μ_◯ b = b : ◯ A
+* Fermionic: Γ ⊢ a : A⁽¹⁾  →  Γ ⊢ ε_ℑ (ℑ a) = a : A, Γ ⊢ d : ℑ A  →  Γ ⊢ δ_ℑ d = d : ℑ A
 
 ### Uniqueness
 
 * Graded Tensor: Γ ⊢ t : A ⊗ B, Γ ⊢ u : A ⊗ B, Γ ⊢ fst(t) = fst(u) : A, snd(t) = snd(u) : B → Γ ⊢ t = u : A ⊗ B.
 * Group Action Γ ⊢ t, u : 𝔾 → A, Γ, g : 𝔾 ⊢ t g = u g : A → Γ ⊢ t = u : 𝔾 → A.
 * Super Modality:  Γ ⊢ t,u : 𝖘 A, Γ ⊢ s-elim(t, x.A, x) = 𝖘-elim(u, x.A, x) : A → Γ ⊢ t = u : 𝖘 A.
+* Bosonic: Γ ⊢ f : ◯ A → B, Γ ⊢ g : ◯ A → B, Γ ⊢ ∀ (a : A), f (η_◯ a) = g (η_◯ a)  →  Γ ⊢ f = g : ◯ A → B
+* Fermionic: Γ ⊢ f : B → ℑ A, Γ ⊢ g : B → ℑ A, Γ ⊢ ∀ (b : B), ε_ℑ (f b) = ε_ℑ (g b)  →  Γ ⊢ f = g : B → ℑ A
 
 ### Coherenses
 
