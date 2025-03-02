@@ -115,7 +115,7 @@ Hom(◯ (𝖘 ℝ¹ᴵ¹), 𝖘 ℝ¹ᴵ¹) ≅ Hom(𝖘 ℝ¹ᴵ¹, ℑ (𝖘 �
 Γ ⊢ 𝖘 B : Uᵢ⁽ᵍ⁾ →  Γ ⊢ ε : ◯ (𝖘 B) → 𝖘 B
 ```
 
-## Examples
+## TED-S (Supergeormetry, Felix) Examples
 
 ∫ modality:
 
@@ -177,7 +177,7 @@ Tensor Product:
   ⊢ t : G → ℝ^|0| ⊗ ℝ^|1| ⊗ ℝ^|1|
 ```
 
-### TED-K Examples
+### TED-K (K-Theory, Jack) Examples
 
 * **Stable Homotopy Primitives**: Fib^n, Susp(A), Trunc^n, Π(x:A).B, Σ(x:A).B, Id_A(u,v), Spec, πₙ^S(A), S⁰[p], Group, A ∧ B, [A, B], Hⁿ(X; G), G ⊗ H, SS(E, r).
 * **Cohesive Spectra**: Linear types like H (Hilbert spaces),  PU(H), Fred^0(H).
