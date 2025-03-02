@@ -3,7 +3,7 @@
 ## Abstract
 
 We present a layered type theory that integrates three foundational frameworks:
-Homotopy Type System (HTS), de Cohesive Modal Type Theory (CMTT), and Equivariant Super Type Theory (ESTT).
+Homotopy Type System (HTS), de Rham Cohesive Modal Type Theory (CMTT), and Equivariant Super Type Theory (ESTT).
 This system builds a progressive structure for formalizing
 mathematical and physical concepts, from homotopy and higher categorical
 structures, through geometric cohesion and differential properties,
@@ -36,7 +36,7 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Group Action: Γ, g : 𝔾 ⊢ A : Uᵢ^g → Γ ⊢ 𝔾 → A : Uᵢ^g.
 * Super Type Theory: Uᵍᵢ`|` 𝖘 A `|` 𝔾 → A.
 * Super Modality: Γ ⊢ A : Uᵢ^g → Γ ⊢ 𝖘 A : Uᵢ^g.
-* Cohesive Type Theory: ♭ `|` ♯ `|` ℑ `|` ◯.
+* Cohesive Type Theory: ♭ `|` ♯ `|` ℑ `|` ◯ (four built-in modalities).
 * Flat Codiscrete: Γ ⊢ A : Uᵢ^g → Γ ⊢ ♭ A : Uᵢ^g
 * Sharp Discrete:  Γ ⊢ A : Uᵢ^g → Γ ⊢ ♯ A : Uᵢ^g
 * Bosonic: Γ ⊢ A : Uᵢ⁽ᵍ⁾  →  Γ ⊢ ◯ A : Uᵢ⁽⁰⁾
