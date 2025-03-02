@@ -63,8 +63,7 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 * Graded Tensor: Γ ⊢ a : A, Γ ⊢ b : B, Γ, x : A, y : B ⊢ C : Uᵢ^g → Γ ⊢ ⊗-elim(a ⊗ b, x.y.C) = C[a/x, b/y] : C[a/x, b/y].
 * Graded Commutativity: Γ ⊢ a : A^g₁, Γ ⊢ b : B^g₂ → Γ ⊢ a ⊗ b = (−1)^(g₁ g₂) b ⊗ a : A ⊗ B.
 * Group Action: Γ, g : 𝔾 ⊢ a : A, Γ ⊢ h : 𝔾 → Γ ⊢ (λg.a) h = a[h/g] : A.
-* Super Modality: Γ ⊢ a : A, Γ, x : A ⊢ B : Uᵢ^g, Γ, x : A ⊢ f : B → Γ ⊢ 𝖘-elim(𝖘-intro(a), x.B, f) = f[a/x] : B[a/x].
-*  ℑ (A ⊗ B) ≃ ℑ A ⊗ ◯ B ⊕ ◯ A ⊗ ℑ B.
+* Super Modality: Γ ⊢ a : A, Γ, x : A ⊢ B : Uᵢ^g, Γ, x : A ⊢ f : B → Γ ⊢ 𝖘-elim(𝖘-intro(a), x.B, f) = f[a/x] : B[a/x], ℑ (A ⊗ B) ≃ ℑ A ⊗ ◯ B ⊕ ◯ A ⊗ ℑ B.
 
 ### Uniqueness
 
