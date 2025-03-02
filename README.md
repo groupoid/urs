@@ -155,7 +155,7 @@ Tensor Product:
 
 ## Bibliography
 
-* Felix Cherubini. Formalizing Cartan Geometry in Modal Homotopy Type Theory. PhD.
+* Felix Cherubini. <a href="https://d-nb.info/1138708615/34">Formalizing Cartan Geometry in Modal Homotopy Type Theory</a>. PhD.
 * Daniel R. Licata, Michael Shulman, Mitchell Riley. <a href="https://github.com/mikeshulman/cohesivett">A Fibrational Framework for Substructural and Modal Logics</a>.
 * Branislav Jurco, Christian Sämann, Urs Schreiber, Martin Wolf. <a href="https://arxiv.org/pdf/1903.02807">Higher Structures in M-Theory</a>.
 * Urs Schreiber. <a href="https://arxiv.org/pdf/1310.7930">Differential cohomology in a cohesive ∞-topos</a>.
