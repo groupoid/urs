@@ -117,6 +117,17 @@ Hom(◯ (𝖘 ℝ¹ᴵ¹), 𝖘 ℝ¹ᴵ¹) ≅ Hom(𝖘 ℝ¹ᴵ¹, ℑ (𝖘 �
 
 ## TED-S (Supergeormetry, Felix) Examples
 
+* Graded Universes: ⊢ Uᵢᴵ⁰ᴵ : Uᵢ₊₁ᴵ⁰ᴵ, ⊢ Uᵢᴵ¹ᴵ : Uᵢ₊₁ᴵ⁰ᴵ.
+* Graded Tensor: Γ ⊢ A : Uᵢ^g₁, Γ ⊢ B : Uᵢ^g₂ → Γ ⊢ A ⊗ B : Uᵢ^(g₁ + g₂) Γ ⊢ a : A, Γ ⊢ b : B → Γ ⊢ a ⊗ b : A ⊗ B Γ ⊢ a : A^g₁, Γ ⊢ b : B^g₂ → Γ ⊢ a ⊗ b = (−1)^(g₁ g₂) b ⊗ a : A ⊗ B.
+* Group Action: Γ, g : 𝔾 ⊢ A : Uᵢ^g → Γ ⊢ 𝔾 → A : Uᵢ^g.
+* Super Type Theory: Uᵍᵢ`|` 𝖘 A `|` 𝔾 → A.
+* Super Modality: Γ ⊢ A : Uᵢ^g → Γ ⊢ 𝖘 A : Uᵢ^g.
+* Cohesive Type Theory: ♭ `|` ♯ `|` ℑ `|` ◯ (four built-in modalities).
+* Flat Codiscrete: Γ ⊢ A : Uᵢ^g → Γ ⊢ ♭ A : Uᵢ^g
+* Sharp Discrete:  Γ ⊢ A : Uᵢ^g → Γ ⊢ ♯ A : Uᵢ^g
+* Bosonic: Γ ⊢ A : Uᵢ⁽ᵍ⁾  →  Γ ⊢ ◯ A : Uᵢ⁽⁰⁾
+* Fermionic: Γ ⊢ A : Uᵢ⁽ᵍ⁾  →  Γ ⊢ ℑ A : Uᵢ⁽¹⁾
+
 ∫ modality:
 
 ```
@@ -179,12 +190,12 @@ Tensor Product:
 
 ### TED-K (K-Theory, Jack) Examples
 
-* **Stable Homotopy Primitives**: Fib^n, Susp(A), Trunc^n, Π(x:A).B, Σ(x:A).B, Id_A(u,v), Spec, πₙ^S(A), S⁰[p], Group, A ∧ B, [A, B], Hⁿ(X; G), G ⊗ H, SS(E, r).
-* **Cohesive Spectra**: Linear types like H (Hilbert spaces),  PU(H), Fred^0(H).
-* **Parameterized Spectra**: X: Type ⊢ E(X):Spec, e.g., KU_G&^τ(X;C).
-* **Qubit Type**: KU_G&^τ(Config;C) := [Config,Fred^0(H)].
-* **Modalities**: ♭, ♯, ℑ, ◯, with ℑ(Config)≃BB_n (braid group delooping).
-* **Key Feature**: KU_G&^τ encodes su(2)-anyonic ground states, with linear types for braiding.
+* Stable Homotopy Primitives: Fib^n, Susp(A), Trunc^n, Π(x:A).B, Σ(x:A).B, Id_A(u,v), Spec, πₙ^S(A), S⁰[p], Group, A ∧ B, [A, B], Hⁿ(X; G), G ⊗ H, SS(E, r).
+* Cohesive Spectra: Linear types like H (Hilbert spaces),  PU(H), Fred^0(H).
+* Parameterized Spectra: X: Type ⊢ E(X):Spec, e.g., KU_G&^τ(X;C).
+* Qubit Type: KU_G&^τ(Config;C) := [Config,Fred^0(H)].
+* Modalities: ♭, ♯, ℑ, ◯, with ℑ(Config)≃BB_n (braid group delooping).
+* Key Feature: KU_G&^τ encodes su(2)-anyonic ground states, with linear types for braiding.
 
 Fibonacci Anions:
 
