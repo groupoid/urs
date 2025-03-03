@@ -22,7 +22,7 @@ type theory into a framework capable of capturing homotopy, cohesion, and superg
 * Equivariant Super Type Theory (ESTT): Thegraded universes/tensors, group actions, and super-modality.
 
 Each layer builds on the previous, culminating in a system tailored to
-formalize superpoints (𝑅ᵖᴵ𐞥), supersymmetry, and equivariant structures,
+formalize superpoints `(𝑅ᵐ|ⁿ)`, supersymmetry, and equivariant structures,
 as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 
 ## Syntax
