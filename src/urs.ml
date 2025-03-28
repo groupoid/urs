@@ -1,3 +1,5 @@
+(* Copyright (c) 2025 Groupoid Infinity *)
+
 open List
 
 (* Configuration for debugging *)
