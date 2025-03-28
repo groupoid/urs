@@ -1,8 +1,8 @@
 open List
 
 (* Configuration for debugging *)
-let verbose = false
-let trace = false
+let verbose = true
+let trace = true
 
 (* Universe grades: bosonic (0) or fermionic (1) *)
 type grade = Bos | Ferm
@@ -136,11 +136,11 @@ let rec infer (ctx : context) (e : exp) : exp =
   | Lam (x, a, b) ->
       let a_ty = infer ctx a in
       (match a_ty with
-       | Universe _ ->
+       | Universe _ ->  (* Ensure 'a' is a type by checking its type is a universe *)
            let ctx' = (x, a) :: ctx in
            let b_ty = infer ctx' b in
            Forall (x, a, b_ty)
-       | _ -> raise (TypeError "Lambda domain must be a type"))
+       | _ -> raise (TypeError ("Lambda domain must be a type, got: " ^ string_of_exp a_ty)))
   | App (f, arg) ->
       (match infer ctx f with
        | Forall (x, a, b) -> check ctx arg a; subst x arg b
@@ -185,9 +185,12 @@ let rec infer (ctx : context) (e : exp) : exp =
   | Wedge (a, b) -> let _ = check ctx a Spectrum in let _ = check ctx b Spectrum in Spectrum
   | HomSpec (a, b) -> let _ = check ctx a Spectrum in let _ = check ctx b Spectrum in Spectrum
   | KU_G (x, g, tau) ->
-      check ctx x (Universe (0, Bos));
-      check ctx g (Grpd 1);
-      check ctx tau (Forall ("_", x, Grpd 1));
+      let x_ty = infer ctx x in
+      check ctx x SmthSet;
+      check ctx g (Universe (0, Bos));
+      check ctx tau (Forall ("_", x_ty, Grpd 1));
+      if not (equal ctx x_ty SmthSet) then
+        raise (TypeError ("KU_G first argument must be of type SmthSet, got: " ^ string_of_exp x_ty));
       Spectrum
   | Qubit (c, h) ->
       check ctx c (Universe (0, Bos));
@@ -217,6 +220,8 @@ and equal (ctx : context) (t1 : exp) (t2 : exp) : bool =
   | Var x, Var y -> x = y
   | Forall (x, a1, b1), Forall (y, a2, b2) ->
       equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 (subst y (Var x) b2)
+  | Lam (x, a1, b1), Lam (y, a2, b2) when x = y ->
+      equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 b2
   | Lam (x, a1, b1), Lam (y, a2, b2) ->
       equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 (subst y (Var x) b2)
   | App (f1, a1), App (f2, a2) -> equal ctx f1 f2 && equal ctx a1 a2
@@ -225,6 +230,7 @@ and equal (ctx : context) (t1 : exp) (t2 : exp) : bool =
   | Flat a1, Flat a2 -> equal ctx a1 a2
   | Sharp a1, Sharp a2 -> equal ctx a1 a2
   | Shape a1, Shape a2 -> equal ctx a1 a2
+  | SmthSet, SmthSet -> true
   | Bosonic a1, Bosonic a2 -> equal ctx a1 a2
   | Tensor (a1, b1), Tensor (a2, b2) -> equal ctx a1 a2 && equal ctx b1 b2
   | Comp (n1, g1, a1, b1), Comp (n2, g2, a2, b2) -> n1 = n2 && equal ctx g1 g2 && equal ctx a1 a2 && equal ctx b1 b2
@@ -249,9 +255,9 @@ and normalize (ctx : context) (e : exp) : exp =
     | _ -> e
   in
   let e' = reduce e in
-  if equal ctx e e' then e else normalize ctx e'
+  if e = e' then e else normalize ctx e'  (* Syntactic equality check *)
 
-let ctx = []
+let ctx = [("τ", Forall ("_", SmthSet, Grpd 1))]  (* τ : Π(_:SmthSet).Grpd_1 *)
 let e = Lam ("x", SmthSet, KU_G (Var "x", Grpd 1, Var "τ"))
 let ty = infer ctx e
-let () = Printf.printf "Type: %s\n" (string_of_exp ty)
+let () = Printf.printf "%s : %s\n" (string_of_exp (normalize ctx e)) (string_of_exp ty)
