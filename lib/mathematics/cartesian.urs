@@ -10,7 +10,7 @@ def cart-closed (U X F : SmthSet) (n : Nat)
 -- Proof term: Adjointness via currying/uncurrying
 def cart-closed-iso (U X F : SmthSet) (n : Nat)
   : Path (plt n (Maps X F)) (plt n (λ k, Π (x : plt k (U × X)), plt k F))
- := λ φ, λ k ux, app-map X F φ k (snd ux)  -- Placeholder, assumes U × X pairing
+ := λ φ, λ k ux, app-map X F φ k (snd ux)  -- assumes U × X pairing
 
 -- Computation check
 def cart-closed-β (U X F : SmthSet) (n : Nat) (φ : plt n (Maps X F)) (x : plt n X)

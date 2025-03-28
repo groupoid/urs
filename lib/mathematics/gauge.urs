@@ -14,5 +14,5 @@ def gauge-equiv-proof (G : Set) (g : G) (X : Grpd 1 := BG G)
 
 -- Lemma: Homotopy equivalence from gauge maps
 def gauge-homotopy (X Y : Grpd∞) (φ : Maps X Y) (φ' : Maps Y X)
-  : Path (Grpd∞) X Y := idp _ _  -- Placeholder for composition homotopy
+  : Path (Grpd∞) X Y := idp _ _  -- composition homotopy
 

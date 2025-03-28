@@ -8,7 +8,7 @@ import foundations.config
 def susp (A : Spectrum) : Spectrum := Susp A
 def trunc (n : Nat) (A : Spectrum) : Spectrum := Trunc^n A
 def hom-spec (A B : Spectrum) : Spectrum := [A, B]
-def wedge (A B : Spectrum) : Spectrum := A ∧ B  -- New: Smash product
+def wedge (A B : Spectrum) : Spectrum := A ∧ B
 
 -- Constructors
 def intro-susp (A : Spectrum) (a : A) : Susp A := susp-intro a

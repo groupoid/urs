@@ -11,13 +11,11 @@ def plt-config (n m : Nat) (X : SmthSet) : Set := plt m (Config^n(X))
 def BB_n (n : Nat) : Grpd 1 := ℑ (Config^n (ℝ^2))
 
 -- Constructors
-def intro-config (n : Nat) (X : SmthSet) (ps : Π (i : Fin n), plt 0 X) : Config^n(X)
-  := config-intro ps
+def intro-config (n : Nat) (X : SmthSet) (ps : Π (i : Fin n), plt 0 X) : Config^n(X) := config-intro ps
 def braid (n : Nat) (b : plt-grpd 1 (BB_n n)) : BB_n n := b
 
 -- Eliminators
-def elim-config (n : Nat) (X : SmthSet) (c : Config^n(X)) (i : Fin n) : plt 0 X
-  := config-elim c i
+def elim-config (n : Nat) (X : SmthSet) (c : Config^n(X)) (i : Fin n) : plt 0 X := config-elim c i
 def elim-braid (n : Nat) (b : BB_n n) : plt-grpd 1 (BB_n n) := b
 
 -- Computation Rules

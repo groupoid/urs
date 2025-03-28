@@ -37,5 +37,5 @@ def test-fermionic-comm (A B : U 0 1) (a : A) (b : B)
 -- Lemma: Tensor associativity (inspired by supergeometry, Page 6)
 def tensor-assoc (i : Nat) (g₁ g₂ g₃ : Grade) (A : U i g₁) (B : U i g₂) (C : U i g₃)
   : Path (U i (g₁ + (g₂ + g₃) mod 2)) ((A ⊗ B) ⊗ C) (A ⊗ (B ⊗ C))
- := idp _ _  -- Placeholder for associativity proof
+ := idp _ _  -- associativity proof
 

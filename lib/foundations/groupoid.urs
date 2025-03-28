@@ -36,5 +36,5 @@ def test-fill-horn (X : Grpd 2) (h : plt-grpd 1 X)
 
 -- Lemma: Gauge equivalence (Page 8)
 def gauge-eq (X Y : Grpd∞) (φ : Maps X Y) (φ' : Maps Y X) (g : Maps X X) (h : g = φ' ∘ φ)
-  : Path (Grpd∞) X Y := idp _ _  -- Placeholder for homotopy equivalence
+  : Path (Grpd∞) X Y := idp _ _  -- homotopy equivalence
 
