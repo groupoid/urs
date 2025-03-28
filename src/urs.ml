@@ -6,8 +6,8 @@ open List
 let verbose = true
 let trace = true
 
-(* Universe grades: bosonic (0) or fermionic (1) *)
-type grade = Bos | Ferm
+(* Universe grades: bosonic (0) or fermionic (1) in honor of Satyendra Nath Bose and Enrico Fermi *)
+type grade = Bose | Fermi
 
 (* Expressions *)
 type exp =
@@ -60,7 +60,7 @@ type context = (string * exp) list
 exception TypeError of string
 
 let string_of_grade = function
-  | Bos -> "0" | Ferm -> "1"
+  | Bose -> "0" | Fermi -> "1"
 
 let rec string_of_exp = function
   | Universe (i, g) -> "U_" ^ string_of_int i ^ "_" ^ string_of_grade g
@@ -121,7 +121,7 @@ let rec subst x s t =
 let rec infer (ctx : context) (e : exp) : exp =
   if verbose then Printf.printf "Infer: %s\n" (string_of_exp e);
   match e with
-  | Universe (i, g) -> Universe (i + 1, Bos) (* U_i : U_{i+1} *)
+  | Universe (i, g) -> Universe (i + 1, Bose) (* U_i : U_{i+1} *)
   | Var x -> (match find_opt (fun (y, _) -> y = x) ctx with
              | Some (_, ty) -> ty
              | None -> raise (TypeError ("Unbound variable: " ^ x)))
@@ -150,7 +150,8 @@ let rec infer (ctx : context) (e : exp) : exp =
   | Path (a, u, v) ->
       let a_ty = infer ctx a in
       (match a_ty with
-       | Universe _ -> check ctx u a; check ctx v a; Universe (0, Bos))
+       | Universe _ -> check ctx u a; check ctx v a; Universe (0, Bose)
+       | _ -> Universe (0, Bose))
   | Transport (a, p, t) ->
       let a_ty = infer ctx a in
       (match a_ty with
@@ -160,47 +161,47 @@ let rec infer (ctx : context) (e : exp) : exp =
             | Path (x', u, v) when equal ctx x x' -> check ctx t (subst "_dummy" u b); subst "_dummy" v b
             | _ -> raise (TypeError "Transport path type mismatch"))
        | _ -> raise (TypeError "Transport requires a dependent type"))
-  | SmthSet -> Universe (0, Bos)
+  | SmthSet -> Universe (0, Bose)
   | Plot (n, x, phi) ->
       check ctx x SmthSet;
-      check ctx phi (Forall ("_", Universe (n, Bos), x));
+      check ctx phi (Forall ("_", Universe (n, Bose), x));
       SmthSet
-  | Flat a -> let _ = check ctx a (Universe (0, Bos)) in Universe (0, Bos)
-  | Sharp a -> let _ = check ctx a (Universe (0, Bos)) in Universe (0, Bos)
-  | Shape a -> let _ = check ctx a (Universe (0, Bos)) in Universe (0, Ferm)
-  | Bosonic a -> let _ = check ctx a (Universe (0, Ferm)) in Universe (0, Bos)
+  | Flat a -> let _ = check ctx a (Universe (0, Bose)) in Universe (0, Bose)
+  | Sharp a -> let _ = check ctx a (Universe (0, Bose)) in Universe (0, Bose)
+  | Shape a -> let _ = check ctx a (Universe (0, Bose)) in Universe (0, Fermi)
+  | Bosonic a -> let _ = check ctx a (Universe (0, Fermi)) in Universe (0, Bose)
   | Tensor (a, b) ->
       let a_ty = infer ctx a in
       let b_ty = infer ctx b in
       (match a_ty, b_ty with
-       | Universe (i, g1), Universe (j, g2) -> Universe (max i j, if g1 = Ferm || g2 = Ferm then Ferm else Bos)
+       | Universe (i, g1), Universe (j, g2) -> Universe (max i j, if g1 = Fermi || g2 = Fermi then Fermi else Bose)
        | _ -> raise (TypeError "Tensor requires types"))
-  | SupSmthSet -> Universe (0, Ferm)
-  | Grpd n -> Universe (0, Bos)
+  | SupSmthSet -> Universe (0, Fermi)
+  | Grpd n -> Universe (0, Bose)
   | Comp (n, g, a, b) ->
       check ctx g (Grpd n);
       check ctx a (Grpd (n-1));
       check ctx b (Grpd (n-1));
       Grpd (n-1)
-  | Spectrum -> Universe (0, Bos)
+  | Spectrum -> Universe (0, Bose)
   | Susp a -> let _ = check ctx a Spectrum in Spectrum
   | Wedge (a, b) -> let _ = check ctx a Spectrum in let _ = check ctx b Spectrum in Spectrum
   | HomSpec (a, b) -> let _ = check ctx a Spectrum in let _ = check ctx b Spectrum in Spectrum
   | KU_G (x, g, tau) ->
       let x_ty = infer ctx x in
       check ctx x SmthSet;
-      check ctx g (Universe (0, Bos));
+      check ctx g (Universe (0, Bose));
       check ctx tau (Forall ("_", x_ty, Grpd 1));
       if not (equal ctx x_ty SmthSet) then
         raise (TypeError ("KU_G first argument must be of type SmthSet, got: " ^ string_of_exp x_ty));
       Spectrum
   | Qubit (c, h) ->
-      check ctx c (Universe (0, Bos));
-      check ctx h (Universe (0, Bos));
+      check ctx c (Universe (0, Bose));
+      check ctx h (Universe (0, Bose));
       Spectrum
   | Config (n, x) -> check ctx x SmthSet; SmthSet
   | Braid (n, b) -> check ctx b (Grpd 1); Grpd 1
-  | Forms (n, x) -> check ctx x SmthSet; Universe (0, Bos)
+  | Forms (n, x) -> check ctx x SmthSet; Universe (0, Bose)
   | Diff (n, omega) -> check ctx omega (Forms (n, Var "X")); Forms (n+1, Var "X")
   | DiffKU_G (x, g, tau, conn) ->
       check ctx x SmthSet;
