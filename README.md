@@ -27,6 +27,53 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 
 ## Syntax
 
+```OCaml
+type grade = Bose | Fermi (* Universe grades: bosonic (0) or fermionic (1) *)
+
+type exp =
+  (* MLTT/HoTT Core *)
+  | Universe of int * grade           (* U i g *)
+  | Var of string                     (* x *)
+  | Forall of string * exp * exp      (* Π(x:A).B *)
+  | Lam of string * exp * exp         (* λx:A. b *)
+  | App of exp * exp                  (* f a *)
+  | Path of exp * exp * exp           (* Id_A(u,v) *)
+  | Transport of exp * exp * exp      (* transport A p t *)
+
+  (* Cohesive Types *)
+  | SmthSet                           (* SmthSet *)
+  | Plot of int * exp * exp           (* plt n X φ *)
+  | Flat of exp                       (* ♭ A *)
+  | Sharp of exp                      (* ♯ A *)
+  | Shape of exp                      (* ℑ A *)
+  | Bosonic of exp                    (* ◯ A *)
+
+  (* Graded and Supergeometry *)
+  | Tensor of exp * exp               (* A ⊗ B *)
+  | SupSmthSet                        (* SupSmthSet *)
+
+  (* Groupoids *)
+  | Grpd of int                       (* Grpd n *)
+  | Comp of int * exp * exp * exp     (* comp n G a b *)
+
+  (* Spectra and Stable Homotopy *)
+  | Spectrum                          (* Spectrum *)
+  | Susp of exp                       (* Susp A *)
+  | Wedge of exp * exp                (* A ∧ B *)
+  | HomSpec of exp * exp              (* [A, B] *)
+
+  (* TED-K *)
+  | KU_G of exp * exp * exp           (* KU_G^τ(X; τ) *)
+  | Qubit of exp * exp                (* [Config, Fred^0 H] *)
+  | Config of int * exp               (* Config^n(X) *)
+  | Braid of int * exp                (* BB_n *)
+
+  (* Differential Cohomology *)
+  | Forms of int * exp                (* Ω^n(X) *)
+  | Diff of int * exp                 (* d ω *)
+  | DiffKU_G of exp * exp * exp * exp (* DiffKU_G^τ(X; τ, conn) *)
+```
+
 ## Semantics
 
 ### Formation
