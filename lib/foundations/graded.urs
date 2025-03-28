@@ -6,10 +6,8 @@ def U (i : Nat) (g : Grade) : Type := Uᵢ^g
 def U₀^g (g : Grade) : U 1 g := U 0 g
 
 -- Graded Tensor Product
-def tensor (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) : U i (g₁ + g₂ mod 2)
- := A ⊗ B
-def pair-tensor (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (a : A) (b : B)
-  : tensor i g₁ g₂ A B := a ⊗ b
+def tensor (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) : U i (g₁ + g₂ mod 2) := A ⊗ B
+def pair-tensor (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (a : A) (b : B) : tensor i g₁ g₂ A B := a ⊗ b
 
 -- Eliminators
 def proj-tensor₁ (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (p : A ⊗ B) : A := p.1
