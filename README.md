@@ -28,7 +28,7 @@ as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
 ## Syntax
 
 ```OCaml
-type grade = Bos | Ferm (* Universe grades: bosonic (0) or fermionic (1) *)
+type grade = Bose | Fermi (* Universe grades: bosonic (0) or fermionic (1) *)
 
 type exp =
   (* MLTT/HoTT Core *)
