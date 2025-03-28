@@ -34,7 +34,25 @@ def Physics (n k m l r d : ℕ) (G : Grpd 𝟏) (γ : G → G) : Type
 
 -- Projection to the 𝐺/𝛾 component
 def πgauge (n k m l r d : ℕ) (G : Grpd 𝟏) (γ : G → G)
-    : Probe n k m l r d G γ → Quotient G γ
-  := λ p : Probe n k m l r d G γ,
-       Quot G γ (fst (snd (snd (snd (fst p)))))
+  : Probe n k m l r d G γ → Quotient G γ
+ := λ p : Probe n k m l r d G γ, Quot G γ (fst (snd (snd (snd (fst p)))))
 
+-- 𝐵ₙ: Braid group on n strands
+-- ↳ ℝ²-configurations quotiented by permutations yield braids
+-- ↳ Generators: σ₁, …, σₙ₋₁ with relations σᵢσᵢ₊₁σᵢ = σᵢ₊₁σᵢσᵢ₊₁, σᵢσⱼ = σⱼσᵢ (|i-j| ≥ 2)
+-- ↳ Used in quantum braiding and anyon statistics
+def 𝐵ₙ (n : ℕ) : Grpd 𝟏 := Braid n (Grpd 𝟏)
+
+-- Introduction: Braid generator σᵢ
+-- ↳ σᵢ : 𝐵ₙ for 1 ≤ i ≤ n-1, strand i crosses over i+1
+def σᵢ (n : ℕ) (i : ℕ) : 𝐵ₙ n := Braid n (Var "σᵢ")  -- Assumes σᵢ in context, i < n
+
+-- Potential extension in Physics using 𝐵ₙ
+def BraidedPhysics (n k m l r d : ℕ) (G : Grpd 𝟏) (γ : G → G) : Type
+ := Physics n k m l r d G γ ⊗ 𝐵ₙ n
+
+def braid-trans (n : ℕ) (G : Grpd 𝟏) (τ : SmthSet → Grpd 𝟏) (b : 𝐵ₙ n) (c : Config n SmthSet) : Config n SmthSet
+
+def BraidApply (n : ℕ) : 𝐵ₙ n → (Config n SmthSet → Config n SmthSet)
+ := λ b : 𝐵ₙ n, λ c : Config n SmthSet,
+       braid-trans n (Grpd 𝟏) (λ _ : SmthSet, Grpd 𝟏) b c

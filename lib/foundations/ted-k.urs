@@ -3,6 +3,8 @@ module ted-k where
 import foundations.stablespec
 import foundations.modalities
 
+def braid-transport (n : ℕ) (G : Grpd 𝟏) (τ : SmthSet → Grpd 𝟏) (b : 𝐵ₙ n) (c : Config n SmthSet) : Config n SmthSet
+
 -- TED K-Theory Spectrum
 def KU_G^τ (X : Type) (G : Group) (τ : X → BPU) : Spectrum := KU_G^τ(X; τ)
 def qubit (Config : Type) (H : Type) : Spectrum := [Config, Fred^0(H)]
