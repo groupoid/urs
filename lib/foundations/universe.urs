@@ -10,7 +10,7 @@
 -- ↳ Associativity: (α ⊕ β) ⊕ γ = α ⊕ (β ⊕ γ)
 -- ↳ Identity: α ⊕ 𝟘 = α = 𝟘 ⊕ α
 
-def 𝒢 : Type := ℕ × ℤ/2ℤ  -- Levels (ℕ) and parity (ℤ/2ℤ: 𝟎 = Bos, 𝟏 = Ferm)
+def 𝒢 : Type := ℕ × ℤ/2ℤ  -- Levels (ℕ) and parity (ℤ/2ℤ: 𝟎 = Bose, 𝟏 = Fermi)
 def ⊕ (α β : 𝒢) : 𝒢 := (fst α + fst β, (snd α + snd β) mod 2)
 def 𝟘 : 𝒢 := (0, 0)  -- Neutral: level 0, bosonic
 def U (α : 𝒢) : Type := Universe α -- Universe formation. U_α : Universe indexed by α ∈ 𝒢 contains types of grade α.
