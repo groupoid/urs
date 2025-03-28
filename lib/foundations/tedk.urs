@@ -1,4 +1,4 @@
-module ted-k where
+module tedk where
 
 import foundations.stablespec
 import foundations.modalities
@@ -26,7 +26,9 @@ def app-qubit (Config : Type) (H : U 0 0) (q : qubit Config H) (c : Config) : Fr
 
 -- Computation Rules
 def ku-β (X : Type) (G : Group) (τ : X → BPU) (f : Maps X (Fred^0 H))
-  : Path (Maps X (Fred^0 H)) (elim-ku X G τ (intro-ku X G τ f)) f := idp _ f
+  : Path (Maps X (Fred^0 H)) (elim-ku X G τ (intro-ku X G τ f)) f
+ := idp _ f
+
 def qubit-β (Config : Type) (H : U 0 0) (f : Maps Config (Fred^0 H)) (c : Config)
   : Path (Fred^0 H) (app-qubit Config H (intro-qubit Config H f) c) (app-map Config (Fred^0 H) f 0 c)
  := hom-β Config (Fred^0 H) f c
@@ -35,13 +37,18 @@ def qubit-β (Config : Type) (H : U 0 0) (f : Maps Config (Fred^0 H)) (c : Confi
 
 -- Test 1: TED K-theory class
 def test-ku (X : Type) (G : Group) (τ : X → BPU) (f : Maps X (Fred^0 H))
-  : KU_G^τ(X; τ) := intro-ku X G τ f
+  : KU_G^τ(X; τ)
+ := intro-ku X G τ f
+
 def test-ku-β (X : Type) (G : Group) (τ : X → BPU) (f : Maps X (Fred^0 H))
-  : Path (Maps X (Fred^0 H)) (elim-ku X G τ (test-ku X G τ f)) f := ku-β X G τ f
+  : Path (Maps X (Fred^0 H)) (elim-ku X G τ (test-ku X G τ f)) f
+ := ku-β X G τ f
 
 -- Test 2: Qubit type
 def test-qubit (Config : Type) (f : Maps Config (Fred^0 H))
-  : qubit Config H := intro-qubit Config H f
+  : qubit Config H
+ := intro-qubit Config H f
+
 def test-qubit-β (Config : Type) (f : Maps Config (Fred^0 H)) (c : Config)
   : Path (Fred^0 H) (app-qubit Config H (test-qubit Config f) c) (app-map Config (Fred^0 H) f 0 c)
  := qubit-β Config H f c

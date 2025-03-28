@@ -2,15 +2,14 @@
 
 open List
 
-(* Configuration for debugging *)
 let verbose = true
 let trace = true
 
 (* Universe grades: bosonic (0) or fermionic (1) in honor of Satyendra Nath Bose and Enrico Fermi *)
 type grade = Bose | Fermi
 
-(* Expressions *)
 type exp =
+
   (* MLTT/HoTT Core *)
   | Universe of int * grade           (* U i g *)
   | Var of string                     (* x *)
@@ -53,11 +52,7 @@ type exp =
   | Diff of int * exp                 (* d ω *)
   | DiffKU_G of exp * exp * exp * exp (* DiffKU_G^τ(X; τ, conn) *)
 
-(* Context: (variable, type) pairs *)
 type context = (string * exp) list
-
-(* Exceptions *)
-exception TypeError of string
 
 let string_of_grade = function
   | Bose -> "0" | Fermi -> "1"
@@ -124,7 +119,7 @@ let rec infer (ctx : context) (e : exp) : exp =
   | Universe (i, g) -> Universe (i + 1, Bose) (* U_i : U_{i+1} *)
   | Var x -> (match find_opt (fun (y, _) -> y = x) ctx with
              | Some (_, ty) -> ty
-             | None -> raise (TypeError ("Unbound variable: " ^ x)))
+             | None -> raise (Failure ("Unbound variable: " ^ x)))
   | Forall (x, a, b) ->
       let a_ty = infer ctx a in
       (match a_ty with
@@ -133,8 +128,8 @@ let rec infer (ctx : context) (e : exp) : exp =
            let b_ty = infer ctx' b in
            (match b_ty with
             | Universe (j, g) -> Universe (max i j, g)
-            | _ -> raise (TypeError "Forall body must be a type"))
-       | _ -> raise (TypeError "Forall domain must be a type"))
+            | _ -> raise (Failure "Forall body must be a type"))
+       | _ -> raise (Failure "Forall domain must be a type"))
   | Lam (x, a, b) ->
       let a_ty = infer ctx a in
       (match a_ty with
@@ -142,11 +137,11 @@ let rec infer (ctx : context) (e : exp) : exp =
            let ctx' = (x, a) :: ctx in
            let b_ty = infer ctx' b in
            Forall (x, a, b_ty)
-       | _ -> raise (TypeError ("Lambda domain must be a type, got: " ^ string_of_exp a_ty)))
+       | _ -> raise (Failure ("Lambda domain must be a type, got: " ^ string_of_exp a_ty)))
   | App (f, arg) ->
       (match infer ctx f with
        | Forall (x, a, b) -> check ctx arg a; subst x arg b
-       | ty -> raise (TypeError ("Application requires a Forall type, got: " ^ string_of_exp ty)))
+       | ty -> raise (Failure ("Application requires a Forall type, got: " ^ string_of_exp ty)))
   | Path (a, u, v) ->
       let a_ty = infer ctx a in
       (match a_ty with
@@ -159,8 +154,8 @@ let rec infer (ctx : context) (e : exp) : exp =
            let p_ty = infer ctx p in
            (match p_ty with
             | Path (x', u, v) when equal ctx x x' -> check ctx t (subst "_dummy" u b); subst "_dummy" v b
-            | _ -> raise (TypeError "Transport path type mismatch"))
-       | _ -> raise (TypeError "Transport requires a dependent type"))
+            | _ -> raise (Failure "Transport path type mismatch"))
+       | _ -> raise (Failure "Transport requires a dependent type"))
   | SmthSet -> Universe (0, Bose)
   | Plot (n, x, phi) ->
       check ctx x SmthSet;
@@ -175,7 +170,7 @@ let rec infer (ctx : context) (e : exp) : exp =
       let b_ty = infer ctx b in
       (match a_ty, b_ty with
        | Universe (i, g1), Universe (j, g2) -> Universe (max i j, if g1 = Fermi || g2 = Fermi then Fermi else Bose)
-       | _ -> raise (TypeError "Tensor requires types"))
+       | _ -> raise (Failure "Tensor requires types"))
   | SupSmthSet -> Universe (0, Fermi)
   | Grpd n -> Universe (0, Bose)
   | Comp (n, g, a, b) ->
@@ -193,7 +188,7 @@ let rec infer (ctx : context) (e : exp) : exp =
       check ctx g (Universe (0, Bose));
       check ctx tau (Forall ("_", x_ty, Grpd 1));
       if not (equal ctx x_ty SmthSet) then
-        raise (TypeError ("KU_G first argument must be of type SmthSet, got: " ^ string_of_exp x_ty));
+        raise (Failure ("KU_G first argument must be of type SmthSet, got: " ^ string_of_exp x_ty));
       Spectrum
   | Qubit (c, h) ->
       check ctx c (Universe (0, Bose));
@@ -214,7 +209,7 @@ and check (ctx : context) (e : exp) (ty : exp) : unit =
   if trace then Printf.printf "Check: %s : %s\n" (string_of_exp e) (string_of_exp ty);
   let inferred = infer ctx e in
   if equal ctx inferred ty then ()
-  else raise (TypeError (Printf.sprintf "Type mismatch: expected %s, got %s" (string_of_exp ty) (string_of_exp inferred)))
+  else raise (Failure (Printf.sprintf "Type mismatch: expected %s, got %s" (string_of_exp ty) (string_of_exp inferred)))
 
 and equal (ctx : context) (t1 : exp) (t2 : exp) : bool =
   if verbose then Printf.printf "Equal: %s vs %s\n" (string_of_exp t1) (string_of_exp t2);
