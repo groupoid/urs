@@ -247,12 +247,9 @@ and equal (ctx : context) (t1 : exp) (t2 : exp) : bool =
   match normalize ctx t1, normalize ctx t2 with
   | Universe (i1, g1), Universe (i2, g2) -> i1 = i2 && g1 = g2
   | Var x, Var y -> x = y
-  | Forall (x, a1, b1), Forall (y, a2, b2) ->
-      equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 (subst y (Var x) b2)
-  | Lam (x, a1, b1), Lam (y, a2, b2) when x = y ->
-      equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 b2
-  | Lam (x, a1, b1), Lam (y, a2, b2) ->
-      equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 (subst y (Var x) b2)
+  | Forall (x, a1, b1), Forall (y, a2, b2) -> equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 (subst y (Var x) b2)
+  | Lam (x, a1, b1), Lam (y, a2, b2) when x = y ->  equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 b2
+  | Lam (x, a1, b1), Lam (y, a2, b2) -> equal ctx a1 a2 && equal ((x, a1) :: ctx) b1 (subst y (Var x) b2)
   | App (f1, a1), App (f2, a2) -> equal ctx f1 f2 && equal ctx a1 a2
   | Path (a1, u1, v1), Path (a2, u2, v2) -> equal ctx a1 a2 && equal ctx u1 u2 && equal ctx v1 v2
   | Transport (a1, p1, t1), Transport (a2, p2, t2) -> equal ctx a1 a2 && equal ctx p1 p2 && equal ctx t1 t2
