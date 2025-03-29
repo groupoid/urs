@@ -1,12 +1,20 @@
+
 (* Copyright (c) 2025 Groupoid Infinity *)
 
 open List
 
-let verbose = true
-let trace = true
+let verbose = false
+let trace = false
 
 (* Universe grades: bosonic (0) or fermionic (1) in honor of Satyendra Nath Bose and Enrico Fermi *)
 type grade = Bose | Fermi
+
+let combine_grades (g1 : grade) (g2 : grade) : grade =
+  match g1, g2 with
+  | Bose, Bose -> Bose
+  | Bose, Fermi -> Fermi
+  | Fermi, Bose -> Fermi
+  | Fermi, Fermi -> Bose
 
 type exp =
 
@@ -44,6 +52,9 @@ type exp =
   (* TED-K *)
   | KU_G of exp * exp * exp           (* KU_G^τ(X; τ) *)
   | Qubit of exp * exp                (* [Config, Fred^0 H] *)
+  | Linear of exp                     (* !A or Type_{lin} *)
+  | AppQubit of exp * exp * exp       (* appQubit A Q x *)
+  | FuseQubit of exp * exp * exp      (* fuseQubit q₁ q₂ (chan : H ⊗ H) *)
   | Config of int * exp               (* Config^n(X) *)
   | Braid of int * exp                (* BB_n *)
 
@@ -86,6 +97,9 @@ let rec string_of_exp = function
   | Forms (n, x) -> "Ω^" ^ string_of_int n ^ "(" ^ string_of_exp x ^ ")"
   | Diff (n, omega) -> "d_" ^ string_of_int n ^ "(" ^ string_of_exp omega ^ ")"
   | DiffKU_G (x, g, tau, conn) -> "DiffKU_" ^ string_of_exp g ^ "^" ^ string_of_exp tau ^ "(" ^ string_of_exp x ^ "," ^ string_of_exp conn ^ ")"
+  | Linear a -> "!" ^ string_of_exp a  (* Linear type as !A *)
+  | AppQubit (a, q, x) -> "appQubit " ^ string_of_exp a ^ " " ^ string_of_exp q ^ " " ^ string_of_exp x
+  | FuseQubit (q1, q2, chan) -> "fuseQubit (" ^ string_of_exp q1 ^ ") (" ^ string_of_exp q2 ^ ") (" ^ string_of_exp chan ^ ")"
 
 let rec subst x s t =
   match t with
@@ -123,13 +137,13 @@ let rec infer (ctx : context) (e : exp) : exp =
   | Forall (x, a, b) ->
       let a_ty = infer ctx a in
       (match a_ty with
-       | Universe (i, _) ->
+       | Universe (i, g) | Linear (Universe (i, g)) ->
            let ctx' = (x, a) :: ctx in
            let b_ty = infer ctx' b in
            (match b_ty with
-            | Universe (j, g) -> Universe (max i j, g)
+            | Universe (j, h) -> Universe (max i j, combine_grades g h)
             | _ -> raise (Failure "Forall body must be a type"))
-       | _ -> raise (Failure "Forall domain must be a type"))
+       | _ -> raise (Failure "Forall domain must be a type or linear type"))
   | Lam (x, a, b) ->
       let a_ty = infer ctx a in
       (match a_ty with
@@ -182,19 +196,36 @@ let rec infer (ctx : context) (e : exp) : exp =
   | Susp a -> let _ = check ctx a Spectrum in Spectrum
   | Wedge (a, b) -> let _ = check ctx a Spectrum in let _ = check ctx b Spectrum in Spectrum
   | HomSpec (a, b) -> let _ = check ctx a Spectrum in let _ = check ctx b Spectrum in Spectrum
-  | KU_G (x, g, tau) ->
-      let x_ty = infer ctx x in
-      check ctx x SmthSet;
-      check ctx g (Universe (0, Bose));
-      check ctx tau (Forall ("_", x_ty, Grpd 1));
-      if not (equal ctx x_ty SmthSet) then
-        raise (Failure ("KU_G first argument must be of type SmthSet, got: " ^ string_of_exp x_ty));
-      Spectrum
+  | KU_G (x, r, tau) ->
+    let x_ty = infer ctx x in
+    (match x_ty with
+     | Universe (i, g) -> raise (Failure "KU_G first argument must be a term, not a type")
+     | ty ->
+         check ctx ty (Universe (0, Bose));
+         check ctx r (Universe (0, Bose));
+         check ctx tau (Forall ("_", ty, Universe (0, Bose)));
+         Universe (0, Bose))
   | Qubit (c, h) ->
       check ctx c (Universe (0, Bose));
       check ctx h (Universe (0, Bose));
       Spectrum
-  | Config (n, x) -> check ctx x SmthSet; SmthSet
+  | Linear a ->
+      let a_ty = infer ctx a in
+      (match a_ty with
+       | Universe (i, g) -> Universe (i, g)
+       | _ -> raise (Failure "Linear requires a type"))
+  | AppQubit (a, q, x) ->
+      check ctx q (Qubit (a, Var "H"));   (* q : [A, Fred^0 H] *)
+      check ctx x a;                      (* x : A *)
+      Var "H"                             (* Result : H *)
+  | FuseQubit (q1, q2, chan) ->
+      check ctx q1 (Qubit (Var "Config", Var "H"));
+      check ctx q2 (Qubit (Var "Config", Var "H"));
+      check ctx chan (Tensor (Var "H", Var "H"));                            (* Channel : H ⊗ H *)
+      Tensor (Qubit (Var "Config", Var "H"), Qubit (Var "Config", Var "H"))  (* Result : Qubit ⊗ Qubit *)
+  | Config (n, x) ->
+    check ctx x (Universe (0, Bose));     (* x : U_0_0 *)
+    Universe (0, Bose)                    (* Config^n(X) : U_0_0 *)
   | Braid (n, b) -> check ctx b (Grpd 1); Grpd 1
   | Forms (n, x) -> check ctx x SmthSet; Universe (0, Bose)
   | Diff (n, omega) -> check ctx omega (Forms (n, Var "X")); Forms (n+1, Var "X")
@@ -255,7 +286,72 @@ and normalize (ctx : context) (e : exp) : exp =
   let e' = reduce e in
   if e = e' then e else normalize ctx e'  (* Syntactic equality check *)
 
-let ctx = [("τ", Forall ("_", SmthSet, Grpd 1))]  (* τ : Π(_:SmthSet).Grpd_1 *)
-let e = Lam ("x", SmthSet, KU_G (Var "x", Grpd 1, Var "τ"))
-let ty = infer ctx e
-let () = Printf.printf "%s : %s\n" (string_of_exp (normalize ctx e)) (string_of_exp ty)
+
+let config = Config (1, SmthSet)
+let mzm_type = Linear (Universe (0, Bose))
+let mzm_fusion_rule = Forall ("m1", mzm_type, Forall ("m2", mzm_type, Forall ("c", Universe (0, Bose), Universe (0, Bose))))
+let ctx = [
+  ("e", Lam ("x", SmthSet, KU_G (Var "x", Grpd 1, Var "τ")));
+  ("τ", Forall ("_", SmthSet, Universe (0, Bose)));
+  ("γ", mzm_type);
+  ("H", Universe (0, Bose));
+  ("SmthSet", Universe (0, Bose));
+  ("config", Config (1, SmthSet));
+  ("Config", Universe (0, Bose));
+  ("1", Universe (0, Bose));
+  ("refl", Path (Universe (0, Bose), Var "1", Var "1"));
+  ("qubit_1", Var "H");
+  ("MZMFusionRule", mzm_fusion_rule)
+]
+
+let mzm_state =
+  Forall ("c", Config (1, SmthSet),
+    Linear (Forall ("m", mzm_type,
+      KU_G (Var "c", SmthSet, Lam ("_", Config (1, SmthSet), Grpd 1)))))
+
+let fuse_mzm =
+  Lam ("m₁", mzm_type,
+    Lam ("m₂", mzm_type,
+      Forall ("c", Universe (0, Bose),
+        App (App (Var "MZMFusionRule", Var "m₁"), Var "m₂"))))
+
+let resolve_mzm =
+  Forall ("p", Forall ("c", Universe (0, Bose), App (App (Var "MZMFusionRule", Var "γ"), Var "γ")),
+    Qubit (Config (1, SmthSet), Var "H"))
+
+let fuse_mzm_state =
+  Lam ("s₁", App (Var "MZMState", Var "c"),
+    Lam ("s₂", App (Var "MZMState", Var "c"),
+      Lam ("p₁", Forall ("m", mzm_type, KU_G (Var "c", SmthSet, Lam ("_", Universe (0, Bose), Grpd 1))),
+        Lam ("p₂", Forall ("m", mzm_type, KU_G (Var "c", SmthSet, Lam ("_", Universe (0, Bose), Grpd 1))),
+          App (Var "1", FuseQubit (Var "q₁", Var "q₂", Tensor (Var "1", Var "1")))))))
+
+let test_type ctx (term : exp) (expected_type : exp) (name : string) : unit =
+    Printf.printf "TEST ";
+    try let inferred_type = infer ctx term in
+        if equal ctx inferred_type expected_type then
+            Printf.printf "OK> %s = %s : %s\n" name (string_of_exp term) (string_of_exp inferred_type)
+        else (
+            Printf.printf "ERROR>\nTerm: %s\nInferred: %s\nExpected: %s\n" (string_of_exp term) (string_of_exp inferred_type) (string_of_exp expected_type);
+            raise (Failure "Type mismatch")
+        )
+    with Failure msg -> Printf.printf "Error in %s: %s\n" name msg
+
+let test_term ctx (term : exp) (expected_type : exp) (name : string) : unit =
+    Printf.printf "TEST ";
+    try if equal ctx term expected_type then
+            Printf.printf "OK> %s = %s\n" name (string_of_exp term)
+        else (
+            Printf.printf "ERROR>\nTerm: %s\nExpected: %s\n" (string_of_exp term) (string_of_exp expected_type);
+            raise (Failure "Term mismatch")
+        )
+    with Failure msg -> Printf.printf "Error in %s: %s\n" name msg
+
+let () =
+    test_type ctx mzm_state (Universe (1,Bose))  "mzm_state";
+    test_type ctx config (Universe (0, Bose)) "config";
+    test_term ctx (Var "MZMFusionRule") (Var "MZMFusionRule") "fusion";
+    test_term ctx fuse_mzm fuse_mzm "fuse_mzm";
+    test_term ctx fuse_mzm_state fuse_mzm_state "fuse_mzm_state";
+    test_type ctx mzm_fusion_rule (Universe (1, Bose)) "mzm_fusion_rule";
+    ()
