@@ -8,7 +8,7 @@ def CrtSp : U₀ := ℝ^n  -- Indexed by n : Nat
 -- Constructors
 def plt (n : Nat) (X : SmthSet) : Set := Plt(ℝ^n, X)
 def precomp (n m : Nat) (X : SmthSet) (f : ℝ^m → ℝ^n) (φ : plt n X) : plt m X := φ ∘ f
-def glue (n : Nat) (X : SmthSet) (U : OpenCover n) (φs : Π (i : I), plt (U i) X)
+def glue-φ (n : Nat) (X : SmthSet) (U : OpenCover n) (φs : Π (i : I), plt (U i) X)
     (coh : Π (i j : I), Path (plt (U i ∩ U j) X) (φs i | U i ∩ U j) (φs j | U i ∩ U j))
   : plt n X := glue U φs coh
 

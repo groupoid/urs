@@ -24,7 +24,7 @@ def config-β (n : Nat) (X : SmthSet) (ps : Π (i : Fin n), plt 0 X) (i : Fin n)
 def braid-idem (n : Nat)
   : Path (Grpd 1) (ℑ (BB_n n)) (BB_n n) := fermionic-idem 0 1 (Config^n (ℝ^2))
 
--- Test Terms and Lemmas
+-- Test Terms and Lemmas 
 
 -- Test 1: Configuration of points
 def test-config (n : Nat) (X : SmthSet) (ps : Π (i : Fin n), plt 0 X)
