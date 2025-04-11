@@ -321,7 +321,7 @@ let fuse_mzm_state =
     Lam ("s₂", App (Var "MZMState", Var "c"),
       Lam ("p₁", Forall ("m", mzm_type, KU_G (Var "c", SmthSet, Lam ("_", Universe (0, Bose), Grpd 1))),
         Lam ("p₂", Forall ("m", mzm_type, KU_G (Var "c", SmthSet, Lam ("_", Universe (0, Bose), Grpd 1))),
-          App (Var "1", FuseQubit (Var "q₁", Var "q₂", Tensor (Var "1", Var "1")))))))
+          FuseQubit (Var "q₁", Var "q₂", Tensor (Var "1", Var "1"))))))
 
 let test_type ctx (term : exp) (expected_type : exp) (name : string) : unit =
     Printf.printf "TEST ";

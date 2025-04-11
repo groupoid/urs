@@ -23,7 +23,7 @@ def germ (n : Nat) (X : SmthSet) (φ : plt n X) : PltGrm(ℝ^n, X) := germ φ
 
 -- Computation rules
 def precomp-id (n : Nat) (X : SmthSet) (φ : plt n X)
-  : Path (plt n X) (precomp n n X id φ) φ := idp (plt n X) φ
+OS  : Path (plt n X) (precomp n n X id φ) φ := idp (plt n X) φ
 def map-β (A B : SmthSet) (f : Π (n : Nat), plt n A → plt n B) (n : Nat) (x : plt n A)
   : Path (plt n B) (app-map A B (map A B f) n x) (f n x) := idp (plt n B) (f n x)
 
@@ -54,4 +54,3 @@ def test-map-β (n : Nat) (φ : plt n (λ k, C^∞(ℝ^k, ℝ)))
 def yoneda (n : Nat) (X : SmthSet)
   : Path (plt n X) (Π (k : Nat), Hom_SmthSet(ℝ^k, ℝ^n) → plt k X) (λ f, precomp k n X f)
  := idp _ _  -- Reflects Hom_SmthSet(ℝ^n, X) ≅ Plt(ℝ^n, X)
-
