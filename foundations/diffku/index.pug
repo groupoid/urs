@@ -1,0 +1,120 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='DiffKU')
+        meta(property='og:description' content='Differential K-Theory Type')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/diffku/')
+
+block title
+    title DIFFKU
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>DIFFKU</a>
+    article.main
+        .exe
+            section
+                h1 DIFFERENTIAL K-THEORY TYPE
+                span.
+        aside
+            time Published: 13 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{DiffKU_G}$ type represents differential K-theory, a refinement of generalized
+                    K-theory that incorporates differential forms and connections. It is a key construct in
+                    physics, particularly for modeling topological invariants in quantum field theory and
+                    string theory. By combining K-theory classes with differential data, it enables precise
+                    descriptions of phenomena like gauge fields and anomalies.
+                +tex.
+                    $\mathbf{DiffKU_G}$ operates within the cohesive type system, interacting with smooth
+                    sets $\mathbf{SmthSet}$ and groupoids $\mathbf{Grpd_1}$, and is typed as a spectrum,
+                    reflecting its role in stable homotopy theory.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.1.1}$ ($\mathbf{DiffKU_G}$-Formation). The differential K-theory
+                    type $\mathbf{DiffKU_G}$ is formed over a smooth set $X : \mathbf{SmthSet}$, a groupoid
+                    $G : \mathbf{Grpd_1}$, a twist $\tau : \prod_{x : X} \mathbf{Grpd_1}$, and a connection
+                    $conn : \Omega^1(X)$, yielding a type in the spectrum universe.
+                +tex(true).
+                    $$
+                        \mathbf{DiffKU_G} :
+                    $$
+                    $$
+                        \prod_{X : \mathbf{SmthSet}} \prod_{G : \mathbf{Grpd_1}}
+                        \prod_{\tau : \prod_{x : X} \mathbf{Grpd_1}}
+                        \prod_{conn : \Omega^1(X)} \mathbf{Spectrum}.
+                    $$
+                +code.
+                    type exp =
+                      | DiffKU_G of exp * exp * exp * exp  (* DiffKU_G X G τ conn *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.1.2}$ ($\mathbf{DiffKU_G}$-Introduction). A term of type
+                    $\mathbf{DiffKU_G}(X, G, \tau, conn)$ is introduced by constructing a differential
+                    K-theory class, combining an underlying K-theory class in $\mathbf{KU_G}(X, G, \tau)$
+                    with a compatible connection $conn : \Omega^1(X)$.
+                +tex(true).
+                    $$
+                        \mathbf{diffku_g} :
+                    $$
+                    $$
+                        \prod_{X : \mathbf{SmthSet}} \prod_{G : \mathbf{Grpd_1}}
+                        \prod_{\tau : \prod_{x : X} \mathbf{Grpd_1}}
+                        \prod_{conn : \Omega^1(X)}
+                        \mathbf{DiffKU_G}(X, G, \tau, conn).
+                    $$
+                +code.
+                    let diffku_g_intro (x : exp) (g : exp) (tau : exp) (conn : exp) : exp =
+                        DiffKU_G (x, g, tau, conn)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.1.3}$ ($\mathbf{DiffKU_G}$-Elimination). The eliminator for
+                    $\mathbf{DiffKU_G}$ allows reasoning about differential K-theory classes by projecting
+                    them to their underlying K-theory classes in $\mathbf{KU_G}(X, G, \tau)$ and their
+                    differential data in $\Omega^1(X)$, preserving the spectrum structure.
+                +tex(true).
+                    $$
+                        \mathbf{DiffKU_GInd} :
+                    $$
+                    $$
+                        \prod_{X : \mathbf{SmthSet}} \prod_{G : \mathbf{Grpd_1}}
+                        \prod_{\tau : \prod_{x : X} \mathbf{Grpd_1}}
+                        \prod_{\beta : \mathbf{DiffKU_G}(X, G, \tau, conn) \to \mathbf{Spectrum}}
+                    $$
+                    $$
+                        \left( \prod_{k : \mathbf{KU_G}(X, G, \tau)} \prod_{c : \Omega^1(X)}
+                        \beta\ (\mathbf{diffku_g}\ X\ G\ \tau\ c) \right) \to
+                        \prod_{d : \mathbf{DiffKU_G}(X, G, \tau, conn)} \beta\ d.
+                    $$
+                +code.
+                    let diffku_g_ind (x : exp) (g : exp) (tau : exp) (beta : exp) (h : exp) : exp =
+                        (* Hypothetical eliminator *)
+                        App (Var "DiffKU_GInd", DiffKU_G (x, g, tau, Var "conn"))
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.1.4}$ (Differential K-Theory Refinement). The type
+                    $\mathbf{DiffKU_G}(X, G, \tau, conn)$ refines $\mathbf{KU_G}(X, G, \tau)$ by
+                    incorporating a connection $conn : \Omega^1(X)$, with a projection map preserving
+                    the underlying K-theory class.
+                +tex(true).
+                    $$
+                        \mathbf{proj}_{\mathbf{KU_G}} :
+                    $$
+                    $$
+                        \prod_{X : \mathbf{SmthSet}} \prod_{G : \mathbf{Grpd_1}}
+                        \prod_{\tau : \prod_{x : X} \mathbf{Grpd_1}}
+                        \prod_{conn : \Omega^1(X)}
+                        \mathbf{DiffKU_G}(X, G, \tau, conn) \to \mathbf{KU_G}(X, G, \tau).
+                    $$
+                +code.
+                    let diffku_g_to_ku_g (x : exp) (g : exp) (tau : exp) (conn : exp) : exp =
+                        KU_G (x, g, tau)
+
+include ../../footer

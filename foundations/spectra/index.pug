@@ -1,0 +1,129 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='SPECTRA')
+        meta(property='og:description' content='Spectra Type for Stable Homotopy')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/sp/')
+
+block title
+    title SPECTRA
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>SPECTRA</a>
+    article.main
+        .exe
+            section
+                h1 SPECTRA TYPE
+                span.
+        aside
+            time Published: 13 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Sp}$ type models spectra in stable homotopy theory, sequences of types
+                    $\{ E^n \}$ with structure maps $\sigma^n : \Sigma E^n \to E^{n+1}$, used in
+                    K-theory, cohomology, and quantum field theory. Spectra capture stable invariants.
+                +tex.
+                    In the cohesive type system, $\mathbf{Sp}$ is a parameterless type in
+                    $\mathbf{U_{(0,0)}}$, not a universe, supporting operations like suspension
+                    $\Sigma^{\infty}$, wedge sums $\vee$, and qubits $\mathbf{Qubit}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.4.1}$ ($\mathbf{Sp}$-Formation). The type $\mathbf{Sp}$ is a
+                    base type in $\mathbf{U_{(0,0)}}$, representing all spectra, stable under suspension:
+                +tex(true).
+                    $$
+                        \mathbf{Sp} : \mathbf{U_{(0,0)}}.
+                    $$
+                +code('urs').
+                    def Sp : U_{(0,0)}
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.4.2}$ ($\mathbf{Sp}$-Introduction). Terms of type
+                    $\mathbf{Sp}$ are introduced via a base constructor or operations like suspension
+                    ($\Sigma^{\infty}$), wedge sums ($\vee$), or qubits ($\mathbf{Qubit}$), forming
+                    stable homotopy classes.
+                +tex(true).
+                    $$
+                        \mathbf{sp} : \mathbf{Sp},
+                    $$
+                    $$
+                        \mathbf{susp} : \prod_{E : \mathbf{Sp}} \mathbf{Sp},
+                    $$
+                    $$
+                        \mathbf{wedge} : \prod_{E : \mathbf{Sp}} \prod_{F : \mathbf{Sp}} \mathbf{Sp},
+                    $$
+                    $$
+                        \mathbf{qubit} : \prod_{C : \mathbf{U_{(0,0)}}} \prod_{H : \mathbf{U_{(0,0)}}} \mathbf{Sp}.
+                    $$
+                +code('urs').
+                    def sp : Sp
+                    def susp (E : Sp) : Sp
+                    def wedge (E F : Sp) : Sp
+                    def qubit (C H : U_{(0,0)}) : Sp
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.4.3}$ ($\mathbf{Sp}$-Elimination). The eliminator maps
+                    $\mathbf{Sp}$ terms to properties in $\mathbf{U_{(0,0)}}$, analyzing stable
+                    homotopy structure.
+                +tex(true).
+                    $$
+                        \mathbf{SpInd} :
+                    $$
+                    $$
+                        \prod_{\beta : \mathbf{Sp} \to \mathbf{U_{(0,0)}}}
+                        \left( \prod_{E : \mathbf{Sp}} \beta\ E \right) \to
+                        \prod_{E : \mathbf{Sp}} \beta\ E.
+                    $$
+                +code('urs').
+                    def sp_ind (beta : Sp -> U_{(0,0)}) (h : Π (E : Sp), beta E)
+                      : Π (E : Sp), beta E
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.4.4}$ (Suspension Invariance). For $E : \mathbf{Sp}$,
+                    $\Sigma^{\infty} E : \mathbf{Sp}$, preserving stable homotopy structure.
+                +tex(true).
+                    $$
+                        \mathbf{susp_inv} :
+                    $$
+                    $$
+                        \prod_{E : \mathbf{Sp}} \Sigma^{\infty} E : \mathbf{Sp}.
+                    $$
+                +code('urs').
+                    def susp_inv (E : Sp) : Sp
+
+                +tex.
+                    $\mathbf{Theorem\ 4.4.5}$ (Wedge Sum Closure). For $E, F : \mathbf{Sp}$,
+                    $E \vee F : \mathbf{Sp}$, the coproduct in spectra.
+                +tex(true).
+                    $$
+                        \mathbf{wedge_closure} :
+                    $$
+                    $$
+                        \prod_{E : \mathbf{Sp}} \prod_{F : \mathbf{Sp}} E \vee F : \mathbf{Sp}.
+                    $$
+                +code('urs').
+                    def wedge_closure (E F : Sp) : Sp
+
+                +tex.
+                    $\mathbf{Theorem\ 4.4.6}$ (Qubit as Spectrum). For $C, H : \mathbf{U_{(0,0)}}$,
+                    $\mathbf{Qubit}(C, H) : \mathbf{Sp}$, connecting quantum states to spectra.
+                +tex(true).
+                    $$
+                        \mathbf{qubit_spectrum} :
+                    $$
+                    $$
+                        \prod_{C : \mathbf{U_{(0,0)}}} \prod_{H : \mathbf{U_{(0,0)}}}
+                        \mathbf{Qubit}(C, H) : \mathbf{Sp}.
+                    $$
+                +code('urs').
+                    def qubit_spectrum (C H : U_{(0,0)}) : Sp
+
+include ../../footer
