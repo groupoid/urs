@@ -1,0 +1,152 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='LINEAR')
+        meta(property='og:description' content='Linear Types in Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/linear/')
+
+block title
+    title LINEAR
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>LINEAR</a>
+    article.main
+        .exe
+            section
+                h1 LINEAR TYPES
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Linear}$ type constructor defines linear types in cohesive type theory,
+                    ensuring resources are used exactly once. Linear types model structures like
+                    vector spaces, linear maps, or quantum states, with applications in quantum computing
+                    and categorical semantics.
+                +tex.
+                    In Urs, $\mathbf{Linear}$ operates on types in graded universes from $\mathbf{Graded}$,
+                    with applications in quantum systems $\mathbf{Qubit}$,
+                    tensor products $\mathbf{Tensor}$, and braided monoidal structures $\mathbf{Braid}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.18.1}$ (Linear Type Formation). The $\mathbf{Linear}$
+                    constructor forms linear types over a base type in a graded universe.
+
+                +tex(true).
+                    $$
+                        \mathbf{Linear} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \mathbf{U}_{i,g} \to \mathbf{U}_{i,g}.
+                    $$
+
+                +code('urs').
+                    def Linear (i : Nat) (g : Grade) (A : U i g) : U i g
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.18.2}$ (Linear Type Constructors). Terms of $\mathbf{Linear}\ A$
+                    are introduced via linear maps and tensor products, ensuring linearity constraints.
+                +tex(true).
+                    $$
+                        \mathbf{lin\text{-}map} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A, B : \mathbf{U}_{i,g}}
+                    $$
+                +tex(true).
+                    $$
+                        \mathbf{Linear}\ A \to \mathbf{Linear}\ B \to \mathbf{U}_{i,g},
+                    $$
+                +tex(true).
+                    $$
+                        \mathbf{lin\text{-}tensor} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A, B : \mathbf{U}_{i,g}}
+                    $$
+                +tex(true).
+                    $$
+                        \mathbf{Linear}\ A \to \mathbf{Linear}\ B \to \mathbf{Linear}\ (A \otimes B).
+                    $$
+
+                +code('urs').
+                    def lin-map (i : Nat) (g : Grade) (A B : U i g) (lA : Linear i g A) (lB : Linear i g B) : U i g
+                    def lin-tensor (i : Nat) (g : Grade) (A B : U i g) (lA : Linear i g A) (lB : Linear i g B) : Linear i g (A ⊗ B)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.18.3}$ (Linear Type Eliminator). The eliminator for
+                    $\mathbf{Linear}\ A$ maps linear types to properties in $\mathbf{U_0}$.
+
+                +tex(true).
+                    $$
+                        \mathbf{LinearInd} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} \prod_{\phi : (\mathbf{Linear}\ A) \to \mathbf{U_0}}
+                    $$
+                +tex(true).
+                    $$
+                        \left( \prod_{l : \mathbf{Linear}\ A} \phi\ l \right) \to \prod_{l : \mathbf{Linear}\ A} \phi\ l.
+                    $$
+
+                +code('urs').
+                    def linear_ind (i : Nat) (g : Grade) (A : U i g)
+                        (phi : (Linear i g A) -> U_0)
+                        (h : Π (l : Linear i g A), phi l)
+                      : Π (l : Linear i g A), phi l
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.18.4}$ (Linearity Constraint). Linear types enforce that
+                    resources are used exactly once, preventing cloning.
+                +tex(true).
+                    $$
+                        \mathbf{no\text{-}cloning} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} \prod_{l : \mathbf{Linear}\ A}
+                    $$
+                +tex(true).
+                    $$
+                        \neg (\mathbf{lin\text{-}map}\ i\ g\ A\ (A \otimes A)\ l\ (l \otimes l)).
+                    $$
+                +code('urs').
+                    def no-cloning (i : Nat) (g : Grade) (A : U i g) (l : Linear i g A)
+                      : ¬ (lin-map i g A (A ⊗ A) l (l ⊗ l))
+
+                +tex.
+                    $\mathbf{Theorem\ 4.18.5}$ (Linear Quantum States). For $C, H : \mathbf{U_0}$,
+                    $\mathbf{Linear}\ \mathbf{Qubit}(C, H)$ models quantum states with linear constraints.
+
+                +tex(true).
+                    $$
+                        \mathbf{linear\text{-}qubit} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}} \prod_{C, H : \mathbf{U_0}} 
+                    $$
+                +tex(true).
+                    $$
+                        \mathbf{Linear}\ (\mathbf{Qubit}(C, H)) : \mathbf{U}_{i,g}.
+                    $$
+
+                +code('urs').
+                    def linear-qubit (i : Nat) (g : Grade) (C H : U_0)
+                      : U i g
+                     := Linear i g (Qubit C H)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.18.6}$ (Linear Tensor Associativity). The tensor product
+                    of linear types is associative, aligning with $\mathbf{Tensor}$.
+                +tex(true).
+                    $$
+                        \mathbf{assoc} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A, B, C : \mathbf{U}_{i,g}}
+                    $$
+                +tex(true).
+                    $$
+                        (\mathbf{lin\text{-}tensor}\ i\ g\ A\ B) \otimes (\mathbf{lin\text{-}tensor}\ i\ g\ B\ C)
+                    $$
+                +tex(true).
+                    $$
+                        = \mathbf{lin\text{-}tensor}\ i\ g\ A\ (\mathbf{lin\text{-}tensor}\ i\ g\ B\ C).
+                    $$
+                +code('urs').
+                    def lin-tensor-assoc (i : Nat) (g : Grade) (A B C : U i g)
+                      : (lin-tensor i g A B) ⊗ (lin-tensor i g B C) = lin-tensor i g A (lin-tensor i g B C)
+
+include ../../footer

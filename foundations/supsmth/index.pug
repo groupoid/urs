@@ -1,0 +1,193 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='SUPSMTH')
+        meta(property='og:description' content='Supersmooth Sets in Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/supsmth/')
+
+block title
+    title SUPSMTH
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>SUPSMTH</a>
+    article.main
+        .exe
+            section
+                h1 SUPERSMOOTH SETS
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{SupSmthSet}$ type represents supersmooth sets, defined as sheaves on the
+                    category of super Cartesian spaces $\mathbf{SupCrtSp}$ with values in $\mathbf{Set}$.
+                    Supersmooth sets extend $\mathbf{SmthSet}$ from \texttt{smthset.pug} by incorporating
+                    supersymmetry with bosonic and fermionic coordinates, used in supergeometry and quantum physics.
+                +tex.
+                    In Urs, $\mathbf{SupSmthSet}$ interacts with graded types from $\mathbf{Graded}$,
+                    bosonic/fermionic modalities from $\mathbf{Bosonic}$ and $\mathbf{Fermionic}$,
+                    differential forms in $\mathbf{Form}$, and quantum fields in $\mathbf{Qubit}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.19.1}$ (Supersmooth Set Formation). The type $\mathbf{SupSmthSet}$
+                    represents supersmooth sets as sheaves on super Cartesian spaces, living in universe
+                    $\mathbf{U}_1$. The category $\mathbf{SupCrtSp}$ is defined as $\mathbb{R}^{n|q}$.
+                +tex(true).
+                    $$
+                        \mathbf{SupSmthSet} : \mathbf{U}_1,
+                    $$
+                    $$
+                        \mathbf{SupCrtSp} : \mathbf{U}_0.
+                    $$
+                +code('urs').
+                    def SupSmthSet : U₁ := Sh(SupCrtSp, Set)
+                    def SupCrtSp : U₀ := ℝ^(n|q)  -- Indexed by (n, q : Nat)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.19.2}$ (Supersmooth Set Constructors). Terms of $\mathbf{SupSmthSet}$
+                    are constructed via plots, precomposition, gluing, and mapping spaces, reflecting the sheaf structure.
+                +tex(true).
+                    $$
+                        \mathbf{sup-plt} : \prod_{n, q : \mathbf{Nat}} \prod_{X : \mathbf{SupSmthSet}} \mathbf{Set},
+                    $$
+                    $$
+                        \mathbf{sup-precomp} : \prod_{n, q, m, r : \mathbf{Nat}} \prod_{X : \mathbf{SupSmthSet}}
+                        (\mathbb{R}^{m|r} \to \mathbb{R}^{n|q}) \to \mathbf{sup-plt}_{n,q}(X) \to \mathbf{sup-plt}_{m,r}(X),
+                    $$
+                    $$
+                        \mathbf{sup-glue} : \prod_{n, q : \mathbf{Nat}} \prod_{X : \mathbf{SupSmthSet}}
+                        \prod_{U : \mathbf{OpenCover}\ n} \prod_{\phi s : \prod_{i : I} \mathbf{sup-plt}_{(U\ i),q}(X)}
+                        \left( \prod_{i, j : I} \mathbf{Path}\ (\mathbf{sup-plt}_{(U\ i \cap U\ j),q}(X))\ ((\phi s\ i) | U\ i \cap U\ j)\ ((\phi s\ j) | U\ i \cap U\ j) \right)
+                        \to \mathbf{sup-plt}_{n,q}(X),
+                    $$
+                    $$
+                        \mathbf{Maps} : \mathbf{SupSmthSet} \to \mathbf{SupSmthSet} \to \mathbf{SupSmthSet},
+                    $$
+                    $$
+                        \mathbf{map} : \prod_{A, B : \mathbf{SupSmthSet}}
+                        \left( \prod_{n, q : \mathbf{Nat}} \mathbf{sup-plt}_{n,q}(A) \to \mathbf{sup-plt}_{n,q}(B) \right) \to \mathbf{Maps}\ A\ B,
+                    $$
+                    $$
+                        \mathbf{app-map} : \prod_{A, B : \mathbf{SupSmthSet}} \mathbf{Maps}\ A\ B \to \prod_{n, q : \mathbf{Nat}}
+                        \mathbf{sup-plt}_{n,q}(A) \to \mathbf{sup-plt}_{n,q}(B).
+                    $$
+                +code('urs').
+                    def sup-plt (n q : Nat) (X : SupSmthSet) : Set := Plt(ℝ^(n|q), X)
+                    def sup-precomp (n q m r : Nat) (X : SupSmthSet) (f : ℝ^(m|r) → ℝ^(n|q)) (φ : sup-plt n q X)
+                      : sup-plt m r X := φ ∘ f
+                    def sup-glue (n q : Nat) (X : SupSmthSet) (U : OpenCover n) (φs : Π (i : I), sup-plt (U i) q X)
+                        (coh : Π (i j : I), Path (sup-plt (U i ∩ U j) q X) (φs i | U i ∩ U j) (φs j | U i ∩ U j))
+                      : sup-plt n q X := glue U φs coh
+                    def Maps (A B : SupSmthSet) : SupSmthSet := λ (n q : Nat), Π (x : sup-plt n q A), sup-plt n q B
+                    def map (A B : SupSmthSet) (f : Π (n q : Nat), sup-plt n q A → sup-plt n q B) : Maps A B
+                     := λ (n q : Nat) (x : sup-plt n q A), f n q x
+                    def app-map (A B : SupSmthSet) (f : Maps A B) (n q : Nat) (x : sup-plt n q A) : sup-plt n q B := f n q x
+                    (* Supersmooth constructors: plots, precomposition, gluing, mapping spaces *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.19.3}$ (Supersmooth Set Eliminators). Eliminators for $\mathbf{SupSmthSet}$
+                    extract bosonic and fermionic components of plots, linking to \mathbf{bosonic.pug} and \mathbf{fermionic.pug}.
+                +tex(true).
+                    $$
+                        \mathbf{bosonic} : \prod_{n, q : \mathbf{Nat}} \prod_{X : \mathbf{SupSmthSet}}
+                        \mathbf{sup-plt}_{n,q}(X) \to \mathbf{plt}_n(X),
+                    $$
+                    $$
+                        \mathbf{fermionic} : \prod_{n, q : \mathbf{Nat}} \prod_{X : \mathbf{SupSmthSet}}
+                        \mathbf{sup-plt}_{n,q}(X) \to (\wedge^q (\mathbb{R}^q)^* \to X).
+                    $$
+                +code('urs').
+                    def bosonic (n q : Nat) (X : SupSmthSet) (φ : sup-plt n q X) : plt n X := φ.1
+                    def fermionic (n q : Nat) (X : SupSmthSet) (φ : sup-plt n q X) : ∧^q (ℝ^q)* → X := φ.2
+                    (* Eliminators: bosonic and fermionic components *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.19.4}$ (Precomposition Identity). Precomposition with the identity
+                    map on $\mathbb{R}^{n|q}$ is the identity on plots.
+                +tex(true).
+                    $$
+                        \mathbf{sup-precomp-id} : \prod_{n, q : \mathbf{Nat}} \prod_{X : \mathbf{SupSmthSet}}
+                        \prod_{\phi : \mathbf{sup-plt}_{n,q}(X)}
+                        \mathbf{Path}\ (\mathbf{sup-plt}_{n,q}(X))\ (\mathbf{sup-precomp}\ n\ q\ n\ q\ X\ \mathbf{id}\ \phi)\ \phi.
+                    $$
+                +code('urs').
+                    def sup-precomp-id (n q : Nat) (X : SupSmthSet) (φ : sup-plt n q X)
+                      : Path (sup-plt n q X) (sup-precomp n q n q X id φ) φ := idp (sup-plt n q X) φ
+                    (* Precomposition identity *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.19.5}$ (Mapping Space Beta Reduction). Application of a map matches
+                    the original function, ensuring consistency of the mapping space.
+                +tex(true).
+                    $$
+                        \mathbf{sup-map-\beta} : \prod_{A, B : \mathbf{SupSmthSet}}
+                        \prod_{f : \prod_{n, q : \mathbf{Nat}} \mathbf{sup-plt}_{n,q}(A) \to \mathbf{sup-plt}_{n,q}(B)}
+                        \prod_{n, q : \mathbf{Nat}} \prod_{x : \mathbf{sup-plt}_{n,q}(A)}
+                        \mathbf{Path}\ (\mathbf{sup-plt}_{n,q}(B))\ (\mathbf{app-map}\ A\ B\ (\mathbf{map}\ A\ B\ f)\ n\ q\ x)\ (f\ n\ q\ x).
+                    $$
+                +code('urs').
+                    def sup-map-β (A B : SupSmthSet) (f : Π (n q : Nat), sup-plt n q A → sup-plt n q B) (n q : Nat) (x : sup-plt n q A)
+                      : Path (sup-plt n q B) (app-map A B (map A B f) n q x) (f n q x) := idp (sup-plt n q B) (f n q x)
+                    (* Mapping space beta reduction *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.19.6}$ (Super Plot Test). A super plot on $\mathbb{R}^{1|1}$
+                    incorporates both bosonic and fermionic coordinates, with $\theta^2 = 0$.
+                +tex(true).
+                    $$
+                        \mathbf{test-super} : \prod_{X : \mathbf{SupSmthSet}} \mathbf{sup-plt}_{1,1}(X),
+                    $$
+                    $$
+                        \mathbf{test-super-precomp} : \prod_{m, r : \mathbf{Nat}} \prod_{X : \mathbf{SupSmthSet}}
+                        \prod_{f : \mathbb{R}^{m|r} \to \mathbb{R}^{1|1}} \mathbf{sup-plt}_{m,r}(X),
+                    $$
+                    $$
+                        \mathbf{test-super-id} : \prod_{X : \mathbf{SupSmthSet}}
+                        \mathbf{Path}\ (\mathbf{sup-plt}_{1,1}(X))\ (\mathbf{sup-precomp}\ 1\ 1\ 1\ 1\ X\ \mathbf{id}\ (\mathbf{test-super}\ X))\ (\mathbf{test-super}\ X).
+                    $$
+                +code('urs').
+                    def test-super (X : SupSmthSet) : sup-plt 1 1 X := λ (x, θ), x + θ  -- θ² = 0
+                    def test-super-precomp (m r : Nat) (X : SupSmthSet) (f : ℝ^(m|r) → ℝ^(1|1))
+                      : sup-plt m r X := sup-precomp 1 1 m r X f (test-super X)
+                    def test-super-id (X : SupSmthSet)
+                      : Path (sup-plt 1 1 X) (sup-precomp 1 1 1 1 X id (test-super X)) (test-super X)
+                     := sup-precomp-id 1 1 X (test-super X)
+                    (* Super plot test *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.19.7}$ (Bosonic and Fermionic Components). The bosonic and fermionic
+                    components of a super plot can be extracted, linking to \mathbf{smthset.pug}.
+                +tex(true).
+                    $$
+                        \mathbf{test-bosonic} : \prod_{X : \mathbf{SupSmthSet}} \mathbf{plt}_1(X),
+                    $$
+                    $$
+                        \mathbf{test-fermionic} : \prod_{X : \mathbf{SupSmthSet}} \wedge^1 (\mathbb{R}^1)^* \to X.
+                    $$
+                +code('urs').
+                    def test-bosonic (X : SupSmthSet) : plt 1 X := bosonic 1 1 X (test-super X)
+                    def test-fermionic (X : SupSmthSet) : ∧^1 (ℝ^1)* → X := fermionic 1 1 X (test-super X)
+                    (* Bosonic and fermionic components *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.19.8}$ (Spinor Fields). For a spinor bundle $S$, the mapping space
+                    to smooth $\mathbb{R}$-valued functions models spinor fields, applicable to $\mathbf{Qubit}$.
+                +tex(true).
+                    $$
+                        \mathbf{spinor-map} : \prod_{S : \mathbf{SpinorBundle}}
+                        \mathbf{Maps}\ (\Pi S)\ (\lambda k, C^\infty(\mathbb{R}^k, \mathbb{R})).
+                    $$
+                +code('urs').
+                    def spinor-map (S : SpinorBundle) : Maps (ΠS) (λ k, C^∞(ℝ^k, ℝ))
+                     := map _ _ (λ n q φ, λ x, φ x)  -- Maps from super smooth set ΠS to smooth ℝ-valued functions
+                    (* Spinor fields lemma *)
+
+include ../../footer
