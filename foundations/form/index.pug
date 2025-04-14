@@ -30,8 +30,8 @@ block content
                 +tex.
                     In Urs, $\mathbf{Forms}_n(X)$ is a type in $\mathbf{U_0}$, parameterized by
                     $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$, supporting operations like the wedge product
-                    and exterior derivative, with applications to gauge fields in \texttt{qubit.pug}
-                    and graded forms in \texttt{graded.pug}.
+                    and exterior derivative, with applications to gauge fields in $\mathbf{Qubit}$
+                    and graded forms in $\mathbf{Graded}$.
 
                 h2 Formation
                 +tex.
@@ -76,6 +76,7 @@ block content
                     $$
                         \mathbf{FormsInd} :
                     $$
+                +tex(true).
                     $$
                         \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
                         \prod_{\phi : \mathbf{Forms}_n(X) \to \mathbf{U_0}}
@@ -83,8 +84,10 @@ block content
                         \prod_{\omega : \mathbf{Forms}_n(X)} \phi\ \omega.
                     $$
                 +code('urs').
-                    def forms_ind (n : Nat) (X : SmthSet) (phi : Forms n X -> U_0) (h : Π (ω : Forms n X), phi ω) : Π (ω : Forms n X), phi ω
-                    (* Eliminator for forms *)
+                    def forms_ind (n : Nat) (X : SmthSet)
+                        (phi : Forms n X -> U_0)
+                        (h : Π (ω : Forms n X), phi ω)
+                      : Π (ω : Forms n X), phi ω
 
                 h2 Theorems
                 +tex.
@@ -143,7 +146,7 @@ block content
 
                 +tex.
                     $\mathbf{Theorem\ 4.12.7}$ (Gauge Field Application). For $X : \mathbf{SmthSet}$,
-                    $\mathbf{Forms}_n(X)$ models gauge fields in quantum systems, as in \texttt{qubit.pug}.
+                    $\mathbf{Forms}_n(X)$ models gauge fields in quantum systems, as in $\mathbf{Aubit}$.
                 +tex(true).
                     $$
                         \mathbf{gauge} : \prod_{X : \mathbf{SmthSet}}
