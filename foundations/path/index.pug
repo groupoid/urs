@@ -1,0 +1,379 @@
+include ../../../header
+
+html
+    head
+        meta(property='og:title'       content='PATH')
+        meta(property='og:description' content='Path Space')
+        meta(property='og:url'         content='https://anders.groupoid.space/foundations/univalent/path/')
+
+block title
+    title PATH
+
+block content
+    nav
+        <a href='../../../index.html'>ANDERS</a>
+        <a href='../../../lib/index.html'>LIB</a>
+        <a href='#'>PATH</a>
+    article.main.list
+        .exe
+            section
+                h1 PATH SPACES
+                aside
+                    time Published: 25 JUL 2018
+                +tex.
+                    The homotopy identity system defines a $\mathbf{Path}$
+                    space indexed over type $A$
+                    with elements as functions from interval $[0,1]$ to values
+                    of that path space $[0,1] \rightarrow A$. HoTT book
+                    defines two induction principles for identity types:
+                    path induction and based path induction.
+                    The cubical type system CCHM briefly described in [1,2,3,4,5].
+                p.
+                    <div><sup>1</sup> &mdash; Bezem, Coquand, Huber (2014)<br>
+                    <sup>2</sup> &mdash; Cohen, Coquand, Huber, Mörtberg (2015)<br>
+                    <sup>3</sup> &mdash; Pitts, Orton (2016)<br>
+                    <sup>4</sup> &mdash; Huber (2017)<br>
+                    <sup>5</sup> &mdash; Vezzosi, Mörtberg , Abel (2019)<br>
+                    </div>
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 5.1}$ (Path Formation).
+                +tex(true).
+                    $$
+                        \equiv\hspace{0.4em}: U =_{def} \prod_{A:U}\prod_{x,y:A} \mathbf{Path}_A(x,y).
+                    $$
+                +code.
+                    def Path (A : U) (x y : A) : U
+                     := PathP (<_> A) x y
+
+                    def Pathᴵ (A : U) (x y : A)
+                     := Π (i : I),
+                        A [∂ i |-> [(i = 0) → x ,
+                                    (i = 1) → y ]]
+                br.
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 5.2}$ (Path Introduction).
+                +tex(true).
+                    $$
+                       \mathrm{id_\equiv} : x \equiv_A x =_{def} \prod_{A:U}\prod_{x:A} [i] x
+                    $$
+                +code.
+                    def idp (A: U) (x: A)
+                      : Path A x x := <_> x
+                +tex.
+                    Returns a reflexivity path space for a given value of the type.
+                    The inhabitant of that path space is the lambda on the homotopy
+                    interval $[0,1]$ that returns a constant value $x$. Written in
+                    syntax as $[i]x$.
+
+                +tex.
+                    $\mathbf{Definition\ 5.2.1}$ (Path Application).
+                +code.
+                    def at0 (A: U) (a b: A)
+                        (p: Path A a b) : A := p @ 0
+
+                    def at1 (A: U) (a b: A)
+                        (p: Path A a b): A := p @ 1
+                br.
+                +tex.
+                    $\mathbf{Definition\ 5.2.2}$ (Path Connections).
+                +tex.
+                    Connections allow you to build a square
+                    with only one element of path: i) $[i,j] p\ @\ min(i,j)$;
+                    ii) $[i,j] p\ @\ max(i,j)$.
+
+                +tex(true).
+                    $$
+                    \begin{array}{ccc}
+                        b & \mapright{[i] b} & b \\
+                        \mapup{p} &  & \mapup{[i] b} \\
+                        a & \mapright{p} & b \\
+                    \end{array}
+                    $$
+
+                +tex(true).
+                    $$
+                    \begin{array}{ccc}
+                        a & \mapright{p} & b \\
+                        \mapup{[i] a} &  & \mapup{p} \\
+                        a & \mapright{[i] a} & a \\
+                    \end{array}
+                    $$
+
+                +code.
+                    def join (A: U) (a b: A) (p: Path A a b)
+                      : PathP (&lt;x&gt; Path A (p@x) b) p (&lt;i&gt; b)
+                     := &lt;y x&gt; p @ (x \/ y)
+
+                    def meet (A: U) (a b: A) (p: Path A a b)
+                      : PathP (&lt;x&gt; Path A a (p@x)) (&lt;i&gt; a) p
+                     := &lt;x y&gt; p @ (x /\ y)
+                br.
+                +tex.
+                    $\mathbf{Definition\ 5.2.3}$ (Path Inversion).
+                +tex.
+                    $\mathbf{Theorem\ 5.2.4}$ (Congruence).
+                +tex(true).
+                    $$
+                        \mathrm{ap} : f(a)\equiv f(b) =_{def}
+                    $$
+                +tex(true).
+                    $$
+                        \prod_{A:U}\prod_{a,x:A}\prod_{B:A\rightarrow U}\prod_{f: \Pi(A,B)}\prod_{p:a\equiv_A x}[i] f(p@i).
+                    $$
+                +code.
+                    def ap (A B: U) (f: A -> B)
+                        (a b: A) (p: Path A a b)
+                      : Path B (f a) (f b)
+
+                    def apd (A: U) (a x: A) (B: A -> U)
+                        (f: A -> B a) (b: B a) (p: Path A a x)
+                      : Path (B a) (f a) (f x)
+                br.
+                +tex.
+                    Maps a given path space between values of one type
+                    to path space of another type using an encode function between types.
+                    Implemented as a lambda defined on $[0,1]$ that returns
+                    application of encode function to path application of
+                    the given path to lamda argument $[i]f (p @ i)$
+                    in both cases.
+
+                +tex.
+                    $\mathbf{Definition\ 5.2.5}$ (Generalized Transport Kan Operation).
+                    Transports a value of the left type to the value of the right type
+                    by a given path element of the path space between left and right types.
+                +tex(true).
+                    $$
+                        \mathrm{transport} : A(0) \rightarrow A(1) =_{def}
+                    $$
+                +tex(true).
+                    $$
+                        \prod_{A:I\rightarrow U}\prod_{r:I}
+                    $$
+                +tex(true).
+                    $$
+                        \lambda x,\mathbf{transp}([i]A(i),0,x).
+                    $$
+                +code.
+                    def transp' (A: U) (x y: A) (p : PathP (&lt;_>A) x y) (i: I)
+                     := transp (&lt;i> (\(_:A),A) (p @ i)) i x
+
+                    def transpᵁ (A B: U) (p : PathP (&lt;_>U) A B) (i: I)
+                     := transp (&lt;i> (\(_:U),U) (p @ i)) i A
+                br.
+                +tex.
+                    $\mathbf{Definition\ 5.2.6}$ (Partial Elements).
+                +tex(true).
+                    $$
+                         \mathrm{Partial} : V =_{def} \prod_{A:U}\prod_{i:I}\mathbf{Partial}(A,i).
+                    $$
+                +code.
+                    def Partial' (A : U) (i : I)
+                      : V := Partial A i
+                br.
+                +tex.
+                    $\mathbf{Definition\ 5.2.7}$ (Cubical Subtypes).
+                +tex(true).
+                    $$
+                         \mathrm{Subtype} : V =_{def}
+                    $$
+                +tex(true).
+                    $$
+                         \prod_{A:U}\prod_{i:I}\prod_{u:\mathbf{Partial}(A,i)}A[i \mapsto u].
+                    $$
+                +code.
+                    def sub (A : U) (i : I) (u : Partial A i)
+                      : V := A [i ↦ u]
+                br.
+                +tex.
+                    $\mathbf{Definition\ 5.2.8}$ (Cubical Elements).
+                +tex(true).
+                    $$
+                         \mathrm{inS} :  A\ [(i=1) \mapsto a ] =_{def}
+                    $$
+                +tex(true).
+                    $$
+                         \prod_{A:U}\prod_{i:I}\prod_{a:A}\mathbf{inc}(A,i,a).
+                    $$
+                +tex(true).
+                    $$
+                         \mathrm{outS} : A\ [i \mapsto u] \rightarrow A =_{def}
+                    $$
+                +tex(true).
+                    $$
+                         \prod_{A:U}\prod_{i:I}\prod_{u:\mathbf{Partial}(A,i)}
+                         \mathbf{ouc}(a).
+                    $$
+                +code.
+                    def inS (A : U) (i : I) (a : A)
+                      : sub A i [(i = 1) → a] := inc A i a
+
+                    def outS (A : U) (i : I) (u : Partial A i)
+                      : A [i ↦ u] -> A := λ (a: A[i ↦ u]), ouc a
+                br.
+                +tex.
+                    $\mathbf{Definition\ 5.2.9}$ (Heterogeneous Composition Kan Operation).
+                +tex(true).
+                    $$
+                         \mathrm{comp}_{\mathrm{CCHM}} : A(0)\ [r \mapsto u(0)] \rightarrow A(1) =_{def}
+                    $$
+                +tex(true).
+                    $$
+                         \prod_{A:U}\prod_{r:I} \prod_{u: \Pi_{i:I}\mathbf{Partial}(A(i),r)}
+                    $$
+                +tex(true).
+                    $$
+                         \lambda u_0, \mathbf{hcomp}(A(1),r,\lambda i.
+                    $$
+                +tex(true).
+                    $$
+                         [(r\hspace{0.1em}\mbox{=}1)\hspace{-0.2em}\rightarrow\hspace{-0.2em}\mathbf{transp}([j]A(i\meet j),i,u(i,1\hspace{0em}\mbox{=}1)) ],
+                    $$
+                +tex(true).
+                    $$
+                         \mathbf{transp}([i]A(i),0,\mathbf{ouc}(u_0))).
+                    $$
+                +code.
+                    def compCCHM (A : I → U) (r : I)
+                        (u : Π (i : I), Partial (A i) r)
+                        (u₀ : (A 0)[r ↦ u 0]) : A 1
+                     := hcomp (A 1) r (λ (i : I),
+                        [ (r = 1) → transp (&lt;j> A (i ∨ j)) i (u i 1=1)])
+                          (transp (&lt;i> A i) 0 (ouc u₀))
+                br.
+                +tex.
+                    $\mathbf{Definition\ 5.2.10}$ (Homogeneous Composition Kan Operation).
+                +tex(true).
+                    $$
+                         \mathrm{comp}_{\mathrm{CHM}} : A\ [r \mapsto u(0)] \rightarrow A =_{def}
+                    $$
+                +tex(true).
+                    $$
+                         \prod_{A:U}\prod_{r:I} \prod_{u:I\rightarrow \mathbf{Partial}(A,r)}
+                    $$
+                +tex(true).
+                    $$
+                         \lambda u_0, \mathbf{hcomp}(A,r,u,\mathbf{ouc}(u_0)).
+                    $$
+                +code.
+                    def compCHM (A : U) (r : I)
+                        (u : I → Partial A r) (u₀ : A[r ↦ u 0]) : A
+                     := hcomp A r u (ouc u₀)
+                br.
+                +tex.
+                    $\mathbf{Theorem\ 5.2.11}$ (Substitution).
+                +tex(true).
+                    $$
+                         \mathrm{subst} : P(x) \rightarrow P(y) =_{def}
+                    $$
+                +tex(true).
+                    $$
+                         \prod_{A:U}\prod_{P:A\rightarrow U}\prod_{x,y:A}\prod_{p:x=y}
+                    $$
+                +tex(true).
+                    $$
+                         \lambda e.\mathbf{transp}([i] P (p @ i),0,e).
+                    $$
+                +code.
+                    def subst (A: U) (P: A -> U) (x y: A) (p: Path A x y)
+                      : P x -> P y
+                     := λ (e: P x), transp (&lt;i> P (p @ i)) 0 e
+                br.
+                +tex.
+                    Other synonyms are $\mathrm{mapOnPath}$ and $\mathrm{cong}$.
+                +tex.
+                    $\mathbf{Theorem\ 5.2.12}$ (Path Composition).
+                +tex(true).
+                    $$
+                    \begin{array}{ccc}
+                        a & \mapright{pcomp} & c \\
+                        \mapup{[i] a} & & \mapup{q} \\
+                        a & \mapright{p\ @\ i} & b \\
+                    \end{array}
+                    $$
+                +code.
+                    def pcomp (A: U) (a b c: A)
+                        (p: Path A a b) (q: Path A b c)
+                      : Path A a c := subst A (Path A a) b c q p
+                +tex.
+                    Composition operation allows building a new path from two given paths
+                    in a connected point. The proofterm is
+                    $\mathbf{comp}([i] \mathbf{Path}_A(a,q@i),p,[])$.
+
+                h2 Elimination
+
+
+                +tex.
+                    $\mathbf{Theorem\ 5.3}$ (J by Paulin-Mohring).
+                +code.
+                    def J (A: U)
+                          (a b: A)
+                          (P: singl A a -> U)
+                          (u: P (a,refl A a))
+                      : П (p: Path A a b), P (b,p)
+                p.
+                    J is formulated in a form of Paulin-Mohring and implemented using
+                    two facts that singletons are contractible and dependent function
+                    transport.
+
+                +tex.
+                    $\mathbf{Theorem\ 5.3.1}$ (Contractability of Singleton).
+                +code.
+                    def singl (A: U) (a: A) : U
+                     := Σ (x: A), Path A a x
+
+                    def contr (A: U) (a b: A) (p: Path A a b)
+                      : Path (singl A a) (a,<_>a) (b,p)
+                +tex.
+                    Proof that singleton is contractible space. Implemented as
+                    $[i] (p @ i, [j] p @ (i \land j))$.
+
+                +tex.
+                    $\mathbf{Definition\ 5.3.2}$ (HoTT Dependent Eliminator).
+                +code.
+                    def J (A: U)
+                          (a: A)
+                          (C: (x: A) -> Path A a x -> U)
+                          (d: C a (refl A a))
+                          (x: A)
+                      : П (p: Path A a x) : C x p
+                p.
+                    J from HoTT book.
+
+                +tex.
+                    $\mathbf{Definition\ 5.3.3}$ (Diagonal Path Induction).
+                +code.
+                    def D (A: U) : U
+                     := П (x y: A), Path A x y -> U
+
+                    def J (A: U)
+                          (x: A)
+                          (C: D A)
+                          (d: C x x (refl A x))
+                          (y: A)
+                      : П (p: Path A x y), C x y p
+                p.
+
+                h2 Computation
+                +tex.
+                    $\mathbf{Definition\ 5.4}$ (Path Computation).
+                +code.
+                    def trans_comp (A: U) (a: A)
+                      : Path A a (trans A A (&lt;_> A) a)
+
+                    def subst_comp (A: U) (P: A -> U) (a: A) (e: P a)
+                      : Path (P a) e (subst A P a a (refl A a) e)
+
+                    def J_comp (A: U) (a: A)
+                        (C: (x: A) -> Path A a x -> U)
+                        (d: C a (refl A a))
+                      : Path (C a (refl A a)) d
+                             (J A a C d a (refl A a))
+                p.
+                    Note that in HoTT there is no Eta rule, otherwise
+                    Path between element would requested to be unique applying
+                    UIP at any Path level which is prohibited. UIP in HoTT
+                    is defined only as instance of n-groupoid, see the PROP type.
+
+include ../../../footer
