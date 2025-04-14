@@ -1,0 +1,100 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='BOSONIC')
+        meta(property='og:description' content='Bosonic Modality in Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/bosonic/')
+
+block title
+    title BOSONIC
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>BOSONIC</a>
+    article.main
+        .exe
+            section
+                h1 BOSONIC MODALITY
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\bigcirc$ modality in cohesive type theory projects a type to bosonic parity ($g = 0$).
+                    For a type $A : \mathbf{U}_{i,g}$, $\bigcirc A$ forces the type to be bosonic,
+                    aligning with supergeometry and quantum physics.
+                +tex.
+                    In Urs, $\bigcirc$ operates on types in graded universes from $\mathbf{Graded}$,
+                    with applications in bosonic quantum fields $\mathbf{qubit}$ and supergeometry
+                    $\mathbf{SmthSet}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.15.1}$ (Bosonic Modality Formation). The $\bigcirc$ modality
+                    is a type operator on graded universes, mapping to bosonic parity.
+                +tex(true).
+                    $$
+                        \bigcirc : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \mathbf{U}_{i,g} \to \mathbf{U}_{i,0}.
+                    $$
+                +code('urs').
+                    def bosonic (i : Nat) (g : Grade) (A : U i g) : U i 0
+                    (* Bosonic modality *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.15.2}$ (Bosonic Modality Introduction). The $\bigcirc$ modality
+                    is applied to a type $A$, producing $\bigcirc A$ with bosonic parity.
+                +tex(true).
+                    $$
+                        \Gamma \vdash A : \mathbf{U}_{i,g} \to \Gamma \vdash \bigcirc A : \mathbf{U}_{i,0}.
+                    $$
+                +code('urs').
+                    (* Applied via bosonic i g A *)
+                    (* Bosonic modality introduction *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.15.3}$ (Bosonic Modality Elimination). The eliminator for
+                    $\bigcirc A$ maps bosonic types to properties in $\mathbf{U_0}$.
+                +tex(true).
+                    $$
+                        \mathbf{BosonicInd} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} \prod_{\phi : (\bigcirc A) \to \mathbf{U_0}}
+                        \left( \prod_{a : \bigcirc A} \phi\ a \right) \to \prod_{a : \bigcirc A} \phi\ a.
+                    $$
+                +code('urs').
+                    def bosonic_ind (i : Nat) (g : Grade) (A : U i g)
+                        (phi : (bosonic i g A) -> U_0)
+                        (h : Π (a : bosonic i g A), phi a)
+                      : Π (a : bosonic i g A), phi a
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.15.4}$ (Idempotence of Bosonic). The $\bigcirc$ modality is idempotent,
+                    as it always projects to bosonic parity.
+                +tex(true).
+                    $$
+                        \mathbf{\bigcirc\text{-}idem} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} (\bigcirc (\bigcirc A)) = (\bigcirc A).
+                    $$
+                +code('urs').
+                    def bosonic_idem (i : Nat) (g : Grade) (A : U i g) : (bosonic i 0 (bosonic i g A)) = (bosonic i g A)
+                    (* Idempotence: bosonic (bosonic A) = bosonic A *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.15.5}$ (Bosonic Qubits). For $C, H : \mathbf{U_0}$,
+                    $\bigcirc \mathbf{Qubit}(C, H)$ models bosonic quantum states.
+                +tex(true).
+                    $$
+                        \mathbf{\bigcirc\text{-}qubit} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{C, H : \mathbf{U_0}} (\bigcirc \mathbf{Qubit}(C, H)) : \mathbf{U}_{i,0}.
+                    $$
+                +code('urs').
+                    def bosonic_qubit (i : Nat) (g : Grade) (C H : U_0) : U i 0 := bosonic i g (Qubit C H)
+                    (* Bosonic qubits: bosonic Qubit(C, H) *)
+
+include ../../footer

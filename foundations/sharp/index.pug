@@ -1,0 +1,100 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='SHARP')
+        meta(property='og:description' content='Sharp Discrete Modality in Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/sharp/')
+
+block title
+    title SHARP
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>SHARP</a>
+    article.main
+        .exe
+            section
+                h1 SHARP DISCRETE MODALITY
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\sharp$ modality in cohesive type theory maps a type to its discrete version,
+                    preserving its grade. For a type $A : \mathbf{U}_{i,g}$, $\sharp A$ forgets codiscrete
+                    structure, modeling discrete spaces in geometry and physics.
+                +tex.
+                    In Urs, $\sharp$ operates on types in graded universes from $\mathbf{Graded}$,
+                    with applications in discrete gauge groups $\mathbf{Qubit}$ and smooth geometry
+                    $\mathbf{SmthSet}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.14.1}$ (Sharp Modality Formation). The $\sharp$ modality
+                    is a type operator on graded universes, preserving the grade.
+                +tex(true).
+                    $$
+                        \sharp : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \mathbf{U}_{i,g} \to \mathbf{U}_{i,g}.
+                    $$
+                +code('urs').
+                    def sharp (i : Nat) (g : Grade) (A : U i g) : U i g
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.14.2}$ (Sharp Modality Introduction). The $\sharp$ modality
+                    is applied to a type $A$, producing $\sharp A$ with the same grade.
+                +tex(true).
+                    $$
+                        \Gamma \vdash A : \mathbf{U}_{i,g} \to \Gamma \vdash \sharp A : \mathbf{U}_{i,g}.
+                    $$
+                +code('urs').
+                    (* Applied via sharp i g A *)
+                    (* Sharp modality introduction *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.14.3}$ (Sharp Modality Elimination). The eliminator for
+                    $\sharp A$ maps discrete types to properties in $\mathbf{U_0}$.
+                +tex(true).
+                    $$
+                        \mathbf{SharpInd} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} \prod_{\phi : (\sharp A) \to \mathbf{U_0}}
+                        \left( \prod_{a : \sharp A} \phi\ a \right) \to \prod_{a : \sharp A} \phi\ a.
+                    $$
+                +code('urs').
+                    def sharp_ind (i : Nat) (g : Grade) (A : U i g)
+                        (phi : (sharp i g A) -> U_0)
+                        (h : Π (a : sharp i g A), phi a)
+                      : Π (a : sharp i g A), phi a
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.14.4}$ (Idempotence of Sharp). The $\sharp$ modality is idempotent,
+                    reflecting its role as a discrete projection.
+                +tex(true).
+                    $$
+                        \mathbf{\sharp\text{-}idem} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} (\sharp (\sharp A)) = (\sharp A).
+                    $$
+                +code('urs').
+                    def sharp_idem (i : Nat) (g : Grade) (A : U i g) : (sharp i g (sharp i g A)) = (sharp i g A)
+                    (* Idempotence: sharp (sharp A) = sharp A *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.14.5}$ (Sharp on Smooth Sets). For $X : \mathbf{SmthSet}$ ,
+                    $\sharp X$ models the discrete topology on $X$.
+
+                +tex(true).
+                    $$
+                        \mathbf{\sharp\text{-}smthset} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{X : \mathbf{SmthSet}} (\sharp X) : \mathbf{U}_{i,g}.
+                    $$
+                +code('urs').
+                    def sharp_smthset (i : Nat) (g : Grade) (X : SmthSet) : U i g := sharp i g X
+                    (* Sharp on smooth sets: discrete topology *)
+
+include ../../footer

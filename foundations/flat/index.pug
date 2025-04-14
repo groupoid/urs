@@ -1,0 +1,100 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='FLAT')
+        meta(property='og:description' content='Flat Codiscrete Modality in Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/flat/')
+
+block title
+    title FLAT
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>FLAT</a>
+    article.main
+        .exe
+            section
+                h1 FLAT CODISCRETE MODALITY
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\flat$ modality in cohesive type theory maps a type to its codiscrete version,
+                    preserving its grade. For a type $A : \mathbf{U}_{i,g}$, $\flat A$ forgets discrete
+                    structure, modeling codiscrete spaces in differential cohomology.
+                +tex.
+                    In Urs, $\flat$ operates on types in graded universes from $\mathbf{Graded}$,
+                    with applications in smooth geometry $\mathbf{SmthSet}$ and differential
+                    cohomology $\mathbf{Form}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.13.1}$ (Flat Modality Formation). The $\flat$ modality
+                    is a type operator on graded universes, preserving the grade.
+                +tex(true).
+                    $$
+                        \flat : \prod_{i : \mathbf{N}} \prod_{g : \mathbf{Grade}}
+                        \mathbf{U}_{i,g} \to \mathbf{U}_{i,g}.
+                    $$
+                +code('urs').
+                    def flat (i : Nat) (g : Grade) (A : U i g) : U i g
+                    (* Flat codiscrete modality *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.13.2}$ (Flat Modality Introduction). The $\flat$ modality
+                    is applied to a type $A$, producing $\flat A$ with the same grade.
+                +tex(true).
+                    $$
+                        \Gamma \vdash A : \mathbf{U}_{i,g} \to \Gamma \vdash \flat A : \mathbf{U}_{i,g}.
+                    $$
+                +code('urs').
+                    (* Applied via flat i g A *)
+                    (* Flat modality introduction *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.13.3}$ (Flat Modality Elimination). The eliminator for
+                    $\flat A$ maps codiscrete types to properties in $\mathbf{U_0}$.
+                +tex(true).
+                    $$
+                        \mathbf{FlatInd} : \prod_{i : \mathbf{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} \prod_{\phi : (\flat A) \to \mathbf{U_0}}
+                        \left( \prod_{a : \flat A} \phi\ a \right) \to \prod_{a : \flat A} \phi\ a.
+                    $$
+                +code('urs').
+                    def flat_ind (i : Nat) (g : Grade) (A : U i g)
+                        (phi : (flat i g A) -> U_0)
+                        (h : Π (a : flat i g A), phi a)
+                      : Π (a : flat i g A), phi a
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.13.4}$ (Idempotence of Flat). The $\flat$ modality is idempotent,
+                    reflecting its role as a codiscrete projection.
+                +tex(true).
+                    $$
+                        \mathbf{\flat\text{-}idem} : \prod_{i : \mathbf{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} (\flat (\flat A)) = (\flat A).
+                    $$
+                +code('urs').
+                    def flat_idem (i : Nat) (g : Grade) (A : U i g) : (flat i g (flat i g A)) = (flat i g A)
+                    (* Idempotence: flat (flat A) = flat A *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.13.5}$ (Flat on Smooth Sets). For $X : \mathbf{SmthSet}$,
+                    $\flat X$ models the codiscrete topology on $X$.
+                +tex(true).
+                    $$
+                        \mathbf{\flat\text{-}smthset} : \prod_{i : \mathbf{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{X : \mathbf{SmthSet}} (\flat X) : \mathbf{U}_{i,g}.
+                    $$
+                +code('urs').
+                    def flat_smthset (i : Nat) (g : Grade) (X : SmthSet) : U i g := flat i g X
+                    (* Flat on smooth sets: codiscrete topology *)
+
+include ../../footer

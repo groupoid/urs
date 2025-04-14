@@ -1,0 +1,108 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='FERMIONIC')
+        meta(property='og:description' content='Fermionic Modality in Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/fermionic/')
+
+block title
+    title FERMIONIC
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>FERMIONIC</a>
+    article.main
+        .exe
+            section
+                h1 FERMIONIC MODALITY
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\Im$ modality in cohesive type theory projects a type to fermionic parity ($g = 1$).
+                    For a type $A : \mathbf{U}_{i,g}$, $\Im A$ forces the type to be fermionic,
+                    used in supergeometry and quantum physics.
+                +tex.
+                    In Urs, $\Im$ operates on types in graded universes from $\mathbf{Graded}$,
+                    with applications in fermionic quantum fields $\mathbf{Qubit}$ and braid
+                    group delooping $\mathbf{Braid}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.16.1}$ (Fermionic Modality Formation). The $\Im$ modality
+                    is a type operator on graded universes, mapping to fermionic parity.
+                +tex(true).
+                    $$
+                        \Im : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \mathbf{U}_{i,g} \to \mathbf{U}_{i,1}.
+                    $$
+                +code('urs').
+                    def fermionic (i : Nat) (g : Grade) (A : U i g) : U i 1
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.16.2}$ (Fermionic Modality Introduction). The $\Im$ modality
+                    is applied to a type $A$, producing $\Im A$ with fermionic parity.
+                +tex(true).
+                    $$
+                        \Gamma \vdash A : \mathbf{U}_{i,g} \to \Gamma \vdash \Im A : \mathbf{U}_{i,1}.
+                    $$
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.16.3}$ (Fermionic Modality Elimination). The eliminator for
+                    $\Im A$ maps fermionic types to properties in $\mathbf{U_0}$.
+                +tex(true).
+                    $$
+                        \mathbf{FermionicInd} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} \prod_{\phi : (\Im A) \to \mathbf{U_0}}
+                        \left( \prod_{a : \Im A} \phi\ a \right) \to \prod_{a : \Im A} \phi\ a.
+                    $$
+                +code('urs').
+                    def fermionic_ind (i : Nat) (g : Grade) (A : U i g)
+                        (phi : (fermionic i g A) -> U_0)
+                        (h : Π (a : fermionic i g A), phi a)
+                      : Π (a : fermionic i g A), phi a
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.16.4}$ (Idempotence of Fermionic). The $\Im$ modality is idempotent,
+                    as it always projects to fermionic parity.
+                +tex(true).
+                    $$
+                        \mathbf{fermionic-idem} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g}} (\Im (\Im A)) = (\Im A).
+                    $$
+                +code('urs').
+                    def fermionic_idem (i : Nat) (g : Grade) (A : U i g) : (fermionic i 1 (fermionic i g A)) = (fermionic i g A)
+                    (* Idempotence: fermionic (fermionic A) = fermionic A *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.16.5}$ (Fermionic Qubits). For $C, H : \mathbf{U_0}$,
+                    $\Im \mathbf{Qubit}(C, H)$ models fermionic quantum states.
+                +tex(true).
+                    $$
+                        \mathbf{\Im\text{-}qubit} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{C, H : \mathbf{U_0}} (\Im \mathbf{Qubit}(C, H)) : \mathbf{U}_{i,1}.
+                    $$
+                +code('urs').
+                    def fermionic_qubit (i : Nat) (g : Grade) (C H : U_0) : U i 1 := fermionic i g (Qubit C H)
+                    (* Fermionic qubits: fermionic Qubit(C, H) *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.16.6}$ (Fermionic and Braid Delooping). The $\Im$ modality
+                    relates to braid group delooping in \mathbf{Braid}.
+                +tex(true).
+                    $$
+                        \mathbf{\Im\text{-}braid} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \prod_{n : \mathbf{Nat}} (\Im (\mathbf{Braid}_n(\mathbb{R}^2))) : \mathbf{U}_{i,1}.
+                    $$
+                +code('urs').
+                    def fermionic_braid (i : Nat) (g : Grade) (n : Nat) : U i 1 := fermionic i g (Braid n ℝ^2)
+                    (* Fermionic braid delooping *)
+
+include ../../footer
