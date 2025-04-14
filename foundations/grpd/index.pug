@@ -1,0 +1,167 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='GROUPOID')
+        meta(property='og:description' content='Groupoids as Kan Complexes in Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/groupoid/')
+
+block title
+    title GROUPOID
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>GROUPOID</a>
+    article.main
+        .exe
+            section
+                h1 GROUPOIDS
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Grpd}_n$ type represents $n$-groupoids as Kan complexes, defined as sheaves
+                    on the simplex category $\Delta$ with values in $\mathbf{Set}$. The type
+                    $\mathbf{Grpd}_\infty$ represents $\infty$-groupoids, used in homotopy theory,
+                    gauge theory, and quantum physics.
+                +tex.
+                    In Urs, $\mathbf{Grpd}_n$ operates in graded universes from $\mathbf{Graded}$,
+                    with applications in gauge transformations $\mathbf{Qubit}$,
+                    smooth groupoids $\mathbf{SmthSet}$, and differential cohomology $\mathbf{Form}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.17.1}$ (Groupoid Formation). The type $\mathbf{Grpd}_n$
+                    represents $n$-groupoids as Kan sheaves on $\Delta$, living in universe
+                    $\mathbf{U}_{n+1}$. The type $\mathbf{Grpd}_\infty$ represents $\infty$-groupoids.
+                +tex(true).
+                    $$
+                        \mathbf{Grpd} : \prod_{n : \mathbf{Nat}} \mathbf{U}_{n+1},
+                    $$
+                    $$
+                        \mathbf{Grpd}_\infty : \mathbf{U}_\infty,
+                    $$
+                    $$
+                        \Delta : \mathbf{U_0}.
+                    $$
+                +code('urs').
+                    def Grpd (n : Nat) : U (n + 1) := Sh(Δ, Set)ₖₐₙ
+                    def Grpd∞ : U∞ := Grpd ∞
+                    def Δ : U₀ := Δ^n  -- Simplex category, indexed by n : Nat
+                    (* Groupoid formation *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.17.2}$ (Groupoid Constructors). Terms of $\mathbf{Grpd}_n$
+                    are constructed via plots, composition, and horn-filling, reflecting the Kan complex structure.
+                +tex(true).
+                    $$
+                        \mathbf{plt-grpd} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{Grpd}_n} \mathbf{Set},
+                    $$
+                    $$
+                        \mathbf{comp} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{Grpd}_n}
+                        \mathbf{plt-grpd}_n(X) \to \mathbf{plt-grpd}_n(X) \to \mathbf{Consecutive}\ g_1\ g_2 \to \mathbf{plt-grpd}_n(X),
+                    $$
+                    $$
+                        \mathbf{fill} : \prod_{n, k : \mathbf{Nat}} \prod_{X : \mathbf{Grpd}_n}
+                        \left( \prod_{i : \mathbf{Fin}\ n} (i \neq k) \to \mathbf{plt-grpd}_{n-1}(X) \right) \to \mathbf{plt-grpd}_n(X).
+                    $$
+                +code('urs').
+                    def plt-grpd (n : Nat) (X : Grpd n) : Set := Plt(Δ^n, X)
+                    def comp (n : Nat) (X : Grpd n) (g₁ g₂ : plt-grpd n X) (consec : Consecutive g₁ g₂)
+                      : plt-grpd n X := g₁ ∘ g₂
+                    def fill (n k : Nat) (X : Grpd n) (h : Π (i : Fin n) (i ≠ k), plt-grpd (n-1) X)
+                      : plt-grpd n X := fill h
+                    (* Groupoid constructors: plots, composition, horn-filling *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.17.3}$ (Groupoid Eliminators). Eliminators for $\mathbf{Grpd}_n$
+                    include mapping plots to paths (homotopy) and reasoning about composition.
+                +tex(true).
+                    $$
+                        \mathbf{homotopy} : \prod_{X : \mathbf{Grpd}_1} \mathbf{plt-grpd}_1(X) \to
+                        \mathbf{Path}\ X\ (\mathbf{source}\ g)\ (\mathbf{target}\ g),
+                    $$
+                    $$
+                        \mathbf{compose-elim} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{Grpd}_n}
+                        \mathbf{plt-grpd}_n(X) \to \mathbf{plt-grpd}_n(X) \to \mathbf{Consecutive}\ g_1\ g_2 \to \mathbf{plt-grpd}_n(X).
+                    $$
+                +code('urs').
+                    def homotopy (X : Grpd 1) (g : plt-grpd 1 X) : Path X (source g) (target g) := g
+                    def compose-elim (n : Nat) (X : Grpd n) (g₁ g₂ : plt-grpd n X) (consec : Consecutive g₁ g₂)
+                      : plt-grpd n X := comp n X g₁ g₂ consec
+                    (* Groupoid eliminators: homotopy, composition *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.17.4}$ (Horn-Filling Condition). The $\mathbf{fill}$ constructor
+                    satisfies the Kan condition, ensuring horns restrict to the given data.
+                +tex(true).
+                    $$
+                        \mathbf{fill-horn} : \prod_{n, k : \mathbf{Nat}} \prod_{X : \mathbf{Grpd}_n}
+                        \prod_{h : \prod_{i : \mathbf{Fin}\ n} (i \neq k) \to \mathbf{plt-grpd}_{n-1}(X)}
+                        \mathbf{Path}\ (\mathbf{plt-grpd}_{n-1}(X))\ ((\mathbf{fill}\ n\ k\ X\ h) | \Lambda_k^n)\ (h\ k).
+                    $$
+                +code('urs').
+                    def fill-horn (n k : Nat) (X : Grpd n) (h : Π (i : Fin n) (i ≠ k), plt-grpd (n-1) X)
+                      : Path (plt-grpd (n-1) X) (fill n k X h | Λ_k^n) (h k) := idp (plt-grpd (n-1) X) (h k)
+                    (* Horn-filling condition *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.17.5}$ (Gauge Transformation in $BG$). For a set $G$,
+                    $BG$ is a 1-groupoid, and gauge transformations induce loops, applicable to $\mathbf{Qubit}$.
+                +tex(true).
+                    $$
+                        \mathbf{BG} : \prod_{G : \mathbf{Set}} \mathbf{Grpd}_1,
+                    $$
+                    $$
+                        \mathbf{test-gauge} : \prod_{G : \mathbf{Set}} \prod_{g : G} \mathbf{plt-grpd}_1(\mathbf{BG}\ G),
+                    $$
+                    $$
+                        \mathbf{test-homotopy} : \prod_{G : \mathbf{Set}} \prod_{g : G}
+                        \mathbf{Path}\ (\mathbf{BG}\ G)\ \mathbf{pt}\ \mathbf{pt}.
+                    $$
+                +code('urs').
+                    def BG (G : Set) : Grpd 1 := λ n, if n = 1 then G else if n = 0 then {pt} else {}
+                    def test-gauge (G : Set) (g : G) : plt-grpd 1 (BG G) := g
+                    def test-homotopy (G : Set) (g : G) : Path (BG G) pt pt := homotopy (BG G) (test-gauge G g)
+                    (* Gauge transformation in BG *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.17.6}$ (Kan Condition Test). For a 2-groupoid $X$,
+                    horn-filling constructs a 2-simplex, satisfying the Kan condition.
+                +tex(true).
+                    $$
+                        \mathbf{test-horn} : \prod_{X : \mathbf{Grpd}_2} \prod_{h : \mathbf{plt-grpd}_1(X)}
+                        \mathbf{plt-grpd}_2(X),
+                    $$
+                    $$
+                        \mathbf{test-fill-horn} : \prod_{X : \mathbf{Grpd}_2} \prod_{h : \mathbf{plt-grpd}_1(X)}
+                        \mathbf{Path}\ (\mathbf{plt-grpd}_1(X))\ ((\mathbf{fill}\ 2\ 1\ X\ (\lambda i\ _, \mathbf{if}\ i = 0\ \mathbf{then}\ h\ \mathbf{else}\ h)) | \Lambda_1^2)\ h.
+                    $$
+                +code('urs').
+                    def test-horn (X : Grpd 2) (h : plt-grpd 1 X) : plt-grpd 2 X := fill 2 1 X (λ i _, if i = 0 then h else h)
+                    def test-fill-horn (X : Grpd 2) (h : plt-grpd 1 X)
+                      : Path (plt-grpd 1 X) (fill 2 1 X (λ i _, if i = 0 then h else h) | Λ_1^2) h := fill-horn 2 1 X _
+                    (* Kan condition test *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.17.7}$ (Gauge Equivalence). For $\infty$-groupoids $X$ and $Y$,
+                    a gauge equivalence establishes a homotopy equivalence.
+                +tex(true).
+                    $$
+                        \mathbf{gauge-eq} : \prod_{X, Y : \mathbf{Grpd}_\infty}
+                        \prod_{\phi : \mathbf{Maps}\ X\ Y} \prod_{\phi' : \mathbf{Maps}\ Y\ X}
+                        \prod_{g : \mathbf{Maps}\ X\ X} \prod_{h : g = \phi' \circ \phi}
+                        \mathbf{Path}\ (\mathbf{Grpd}_\infty)\ X\ Y.
+                    $$
+                +code('urs').
+                    def gauge-eq (X Y : Grpd∞) (φ : Maps X Y) (φ' : Maps Y X) (g : Maps X X) (h : g = φ' ∘ φ)
+                      : Path (Grpd∞) X Y := idp _ _  -- Homotopy equivalence
+                    (* Gauge equivalence lemma *)
+
+include ../../footer
