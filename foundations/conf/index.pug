@@ -1,0 +1,126 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='CONF')
+        meta(property='og:description' content='Configuration Spaces for Smooth Sets')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/confn/')
+
+block title
+    title CONF
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>CONF</a>
+    article.main
+        .exe
+            section
+                h1 CONFIGURATION SPACE
+                span.
+        aside
+            time Published: 13 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Conf}^n(X)$ type models the configuration space of $n$ distinct points
+                    in a smooth set $X : \mathbf{SmthSet}$, the space of ordered $n$-tuples
+                    $\{(x_1, \dots, x_n) \in X^n \mid x_i \neq x_j \text{ for } i \neq j\}$, used in
+                    smooth geometry, braid groups, and stable homotopy theory.
+                +tex.
+                    In the cohesive type system, $\mathbf{Conf}^n(X)$ is a type in $\mathbf{SmthSet}$,
+                    parameterized by $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$, representing
+                    smooth configurations of points in $X$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.7.1}$ ($\mathbf{Conf}^n$-Formation). The type
+                    $\mathbf{Conf}^n(X)$ is a smooth set in $\mathbf{SmthSet}$, formed for each
+                    $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$, the subspace of $X^n$ excluding
+                    the fat diagonal.
+                +tex(true).
+                    $$
+                        \mathbf{Conf} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}} \mathbf{SmthSet}.
+                    $$
+                +code('urs').
+                    def Conf (n : Nat) (X : SmthSet) : SmthSet
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.7.2}$ ($\mathbf{Conf}^n$-Introduction). Terms of type
+                    $\mathbf{Conf}^n(X)$ are $n$-tuples of distinct points in $X : \mathbf{SmthSet}$,
+                    introduced via the constructor $\mathbf{conf}$.
+                +tex(true).
+                    $$
+                        \mathbf{conf} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{x_1, \dots, x_n : X} \left( \prod_{i \neq j} x_i \neq x_j \right) \to \mathbf{Conf}^n(X).
+                    $$
+                +code('urs').
+                    def conf (n : Nat) (X : SmthSet) (x_1 ... x_n : X)
+                        (p : Π (i j : Fin n), i ≠ j → x_i ≠ x_j) : Conf n X
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.7.3}$ ($\mathbf{Conf}^n$-Elimination). The eliminator for
+                    $\mathbf{Conf}^n(X)$ maps configurations to properties in $\mathbf{SmthSet}$,
+                    projecting distinct points to their components.
+                +tex(true).
+                    $$
+                        \mathbf{ConfInd} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{\beta : \mathbf{Conf}^n(X) \to \mathbf{SmthSet}}
+                        \left( \prod_{c : \mathbf{Conf}^n(X)} \beta\ c \right) \to
+                        \prod_{c : \mathbf{Conf}^n(X)} \beta\ c.
+                    $$
+                +code('urs').
+                    def conf_ind (n : Nat) (X : SmthSet) (beta : Conf n X -> SmthSet)
+                        (h : Π (c : Conf n X), beta c) : Π (c : Conf n X), beta c
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.7.4}$ (Projection Maps). For $X : \mathbf{SmthSet}$, the
+                    configuration space $\mathbf{Conf}^n(X)$ has projection maps to $X$ for each
+                    coordinate.
+                +tex(true).
+                    $$
+                        \mathbf{proj} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}} \prod_{i : \mathbf{Fin}\ n}
+                        \mathbf{Conf}^n(X) \to X.
+                    $$
+                +code('urs').
+                    def proj (n : Nat) (X : SmthSet) (i : Fin n) : Conf n X -> X
+
+                +tex.
+                    $\mathbf{Theorem\ 4.7.5}$ (Diagonal Exclusion). The space $\mathbf{Conf}^n(X)$ is
+                    the complement of the fat diagonal in $X^n$, ensuring distinct points.
+                +tex(true).
+                    $$
+                        \mathbf{diag_excl} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Path}\ (\mathbf{Conf}^n(X))\ (X^n \setminus \Delta^n(X)).
+                    $$
+                +code('urs').
+                    def diag_excl (n : Nat) (X : SmthSet) : Path (Conf n X) (X^n \ Diff (Delta n X))
+
+                +tex.
+                    $\mathbf{Theorem\ 4.7.6}$ (Smooth Structure). For $X : \mathbf{SmthSet}$,
+                    $\mathbf{Conf}^n(X)$ inherits the smooth structure of $X^n$, forming a smooth set.
+                +tex(true).
+                    $$
+                        \mathbf{smooth_conf} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{SheafStr}(\mathbf{Conf}^n(X), \mathbb{R}^m).
+                    $$
+                +code('urs').
+                    def smooth_conf (n : Nat) (X : SmthSet)
+                      : SheafStr (Conf n X) ℝ^m
+
+include ../../footer

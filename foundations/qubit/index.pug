@@ -1,0 +1,128 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='QUBIT')
+        meta(property='og:description' content='Qubit Type for Quantum Systems')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/qubit/')
+
+block title
+    title QUBIT
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>QUBIT</a>
+    article.main
+        .exe
+            section
+                h1 QUBIT TYPE
+                span.
+        aside
+            time Published: 13 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Qubit}(C, H)$ type models quantum bits as spectra in stable homotopy
+                    theory, parameterized by a coefficient type $C : \mathbf{U_0}$ (e.g., complex numbers)
+                    and a space $H : \mathbf{U_0}$ (e.g., a Hilbert space or smooth set). Qubits formalize
+                    quantum systems in the cohesive type system, connecting to K-theory and geometry.
+                +tex.
+                    In Urs, $\mathbf{Qubit}(C, H)$ is a type in $\mathbf{Sp}$, representing stabilized
+                    quantum states with operations like superposition and entanglement, potentially
+                    over smooth sets $H : \mathbf{SmthSet}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.8.1}$ ($\mathbf{Qubit}$-Formation). The type
+                    $\mathbf{Qubit}(C, H)$ is a spectrum in $\mathbf{Sp}$, formed for each
+                    $C, H : \mathbf{U_0}$, encoding a quantum system.
+                +tex(true).
+                    $$
+                        \mathbf{Qubit} : \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{U_0}} \mathbf{Sp}.
+                    $$
+                +code('urs').
+                    def Qubit (C H : U_0) : Sp
+                    (* Qubit as a spectrum *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.8.2}$ ($\mathbf{Qubit}$-Introduction). Terms of type
+                    $\mathbf{Qubit}(C, H)$ are quantum states, introduced via the $\mathbf{qubit}$
+                    constructor, parameterized by $C$ and $H$.
+                +tex(true).
+                    $$
+                        \mathbf{qubit} : \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{U_0}}
+                        \prod_{s : C \times H} \mathbf{Qubit}(C, H).
+                    $$
+                +code('urs').
+                    def qubit (C H : U_0) (s : C * H) : Qubit C H
+                    (* Construct a qubit state *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.8.3}$ ($\mathbf{Qubit}$-Elimination). The eliminator for
+                    $\mathbf{Qubit}(C, H)$ maps quantum states to properties in $\mathbf{Sp}$,
+                    analyzing their stable homotopy structure.
+                +tex(true).
+                    $$
+                        \mathbf{QubitInd} :
+                    $$
+                    $$
+                        \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{U_0}}
+                        \prod_{\beta : \mathbf{Qubit}(C, H) \to \mathbf{Sp}}
+                        \left( \prod_{Q : \mathbf{Qubit}(C, H)} \beta\ Q \right) \to
+                        \prod_{Q : \mathbf{Qubit}(C, H)} \beta\ Q.
+                    $$
+                +code('urs').
+                    def qubit_ind (C H : U_0) (beta : Qubit C H -> Sp) (h : Π (Q : Qubit C H), beta Q) : Π (Q : Qubit C H), beta Q
+                    (* Eliminator for qubits *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.8.4}$ (Superposition). For $C, H : \mathbf{U_0}$, states in
+                    $\mathbf{Qubit}(C, H)$ support linear combinations, forming superpositions.
+                +tex(true).
+                    $$
+                        \mathbf{superpose} :
+                    $$
+                    $$
+                        \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{U_0}}
+                        \prod_{Q_1, Q_2 : \mathbf{Qubit}(C, H)} \prod_{a, b : C}
+                        \mathbf{Qubit}(C, H).
+                    $$
+                +code('urs').
+                    def superpose (C H : U_0) (Q_1 Q_2 : Qubit C H) (a b : C) : Qubit C H
+                    (* Linear combination of states *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.8.5}$ (Tensor Product). Qubits $\mathbf{Qubit}(C, H_1)$ and
+                    $\mathbf{Qubit}(C, H_2)$ form composite systems via tensor products.
+                +tex(true).
+                    $$
+                        \mathbf{tensor} :
+                    $$
+                    $$
+                        \prod_{C : \mathbf{U_0}} \prod_{H_1, H_2 : \mathbf{U_0}}
+                        \mathbf{Qubit}(C, H_1) \to \mathbf{Qubit}(C, H_2) \to \mathbf{Qubit}(C, H_1 \otimes H_2).
+                    $$
+                +code('urs').
+                    def tensor (C H_1 H_2 : U_0) : Qubit C H_1 -> Qubit C H_2 -> Qubit C (H_1 ⊗ H_2)
+                    (* Tensor product of qubits *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.8.6}$ (Smooth Qubits). If $H : \mathbf{SmthSet}$, then
+                    $\mathbf{Qubit}(C, H)$ inherits a smooth structure, enabling quantum fields.
+                +tex(true).
+                    $$
+                        \mathbf{smooth_qubit} :
+                    $$
+                    $$
+                        \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{SmthSet}}
+                        \mathbf{SheafStr}(\mathbf{Qubit}(C, H), \mathbb{R}^m).
+                    $$
+                +code('urs').
+                    def smooth_qubit (C : U_0) (H : SmthSet) : SheafStr (Qubit C H) ℝ^m
+                    (* Smooth structure for qubits *)
+
+include ../../footer
