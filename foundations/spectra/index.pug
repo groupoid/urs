@@ -4,7 +4,7 @@ html
     head
         meta(property='og:title'       content='SPECTRA')
         meta(property='og:description' content='Spectra Type for Stable Homotopy')
-        meta(property='og:url'         content='https://urs.groupoid.space/foundations/sp/')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/spectra/')
 
 block title
     title SPECTRA
@@ -29,25 +29,27 @@ block content
                 +tex.
                     In the cohesive type system, $\mathbf{Sp}$ is a parameterless type in
                     $\mathbf{U_{(0,0)}}$, not a universe, supporting operations like suspension
-                    $\Sigma^{\infty}$, wedge sums $\vee$, and qubits $\mathbf{Qubit}$.
+                    ($\Sigma^{\infty}$), wedge sums ($\vee$), homomorphisms ($\mathbf{Hom}_{\mathbf{Sp}}$),
+                    and qubits ($\mathbf{Qubit}$).
 
                 h2 Formation
                 +tex.
                     $\mathbf{Definition\ 4.4.1}$ ($\mathbf{Sp}$-Formation). The type $\mathbf{Sp}$ is a
-                    base type in $\mathbf{U_{(0,0)}}$, representing all spectra, stable under suspension:
+                    base type in $\mathbf{U_{(0,0)}}$, representing all spectra, stable under suspension.
                 +tex(true).
                     $$
                         \mathbf{Sp} : \mathbf{U_{(0,0)}}.
                     $$
                 +code('urs').
                     def Sp : U_{(0,0)}
+                    (* Type of all spectra *)
 
                 h2 Introduction
                 +tex.
                     $\mathbf{Definition\ 4.4.2}$ ($\mathbf{Sp}$-Introduction). Terms of type
                     $\mathbf{Sp}$ are introduced via a base constructor or operations like suspension
-                    ($\Sigma^{\infty}$), wedge sums ($\vee$), or qubits ($\mathbf{Qubit}$), forming
-                    stable homotopy classes.
+                    ($\Sigma^{\infty}$), wedge sums ($\vee$), homomorphisms ($\mathbf{Hom}_{\mathbf{Sp}}$),
+                    or qubits ($\mathbf{Qubit}$), forming stable homotopy classes.
                 +tex(true).
                     $$
                         \mathbf{sp} : \mathbf{Sp},
@@ -59,13 +61,18 @@ block content
                         \mathbf{wedge} : \prod_{E : \mathbf{Sp}} \prod_{F : \mathbf{Sp}} \mathbf{Sp},
                     $$
                     $$
+                        \mathbf{Hom}_{\mathbf{Sp}} : \prod_{E : \mathbf{Sp}} \prod_{F : \mathbf{Sp}} \mathbf{Sp},
+                    $$
+                    $$
                         \mathbf{qubit} : \prod_{C : \mathbf{U_{(0,0)}}} \prod_{H : \mathbf{U_{(0,0)}}} \mathbf{Sp}.
                     $$
                 +code('urs').
                     def sp : Sp
                     def susp (E : Sp) : Sp
                     def wedge (E F : Sp) : Sp
+                    def hom_spec (E F : Sp) : Sp
                     def qubit (C H : U_{(0,0)}) : Sp
+                    (* Constructors for spectra *)
 
                 h2 Elimination
                 +tex.
@@ -82,8 +89,8 @@ block content
                         \prod_{E : \mathbf{Sp}} \beta\ E.
                     $$
                 +code('urs').
-                    def sp_ind (beta : Sp -> U_{(0,0)}) (h : Π (E : Sp), beta E)
-                      : Π (E : Sp), beta E
+                    def sp_ind (beta : Sp -> U_{(0,0)}) (h : Π (E : Sp), beta E) : Π (E : Sp), beta E
+                    (* Eliminator for spectra *)
 
                 h2 Theorems
                 +tex.
@@ -113,7 +120,20 @@ block content
                     def wedge_closure (E F : Sp) : Sp
 
                 +tex.
-                    $\mathbf{Theorem\ 4.4.6}$ (Qubit as Spectrum). For $C, H : \mathbf{U_{(0,0)}}$,
+                    $\mathbf{Theorem\ 4.4.6}$ (Homomorphism Spectrum). For $E, F : \mathbf{Sp}$,
+                    $\mathbf{Hom}_{\mathbf{Sp}}(E, F) : \mathbf{Sp}$, the spectrum of stable maps.
+                +tex(true).
+                    $$
+                        \mathbf{hom_closure} :
+                    $$
+                    $$
+                        \prod_{E : \mathbf{Sp}} \prod_{F : \mathbf{Sp}} \mathbf{Hom}_{\mathbf{Sp}}(E, F) : \mathbf{Sp}.
+                    $$
+                +code('urs').
+                    def hom_closure (E F : Sp) : Sp
+
+                +tex.
+                    $\mathbf{Theorem\ 4.4.7}$ (Qubit as Spectrum). For $C, H : \mathbf{U_{(0,0)}}$,
                     $\mathbf{Qubit}(C, H) : \mathbf{Sp}$, connecting quantum states to spectra.
                 +tex(true).
                     $$

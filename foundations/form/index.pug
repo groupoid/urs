@@ -1,0 +1,161 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='FORM')
+        meta(property='og:description' content='Differential Cohomology and Forms')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/form/')
+
+block title
+    title FORM
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>FORM</a>
+    article.main
+        .exe
+            section
+                h1 DIFFERENTIAL COHOMOLOGY
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Forms}_n(X)$ type models the space of differential $n$-forms $\Omega^n(X)$
+                    on a smooth set $X : \mathbf{SmthSet}$, a fundamental component of differential cohomology,
+                    which refines de Rham cohomology with differential forms. This is used in smooth geometry,
+                    gauge theory, and quantum field theory.
+                +tex.
+                    In Urs, $\mathbf{Forms}_n(X)$ is a type in $\mathbf{U_0}$, parameterized by
+                    $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$, supporting operations like the wedge product
+                    and exterior derivative, with applications to gauge fields in \texttt{qubit.pug}
+                    and graded forms in \texttt{graded.pug}.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.12.1}$ ($\mathbf{Forms}$-Formation). The type
+                    $\mathbf{Forms}_n(X)$ is a type in $\mathbf{U_0}$, formed for each
+                    $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$, representing the space of $n$-forms $\Omega^n(X)$.
+                +tex(true).
+                    $$
+                        \mathbf{Forms} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}} \mathbf{U_0}.
+                    $$
+                +code('urs').
+                    def Forms (n : Nat) (X : SmthSet) : U_0
+                    (* Type of n-forms Ω^n(X) *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.12.2}$ ($\mathbf{Forms}$-Introduction). Terms of type
+                    $\mathbf{Forms}_n(X)$ are differential $n$-forms, introduced via a constructor,
+                    with operations like the wedge product.
+                +tex(true).
+                    $$
+                        \mathbf{form} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Forms}_n(X),
+                    $$
+                    $$
+                        \mathbf{wedge} : \prod_{n, m : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Forms}_n(X) \to \mathbf{Forms}_m(X) \to \mathbf{Forms}_{n+m}(X).
+                    $$
+                +code('urs').
+                    def form (n : Nat) (X : SmthSet) : Forms n X
+                    (* Constructor for n-forms *)
+                    def wedge (n m : Nat) (X : SmthSet) (α : Forms n X) (β : Forms m X) : Forms (n+m) X
+                    (* Wedge product: α ∧ β *)
+                    (* Differential form introduction *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.12.3}$ ($\mathbf{Forms}$-Elimination). The eliminator for
+                    $\mathbf{Forms}_n(X)$ maps differential forms to properties in $\mathbf{U_0}$,
+                    analyzing their structure.
+                +tex(true).
+                    $$
+                        \mathbf{FormsInd} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{\phi : \mathbf{Forms}_n(X) \to \mathbf{U_0}}
+                        \left( \prod_{\omega : \mathbf{Forms}_n(X)} \phi\ \omega \right) \to
+                        \prod_{\omega : \mathbf{Forms}_n(X)} \phi\ \omega.
+                    $$
+                +code('urs').
+                    def forms_ind (n : Nat) (X : SmthSet) (phi : Forms n X -> U_0) (h : Π (ω : Forms n X), phi ω) : Π (ω : Forms n X), phi ω
+                    (* Eliminator for forms *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.12.4}$ (Exterior Derivative). For $n : \mathbf{Nat}$, $X : \mathbf{SmthSet}$,
+                    the exterior derivative maps $n$-forms to $(n+1)$-forms, satisfying $d \circ d = 0$.
+                +tex(true).
+                    $$
+                        \mathbf{ext} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Forms}_n(X) \to \mathbf{Forms}_{n+1}(X),
+                    $$
+                    $$
+                        \mathbf{nil} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{\omega : \mathbf{Forms}_n(X)}
+                        (\mathbf{ext}\ (n+1)\ X\ (\mathbf{ext}\ n\ X\ \omega)) = 0.
+                    $$
+                +code('urs').
+                    def ext_der (n : Nat) (X : SmthSet) : Forms n X -> Forms (n+1) X
+                    def ext_der_nil (n : Nat) (X : SmthSet) (ω : Forms n X) : (ext_der (n+1) X (ext_der n X ω)) = 0
+                    (* Exterior derivative: d : Ω^n(X) → Ω^(n+1)(X), d ∘ d = 0 *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.12.5}$ (Wedge Product Properties). The wedge product is
+                    graded commutative, reflecting the structure of differential forms.
+                +tex(true).
+                    $$
+                        \mathbf{comm} : \prod_{n, m : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{\alpha : \mathbf{Forms}_n(X)} \prod_{\beta : \mathbf{Forms}_m(X)}
+                        (\alpha \wedge \beta) = ((-1)^{n m} (\beta \wedge \alpha)).
+                    $$
+                +code('urs').
+                    def wedge_comm (n m : Nat) (X : SmthSet) (α : Forms n X) (β : Forms m X)
+                      : Path (Forms (n+m) X) (wedge n m X α β) ((-1)^(n * m) * (wedge m n X β α))
+                    (* Graded commutativity: α ∧ β = (-1)^(n m) (β ∧ α) *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.12.6}$ (De Rham Cohomology Link). For $n : \mathbf{Nat}$, $X : \mathbf{SmthSet}$,
+                    $\mathbf{Forms}_n(X)$ contributes to de Rham cohomology via closed and exact forms.
+                +tex(true).
+                    $$
+                        \mathbf{closed} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Forms}_n(X) \to \mathbf{Prop},
+                    $$
+                    $$
+                        \mathbf{exact} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Forms}_n(X) \to \mathbf{Prop},
+                    $$
+                    $$
+                        \mathbf{de\text{-}Rham} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Hom}_{\mathbf{Sp}}(\mathbf{closed}\ n\ X, \mathbf{exact}\ n\ X).
+                    $$
+                +code('urs').
+                    def closed_forms (n : Nat) (X : SmthSet) (ω : Forms n X) : Prop := (ext_der n X ω) = 0
+                    def exact_forms (n : Nat) (X : SmthSet) (ω : Forms n X) : Prop := Σ (α : Forms (n-1) X), (ext_der (n-1) X α) = ω
+                    def de_rham (n : Nat) (X : SmthSet) : Hom_Sp (closed_forms n X, exact_forms n X)
+                    (* De Rham cohomology: H^n_dR(X) *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.12.7}$ (Gauge Field Application). For $X : \mathbf{SmthSet}$,
+                    $\mathbf{Forms}_n(X)$ models gauge fields in quantum systems, as in \texttt{qubit.pug}.
+                +tex(true).
+                    $$
+                        \mathbf{gauge} : \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Forms}_1(X) \to \mathbf{Forms}_2(X),
+                    $$
+                    $$
+                        \mathbf{curv} : \prod_{X : \mathbf{SmthSet}} \prod_{A : \mathbf{Forms}_1(X)}
+                        (\mathbf{gauge}\ X\ A) = (\mathbf{ext}\ 1\ X\ A).
+                    $$
+                +code('urs').
+                    def gauge_field (X : SmthSet) : Forms 1 X -> Forms 2 X := ext_der 1 X
+                    def gauge_field_curv (X : SmthSet) (A : Forms 1 X) : (gauge_field X A) = (ext_der 1 X A) := refl
+                    (* Gauge field: F = dA *)
+
+include ../../footer

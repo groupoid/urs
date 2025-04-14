@@ -1,0 +1,214 @@
+include ../../../header
+
+html
+    head
+        meta(property='og:title'       content='SIGMA')
+        meta(property='og:description' content='Dependent Sum')
+        meta(property='og:url'         content='https://anders.groupoid.space/foundations/mltt/sigma/')
+
+block title
+    title SIGMA
+
+block content
+    nav
+        <a href='../../../index.html'>ANDERS</a>
+        <a href='../../../lib/index.html'>LIB</a>
+        <a href='#'>SIGMA</a>
+    article.main.list
+        section
+            h1 CONTEXT SPACES
+            aside time Published: 14 OCT 2017
+        section
+            +tex.
+                $\Sigma$-type is a space that contains dependent pairs
+                where type of the second element depends on the value
+                of the first element. As only one point of fiber domain
+                present in every defined pair, $\Sigma$-type is also a dependent sum,
+                where fiber base is a disjoint union.
+            +tex.
+                Spaces of dependent pairs are using in type theory to model
+                cartesian products, disjoint sums, fiber bundles, vector spaces,
+                telescopes, lenses, contexts, objects, algebras, ∃-type, etc.
+
+        section
+            h2 Formation
+
+            +tex.
+                $\mathbf{Definition\ 2.1}$ ($\Sigma$-Formation, Dependent Sum). The dependent sum
+                type is indexed over type $A$ in the sense of coproduct or disjoint union,
+                where only one fiber codomain $B(x)$ is present in pair.
+            +tex(true).
+                $$
+                    \Sigma : U =_{def} \sum_{x:A} B(x).
+                $$
+
+            +code.
+                def Sigma (A: U) (B: A → U) : U
+                 := Σ (x: A), B(x)
+            br
+
+
+            h2 Introduction
+
+            +tex.
+                $\mathbf{Definition\ 2.2}$ (Dependent Pair). The dependent pair
+                constructor is a way to create indexed pair over type $A$
+                in the sense of coproduct or disjoint union.
+            +tex(true).
+                $$
+                    \mathbf{pair} : \Sigma(A,B) =_{def}
+                $$
+            +tex(true).
+                $$
+                    \prod_{A:U}\prod_{B:A \rightarrow U}\prod_{a:A}\prod_{b:B(a)} (a,b).
+                $$
+            +code.
+                def pair (A: U) (B: A → U) (a: A) (b: B a)
+                  : Sigma A B := (a, b)
+            br
+
+            h2 Elimination
+
+            +tex.
+                $\mathbf{Definition\ 2.3}$ (Dependent Projections). The dependent projections
+                $pr_{1}: \Sigma(A,B) \rightarrow A$ and
+                $pr_{2}: \Pi_{x: \Sigma(A,B)} B(pr_{1}(x))$ are pair deconstructors.
+            +tex(true).
+                $$
+                    \mathbf{pr}_1 : \prod_{A:U} \prod_{B:A \rightarrow U} \prod_{x: \Sigma(A,B)} A
+                $$
+            +tex(true).
+                $$
+                    =_{def} .1 =_{def} (a,b) \mapsto a.
+                $$
+            +tex(true).
+                $$
+                    \mathbf{pr}_2 : \prod_{A:U} \prod_{B:A \rightarrow U} \prod_{x: \Sigma(A,B)} B(x.1)
+                $$
+            +tex(true).
+                $$
+                    =_{def} .2 =_{def} (a,b) \mapsto b.
+                $$
+            +code.
+                def pr₁ (A: U) (B: A → U) (x: Sigma A B)
+                  : A := x.1
+                def pr₂ (A: U) (B: A → U) (x: Sigma A B)
+                  : B (pr₁ A B x) := x.2
+            br.
+
+            +tex.
+                If you want to access deep sigma a series of $.2$
+                accessors should be applied followed by $.1$.
+
+            +tex.
+                $\mathbf{Definition\ 2.3.1}$ ($\Sigma$-Induction Principle). States that
+                if predicate holds for two projections
+                then predicate holds for total space.
+
+            +code.
+                def Σ-ind (A : U) (B : A -> U)
+                    (C : Π (s: Σ (x: A), B x), U) 
+                    (g: Π (x: A) (y: B x), C (x,y))
+                    (p: Σ (x: A), B x) : C p := g p.1 p.2
+            br
+
+            h2 Computation
+            +tex.
+                $\mathbf{Definition\ 2.4}$ ($\Sigma$-Computation).
+
+            +code.
+                def Σ-β₁ (A : U) (B : A → U) (a : A) (b : B a)
+                  : Path A a (pr₁ A B (a ,b)) := idp A a
+            br.
+            +code.
+                def Σ-β₂ (A : U) (B : A → U) (a : A) (b : B a)
+                  : Path (B a) b (pr₂ A B (a, b)) := idp (B a) b
+            br
+
+            h2 Uniqueness
+
+            +tex.
+                $\mathbf{Definition\ 2.5}$ ($\Sigma$-Uniqueness).
+            +code.
+               def Σ-η (A : U) (B : A → U) (p : Sigma A B)
+                 : Path (Sigma A B) p (pr₁ A B p, pr₂ A B p)
+                := idp  (Sigma A B) p
+
+            br
+
+            h2 Theorems
+            +tex.
+                    $\mathbf{Theorem}$ (Axiom of Choice). If for all $x : A$ there is $y : B$
+                    such that $R(x,y)$, then there is a function $f : A \rightarrow B$ such
+                    that for all $x : A$ there is a witness of $R(x,f(x))$.
+
+            +code.
+                def ac (A B: U) (R: A -> B -> U)
+                    (g: Π (x: A), Σ (y: B), R x y)
+                  : Σ (f: A -> B), Π (x: A), R x (f x)
+                 := (\(i:A),(g i).1,\(j:A),(g j).2)
+
+            +tex.
+                    $\mathbf{Theorem}$ (Total). If fiber over base implies another fiber
+                    over the same base then we can construct total space of section
+                    over that base with another fiber.
+
+            +code.
+                def total (A:U) (B C : A -> U)
+                    (f : Π (x:A), B x -> C x)
+                    (w: Σ(x: A), B x)
+                  : Σ (x: A), C x := (w.1,f (w.1) (w.2))
+
+            +tex.
+                    $\mathbf{Theorem}$ (Path Between Sigmas). Path between
+                    two sigmas $t,u: \Sigma(A,B)$ could be decomposed to
+                    sigma of two paths $p:t_1=_{A}u_1)$ and $(t_2=_{B(p@i)}u_2)$.
+
+            +code.
+                def funDepTr (A: U) (P: A -> U) (a0 a1: A)
+                    (p: PathP (&lt;_>A) a0 a1) (u0: P a0) (u1: P a1)
+                  : PathP (&lt;_>U) (PathP (&lt;i> P (p @ i)) u0 u1)
+                    (PathP (&lt;_>P a1) (hcomp (P a1) 0 (λ (k : I), [])
+                    (transp (&lt;i> P (p @ i)) 0 u0)) u1)
+                 := &lt;j> PathP (&lt;i> P (p @ j \/ i)) (comp (\(i:I),
+                    P (p @ j /\ i)) -j (\(k: I),
+                    [(j = 0) -> u0 ]) (inc (P a0) -j u0)) u1
+            br.
+            +code.
+                def pathSig (A: U) (P: A -> U)
+                    (t u: Σ (x: A), P x) (p: PathP (&lt;_>A) t.1 u.1)
+                  : PathP (&lt;_>U) (PathP (&lt;i>P (p @ i)) t.2 u.2) 
+                          (PathP (&lt;_>P u.1)
+                                 (hcomp (P u.1) 0 
+                                   (λ(k:I),[]) (transp (&lt;i> P (p @ i))
+                                      0 t.2)) u.2)
+                                   := funDepTr A P t.1 u.1 p t.2 u.2
+
+            +tex.
+                    $\mathbf{Theorem}$ (Propositions). If codomain $B: A \rightarrow U$
+                    of dependent the function $f: (x:A) \rightarrow B(x)$
+                    is a mere proposition and for two sigmas $t,u: \Sigma(A,B)$ there is
+                    a path $\mathrm{Path}_A(t_1,u_1)$ then the path between second components $\mathrm{Path}_{B(p@i)}(t_2,u_2)$
+                    is a mere proposition too. Same if codomain is set.
+
+            +code.
+                    corSigProp (A:U) (B:A-> U)
+                        (pB: (x:A) -> isProp (B x))
+                        (t u: Sigma A B) (p:Path A t.1 u.1):
+                        isProp (PathP (&lt;i&gt;B (p@i)) t.2 u.2)
+
+                    corSigSet (A:U) (B:A-> U)
+                        (sB: (x:A) -> isSet (B x))
+                        (t u: Sigma A B) (p: Path A t.1 u.1):
+                        isProp (PathP (&lt;i&gt;B (p@i)) t.2 u.2)
+
+            +tex.
+                    $\mathbf{Theorem}$ (Contractability). If first and second component of sigma
+                    are contractible then the total space of sigma is contractible.
+
+            +code.
+                    sigmaIsContr (A: U) (B: A -> U) (u: isContr A)
+                                 (q: (x: A) -> isContr (B x))
+                               : isContr (Sigma A B)
+
+include ../../../footer

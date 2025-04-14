@@ -1,0 +1,103 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='UNIVERSE')
+        meta(property='og:description' content='Type Universes and Prop')
+        meta(property='og:url'         content='https://laurent.groupoid.space/foundations/universe/')
+
+block title
+    title UNIVERSE
+
+block content
+    nav
+        <a href='../../index.html'>LAURENT</a>
+        <a href='#'>UNIVERSE</a>
+    article.main
+        .exe
+            section
+                h1 TYPE UNIVERSES
+                span.
+        aside
+            time Published: 21 MAR 2025
+        .exe
+            section
+                +tex.
+                    The type system employs a limited hierarchy of universes, $U_0 : U_1$,
+                    alongside $\text{Prop}$, to manage types and propositions. This structure balances
+                    expressiveness with simplicity, drawing analogies to Coq and Lean while serving
+                    Schwartz’s analysis framework.
+                +tex.
+                    $U_0$ contains small types (e.g., $\mathbb{R}$, $\text{Set}(A)$), while $U_1$
+                    classifies $U_0$ and higher constructs (e.g., $\text{Power}(A)$). $\text{Prop}$
+                    is a distinct universe for 0-truncated propositions, supporting classical logic.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 1.2.1}$ (Universe Hierarchy). The system defines two universes:
+                    $U_0$, the type of small types, and $U_1$, the type of $U_0$, with $\text{Prop}$ as
+                    a separate propositional universe.
+                +tex(true).
+                    $$
+                        U_0 : U_1, \quad \text{Prop} : U_0.
+                    $$
+                +code.
+                    type exp =
+                      | Univrse i (* i in [0,1] *)
+                      | Prop
+
+                h2 Nuances of U<sub>0</sub> : U<sub>1</sub>
+                +tex.
+                    $U_0$ includes base types like $\mathbb{N}$, $\mathbb{R}$, and $\text{Set}(\mathbb{R})$,
+                    sufficient for most analysis constructs. $U_1$ enables higher types like
+                    $\text{Power}(\mathbb{R})$ or $\text{Measure}(A, \Sigma)$, but the hierarchy stops
+                    here to avoid Russell-style paradoxes and maintain decidability.
+                +tex(true).
+                    $$
+                        \mathbb{R} : U_0, \quad \text{Set}(\mathbb{R}) : U_0, \quad \mathcal{P}(\mathbb{R}) : U_1.
+                    $$
+                +tex.
+                    Unlike Coq’s cumulative $U_i : U_{i+1}$ or Lean’s infinite hierarchy, this limited
+                    $U_0 : U_1$ avoids universe polymorphism, simplifying type checking while limiting
+                    higher inductive types or complex type families.
+
+                h2 Prop and Classical Logic
+                +tex.
+                    $\text{Prop}$ is 0-truncated, meaning any $P : \text{Prop}$ has at most one proof,
+                    aligning with classical logic via Z3 integration. This contrasts with Coq’s
+                    constructive $\text{Prop}$ (proof-relevant) and Lean’s flexible $\text{Prop}$ with
+                    optional classical axioms.
+                +tex(true).
+                    $$
+                        P : \text{Prop}, \ p, q : P \implies p = q, \quad P \lor \neg P.
+                    $$
+                +code.
+                    let prop_true : exp = Prop  (* Classical Prop *)
+
+                h2 Coq and Lean Analogies
+                +tex.
+                    In Coq, $\text{Prop}$ is impredicative and constructive, allowing $P : \text{Prop}$
+                    to define types inductively, whereas our $\text{Prop}$ is predicative within $U_0$
+                    and classical. Lean’s $\text{Prop}$ is similar but supports quotient types natively,
+                    which we defer to future extensions (e.g., Dedekind cuts in $\mathbb{R}$).
+                +tex.
+                    Our $U_0 : U_1$ mirrors Coq’s minimal hierarchy for analysis but avoids Lean’s
+                    full cumulativity, prioritizing Z3-driven decidability over proof complexity.
+
+                h2 Advantages and Limitations
+                +tex.
+                    $\mathbf{Advantages}$: The limited hierarchy ensures type checking is straightforward,
+                    and $\text{Prop}$’s classical nature aligns with Schwartz’s analysis, enabling
+                    efficient Z3 verification for real arithmetic and set equality.
+                +tex.
+                    $\mathbf{Limitations}$: Higher universes ($U_2, U_3, \ldots$) are absent, restricting
+                    nested type constructions beyond $U_1$ (e.g., $\text{Power}(\text{Power}(A))$ requires
+                    careful encoding). Impredicativity is sacrificed for simplicity.
+
+                h2 Future Directions
+                +tex.
+                    Future support for quotient types (e.g., Lean-style $\text{Quotient}$) could enrich
+                    $U_0$, enabling constructions like Dedekind reals directly within the system, though
+                    current focus remains on Z3-backed real analysis without such granularity.
+
+include ../../footer
