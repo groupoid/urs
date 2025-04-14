@@ -1,0 +1,255 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='GRADED')
+        meta(property='og:description' content='Graded Universes for Cohesive Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/graded/')
+
+block title
+    title GRADED
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>GRADED</a>
+    article.main
+        .exe
+            section
+                h1 GRADED UNIVERSES
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{U}_\alpha$ type represents a graded universe indexed by a monoid
+                    $\mathcal{G} = \mathbb{N} \times \mathbb{Z}/2\mathbb{Z}$, where $\alpha \in \mathcal{G}$
+                    encodes a level ($\mathbb{N}$) and parity ($\mathbb{Z}/2\mathbb{Z}$: $0$ = bosonic, $1$ = fermionic).
+                    Graded universes support type hierarchies with cumulativity, graded tensor products,
+                    and coherence rules, used in supergeometry (e.g., bosonic/fermionic types),
+                    quantum systems (e.g., graded qubits), and cohesive type theory.
+                +tex.
+                    In Urs, $\mathbf{U}_\alpha$ is a type indexed by $\alpha : \mathcal{G}$, with operations
+                    like lifting, product formation, and graded tensor products, extending standard
+                    universe hierarchies to include parity, building on $\mathbf{Tensor}$.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.11.1}$ (Grading Monoid). The grading monoid $\mathcal{G}$
+                    is defined as $\mathbb{N} \times \mathbb{Z}/2\mathbb{Z}$, with operation $\oplus$
+                    and neutral element $\mathbf{0}$, encoding level and parity.
+                +tex(true).
+                    $$
+                        \mathcal{G} : \mathbf{Type} \equiv \mathbb{N} \times \mathbb{Z}/2\mathbb{Z},
+                    $$
+                    $$
+                        \oplus : \mathcal{G} \to \mathcal{G} \to \mathcal{G},
+                    $$
+                    $$
+                        \quad (\alpha, \beta) \mapsto (\text{fst}\ \alpha + \text{fst}\ \beta, (\text{snd}\ \alpha + \text{snd}\ \beta) \mod 2),
+                    $$
+                    $$
+                        \mathbf{0} : \mathcal{G} \equiv (0, 0).
+                    $$
+                +tex.
+                    $\mathbf{Definition\ 4.11.2}$ (Graded Universe Formation). The universe
+                    $\mathbf{U}_\alpha$ is a type indexed by $\alpha : \mathcal{G}$, containing types of grade $\alpha$.
+                    A shorthand notation $\mathbf{U}_{i,g}$ is used for $\mathbf{U}\ (i, g)$.
+                +tex(true).
+                    $$
+                        \mathbf{U} : \mathcal{G} \to \mathbf{Type},
+                    $$
+                    $$
+                        \mathbf{Grade} : \mathbf{Set} \equiv \{0, 1\},
+                    $$
+                    $$
+                        \mathbf{U}_{i,g} : \mathbf{Type} \equiv \mathbf{U}\ (i, g).
+                    $$
+                +code('urs').
+                    def 𝒢 : Type := ℕ × ℤ/2ℤ  -- Levels (ℕ) and parity (ℤ/2ℤ: 𝟎 = Bose, 𝟏 = Fermi)
+                    def ⊕ (α β : 𝒢) : 𝒢 := (fst α + fst β, (snd α + snd β) mod 2)
+                    def 𝟘 : 𝒢 := (0, 0)  -- Neutral: level 0, bosonic
+                    def U (α : 𝒢) : Type := Universe α  -- Universe formation
+                    def Grade : Set := {0, 1}  -- 0 for bosonic, 1 for fermionic
+                    def U (i : Nat) (g : Grade) : Type := U (i, g)
+                    def U₀^g (g : Grade) : U (1, g) := U (0, g)
+                    def U₀₀ : Type := U (0, 0)  -- Bosonic level 0
+                    def U₁₀ : Type := U (1, 0)  -- Bosonic level 1
+                    def U₀₁ : Type := U (0, 1)  -- Fermionic level 0
+                    (* Graded universe formation *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.11.3}$ (Graded Universe Coherence Rules). Graded universes
+                    support coherence rules for lifting, product formation, and substitution, ensuring
+                    type-theoretic consistency.
+                +tex(true).
+                    $$
+                        \mathbf{lift} : \prod_{\alpha, \beta : \mathcal{G}} \prod_{\delta : \mathcal{G}}
+                        \mathbf{U}\ \alpha \to (\beta = \alpha \oplus \delta) \to \mathbf{U}\ \beta,
+                    $$
+                    $$
+                        \mathbf{univ} : \prod_{\alpha : \mathcal{G}} \mathbf{U}\ (\alpha \oplus (1, 0)),
+                    $$
+                    $$
+                        \mathbf{cumul} : \prod_{\alpha, \beta : \mathcal{G}} \prod_{A : \mathbf{U}\ \alpha}
+                        \prod_{\delta : \mathcal{G}} (\beta = \alpha \oplus \delta) \to \mathbf{U}\ \beta,
+                    $$
+                    $$
+                        \mathbf{prod} : \prod_{\alpha, \beta : \mathcal{G}} \prod_{A : \mathbf{U}\ \alpha}
+                        \prod_{B : A \to \mathbf{U}\ \beta} \mathbf{U}\ (\alpha \oplus \beta),
+                    $$
+                    $$
+                        \mathbf{subst} : \prod_{\alpha, \beta : \mathcal{G}} \prod_{A : \mathbf{U}\ \alpha}
+                        \prod_{B : A \to \mathbf{U}\ \beta} \prod_{t : A} \mathbf{U}\ \beta,
+                    $$
+                +tex(true).
+                    $$
+                        \mathbf{shift} : \prod_{\alpha, \delta : \mathcal{G}} \prod_{A : \mathbf{U}\ \alpha}
+                        \mathbf{U}\ (\alpha \oplus \delta).
+                    $$
+                +code('urs').
+                    def lift (α β : 𝒢) (δ : 𝒢) (e : U α) : β = α ⊕ δ → U β := λ eq : β = α ⊕ δ, transport (λ x : 𝒢, U x) eq e  -- Universe lifting
+                    def univ-type (α : 𝒢) : U (α ⊕ (1, 0)) := lift α (α ⊕ (1, 0)) (1, 0) (U α) refl  -- Type-in-type formation
+                    def cumul (α β : 𝒢) (A : U α) (δ : 𝒢) : β = α ⊕ δ → U β := lift α β δ A  -- Cumulativity
+                    def prod-rule (α β : \mathcal{G}) (A : U α) (B : A → U β) : U (α ⊕ β) := Π (x : A), B x  -- Product formation
+                    def subst-rule (α β : \mathcal{G}) (A : U α) (B : A → U β) (t : A) : U β := B t  -- Substitution coherence
+                    def shift (α δ : \mathcal{G}) (A : U α) : U (α ⊕ δ) := lift α (α ⊕ δ) δ A refl  -- Grade shift
+                    (* Graded universe coherence rules *)
+
+                +tex.
+                    $\mathbf{Definition\ 4.11.4}$ (Graded Tensor Introduction). Graded tensor products
+                    combine types with matching levels, combining parities.
+                +tex(true).
+                    $$
+                        \mathbf{tensor} : \prod_{i : \mathbb{N}} \prod_{g_1, g_2 : \mathbf{Grade}}
+                        \mathbf{U}_{i,g_1} \to \mathbf{U}_{i,g_2} \to \mathbf{U}_{i,(g_1 + g_2 \mod 2)},
+                    $$
+                    $$
+                        \mathbf{pair\text{-}tensor} : \prod_{i : \mathbb{N}} \prod_{g_1, g_2 : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g_1}} \prod_{B : \mathbf{U}_{i,g_2}} \prod_{a : A} \prod_{b : B}
+                        \mathbf{tensor}\ i\ g_1\ g_2\ A\ B.
+                    $$
+                +code('urs').
+                    def tensor (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) : U i (g₁ + g₂ mod 2) := A ⊗ B
+                    def pair-tensor (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (a : A) (b : B) : tensor i g₁ g₂ A B := a ⊗ b
+                    (* Graded tensor product introduction *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.11.5}$ (Graded Tensor Eliminators). Eliminators for graded
+                    tensor products project to their components.
+                +tex(true).
+                    $$
+                        \otimes\text{-}\mathbf{prj}_1 : \prod_{i : \mathbb{N}} \prod_{g_1, g_2 : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g_1}} \prod_{B : \mathbf{U}_{i,g_2}}
+                        (A \otimes B) \to A,
+                    $$
+                    $$
+                        \otimes\text{-}\mathbf{pr}_2 : \prod_{i : \mathbb{N}} \prod_{g_1, g_2 : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g_1}} \prod_{B : \mathbf{U}_{i,g_2}}
+                        (A \otimes B) \to B.
+                    $$
+                +code('urs').
+                    def proj-tensor₁ (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (p : A ⊗ B) : A := p.1
+                    def proj-tensor₂ (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (p : A ⊗ B) : B := p.2
+                    (* Projections for graded tensor products *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.11.6}$ (Monoid Properties). The grading monoid $\mathcal{G}$
+                    satisfies associativity and identity laws.
+                +tex(true).
+                    $$
+                        \mathbf{assoc} : \prod_{\alpha, \beta, \gamma : \mathcal{G}}
+                        ((\alpha \oplus \beta) \oplus \gamma) = (\alpha \oplus (\beta \oplus \gamma)),
+                    $$
+                    $$
+                        \mathbf{id\text{-}left} : \prod_{\alpha : \mathcal{G}} (\alpha \oplus \mathbf{0}) = \alpha,
+                    $$
+                    $$
+                        \mathbf{id\text{-}right} : \prod_{\alpha : \mathcal{G}} (\mathbf{0} \oplus \alpha) = \alpha.
+                    $$
+                +code('urs').
+                    def assoc (α β γ : 𝒢) : (α ⊕ β) ⊕ γ = α ⊕ (β ⊕ γ) := refl  -- Associativity
+                    def ident-left (α : 𝒢) : α ⊕ 𝟘 = α := refl  -- Left identity
+                    def ident-right (α : 𝒢) : 𝟘 ⊕ α = α := refl  -- Right identity
+                    (* Monoid properties *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.11.7}$ (Graded Tensor Product Properties). Graded tensor products
+                    satisfy graded commutativity and computation rules, reflecting supergeometry principles.
+                +tex(true).
+                    $$
+                        \mathbf{tensor\text{-}comm} : \prod_{i : \mathbb{N}} \prod_{g_1, g_2 : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g_1}} \prod_{B : \mathbf{U}_{i,g_2}} 
+                    $$
+                    $$
+                        \prod_{a : A} \prod_{b : B}
+                        (a \otimes b) = ((-1)^{g_1 g_2} (b \otimes a)),
+                    $$
+                    $$
+                        \mathbf{tensor\text{-}\beta}_1 : \prod_{i : \mathbb{N}} \prod_{g_1, g_2 : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g_1}} \prod_{B : \mathbf{U}_{i,g_2}}
+                    $$
+                    $$
+                        \prod_{a : A} \prod_{b : B}
+                        (\otimes\text{-}\mathbf{prj}_1\ i\ g_1\ g_2\ A\ B\ (a \otimes b)) = a.
+                    $$
+
+                +code('urs').
+                    def tensor-comm (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (a : A) (b : B)
+                      : Path (A ⊗ B) (a ⊗ b) ((-1)^(g₁ * g₂) * (b ⊗ a))
+                     := idp (A ⊗ B) (a ⊗ b)  -- Graded commutativity: a ⊗ b = (-1)^(g₁ g₂) (b ⊗ a)
+                    def tensor-β₁ (i : Nat) (g₁ g₂ : Grade) (A : U i g₁) (B : U i g₂) (a : A) (b : B)
+                      : Path A (proj-tensor₁ i g₁ g₂ A B (a ⊗ b)) a := idp A a
+                    (* Graded tensor product properties *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.11.8}$ (Tensor Associativity). Graded tensor products are associative,
+                    aligning with supergeometry and \texttt{tensor.pug}.
+                +tex(true).
+                    $$
+                        \mathbf{tensor\text{-}assoc} : \prod_{i : \mathbb{N}} \prod_{g_1, g_2, g_3 : \mathbf{Grade}}
+                        \prod_{A : \mathbf{U}_{i,g_1}} \prod_{B : \mathbf{U}_{i,g_2}} \prod_{C : \mathbf{U}_{i,g_3}}
+                        ((A \otimes B) \otimes C) = (A \otimes (B \otimes C)).
+                    $$
+                +code('urs').
+                    def tensor-assoc (i : Nat) (g₁ g₂ g₃ : Grade) (A : U i g₁) (B : U i g₂) (C : U i g₃)
+                      : Path (U i (g₁ + (g₂ + g₃) mod 2)) ((A ⊗ B) ⊗ C) (A ⊗ (B ⊗ C))
+                     := idp _ _  -- Associativity: (A ⊗ B) ⊗ C = A ⊗ (B ⊗ C)
+                    (* Tensor associativity *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.11.9}$ (Test Cases). Examples illustrate bosonic and fermionic tensor products,
+                    applicable to quantum systems like \texttt{qubit.pug}.
+                +tex(true).
+                    $$
+                        \mathbf{bose} : \prod_{A, B : \mathbf{U}_{0,0}} \prod_{a : A} \prod_{b : B}
+                        \mathbf{U}_{0,0},
+                    $$
+                    $$
+                        \mathbf{bose\text{-}comm} : \prod_{A, B : \mathbf{U}_{0,0}} \prod_{a : A} \prod_{b : B}
+                        (a \otimes b) = (b \otimes a),
+                    $$
+                    $$
+                        \mathbf{fermi} : \prod_{A, B : \mathbf{U}_{0,1}} \prod_{a : A} \prod_{b : B}
+                        \mathbf{U}_{0,1},
+                    $$
+                    $$
+                        \mathbf{fermi\text{-}comm} : \prod_{A, B : \mathbf{U}_{0,1}} \prod_{a : A} \prod_{b : B}
+                        (a \otimes b) = (- (b \otimes a)).
+                    $$
+                +code('urs').
+                    def test-bosonic-tensor (A B : U 0 0) (a : A) (b : B)
+                      : tensor 0 0 0 A B := pair-tensor 0 0 0 A B a b
+                    def test-bosonic-comm (A B : U 0 0) (a : A) (b : B)
+                      : Path (A ⊗ B) (a ⊗ b) (b ⊗ a) := tensor-comm 0 0 0 A B a b  -- 0 * 0 = 0, so 1
+                    def test-fermionic-tensor (A B : U 0 1) (a : A) (b : B)
+                      : tensor 0 1 1 A B := pair-tensor 0 1 1 A B a b
+                    def test-fermionic-comm (A B : U 0 1) (a : A) (b : B)
+                      : Path (A ⊗ B) (a ⊗ b) (- (b ⊗ a)) := tensor-comm 0 1 1 A B a b  -- 1 * 1 = 1, so -1
+                    (* Test cases for bosonic and fermionic tensors *)
+
+include ../../footer

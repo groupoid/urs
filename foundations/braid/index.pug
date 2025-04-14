@@ -1,0 +1,141 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='BRAID')
+        meta(property='og:description' content='Braid Group Type for Cohesive Systems')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/braid/')
+
+block title
+    title BRAID
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>BRAID</a>
+    article.main
+        .exe
+            section
+                h1 BRAID GROUP
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Braid}_n(X)$ type models the braid group $B_n(X)$ on $n$ strands over
+                    a smooth set $X : \mathbf{SmthSet}$, the fundamental group of the configuration
+                    space $\mathbf{Conf}^n(X)$, used in knot theory, quantum computing, and smooth geometry.
+                +tex.
+                    In Urs, $\mathbf{Braid}_n(X)$ is a type in $\mathbf{U_0}$, parameterized by
+                    $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$, supporting braid generators
+                    $\sigma_i$ and relations, with applications to anyonic quantum gates and knot invariants.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.10.1}$ ($\mathbf{Braid}$-Formation). The type
+                    $\mathbf{Braid}_n(X)$ is a type in $\mathbf{U_0}$, formed for each
+                    $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$, representing the braid group $B_n(X)$.
+                +tex(true).
+                    $$
+                        \mathbf{Braid} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}} \mathbf{U_0}.
+                    $$
+                +code('urs').
+                    def Braid (n : Nat) (X : SmthSet) : U_0
+                    (* Braid group type *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.10.2}$ ($\mathbf{Braid}$-Introduction). Terms of type
+                    $\mathbf{Braid}_n(X)$ are braid elements, introduced via the $\mathbf{braid}$
+                    constructor, representing generators $\sigma_i$ for $i : \mathbf{Fin}\ (n-1)$.
+                +tex(true).
+                    $$
+                        \mathbf{braid} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{i : \mathbf{Fin}\ (n-1)} \mathbf{Braid}_n(X).
+                    $$
+                +code('urs').
+                    def braid (n : Nat) (X : SmthSet) (i : Fin (n-1)) : Braid n X
+                    (* Braid generator sigma_i *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.10.3}$ ($\mathbf{Braid}$-Elimination). The eliminator for
+                    $\mathbf{Braid}_n(X)$ maps braid elements to properties in $\mathbf{U_0}$,
+                    analyzing their groupoid structure.
+                +tex(true).
+                    $$
+                        \mathbf{BraidInd} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{\beta : \mathbf{Braid}_n(X) \to \mathbf{U_0}}
+                        \left( \prod_{b : \mathbf{Braid}_n(X)} \beta\ b \right) \to
+                        \prod_{b : \mathbf{Braid}_n(X)} \beta\ b.
+                    $$
+                +code('urs').
+                    def braid_ind (n : Nat) (X : SmthSet) (beta : Braid n X -> U_0) (h : Π (b : Braid n X), beta b) : Π (b : Braid n X), beta b
+                    (* Eliminator for braids *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.10.4}$ (Braid Relations). For $n : \mathbf{Nat}$, $X : \mathbf{SmthSet}$,
+                    $\mathbf{Braid}_n(X)$ satisfies the braid group relations, where $\sigma_i := \mathbf{braid}\ i$.
+                +tex(true).
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{i, j : \mathbf{Fin}\ (n-1),\ |i-j|\geq 2}
+                        \sigma_i \cdot \sigma_j = \sigma_j \cdot \sigma_i,
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{i : \mathbf{Fin}\ (n-2)}
+                        \sigma_i \cdot \sigma_{i+1} \cdot \sigma_i = \sigma_{i+1} \cdot \sigma_i \cdot \sigma_{i+1}.
+                    $$
+                +code('urs').
+                    def braid_rel_comm (n : Nat) (X : SmthSet) (i j : Fin (n-1)) : Path (braid i · braid j) (braid j · braid i)
+                        (* Commutation: σ_i · σ_j = σ_j · σ_i for |i-j| ≥ 2 *)
+                    def braid_rel_yang (n : Nat) (X : SmthSet) (i : Fin (n-2)) : Path (braid i · braid (i+1) · braid i) (braid (i+1) · braid i · braid (i+1))
+                        (* Yang-Baxter: σ_i · σ_{i+1} · σ_i = σ_{i+1} · σ_i · σ_{i+1} *)
+                    (* Braid group relations *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.10.5}$ (Configuration Space Link). For $n : \mathbf{Nat}$, $X : \mathbf{SmthSet}$,
+                    $\mathbf{Braid}_n(X)$ is the fundamental groupoid of $\mathbf{Conf}^n(X)$.
+                +tex(true).
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Braid}_n(X) \cong \pi_1(\mathbf{Conf}^n(X)).
+                    $$
+                +code('urs').
+                    def braid_conf (n : Nat) (X : SmthSet) : Path (Braid n X) (pi_1 (Conf n X))
+                    (* Braid as fundamental groupoid *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.10.6}$ (Quantum Braiding). For $C, H : \mathbf{U_0}$,
+                    $\mathbf{Braid}_n(X)$ acts on $\mathbf{Qubit}(C, H)^{\otimes n}$ as braiding operators.
+                +tex(true).
+                    $$
+                        \mathbf{braid_qubit} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{C, H : \mathbf{U_0}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Braid}_n(X) \to \left( \mathbf{Qubit}(C, H)^{\otimes n} \to \mathbf{Qubit}(C, H)^{\otimes n} \right).
+                    $$
+                +code('urs').
+                    def braid_qubit (n : Nat) (C H : U_0) (X : SmthSet) : Braid n X -> (Qubit C H)^n -> (Qubit C H)^n
+                    (* Quantum braiding action *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.10.7}$ (Braid Group Delooping). For $n : \mathbf{Nat}$,
+                    the delooping $\mathbf{BB}_n$ of the braid group $B_n$ is a 1-groupoid,
+                    defined as the fundamental groupoid of $\mathbf{Conf}^n(\mathbb{R}^2)$.
+                +tex(true).
+                    $$
+                        \mathbf{BB}_n : \mathbf{Grpd}\ 1 \equiv \Im(\mathbf{Conf}^n(\mathbb{R}^2)).
+                    $$
+                +code('urs').
+                    def BB_n (n : Nat) : Grpd 1 := ℑ (Conf n ℝ^2)
+                    (* Delooping of braid group *)
+
+include ../../footer
