@@ -58,7 +58,7 @@ block content
                     $\Im A$ maps fermionic types to properties in $\mathbf{U_0}$.
                 +tex(true).
                     $$
-                        \mathbf{FermionicInd} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \mathbf{\Im\text{-}Ind} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
                         \prod_{A : \mathbf{U}_{i,g}} \prod_{\phi : (\Im A) \to \mathbf{U_0}}
                         \left( \prod_{a : \Im A} \phi\ a \right) \to \prod_{a : \Im A} \phi\ a.
                     $$
@@ -74,12 +74,12 @@ block content
                     as it always projects to fermionic parity.
                 +tex(true).
                     $$
-                        \mathbf{fermionic-idem} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
+                        \mathbf{\Im\text{-}idem} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
                         \prod_{A : \mathbf{U}_{i,g}} (\Im (\Im A)) = (\Im A).
                     $$
                 +code('urs').
-                    def fermionic_idem (i : Nat) (g : Grade) (A : U i g) : (fermionic i 1 (fermionic i g A)) = (fermionic i g A)
-                    (* Idempotence: fermionic (fermionic A) = fermionic A *)
+                    def fermionic_idem (i : Nat) (g : Grade) (A : U i g)
+                      : (fermionic i 1 (fermionic i g A)) = (fermionic i g A)
 
                 +tex.
                     $\mathbf{Theorem\ 4.16.5}$ (Fermionic Qubits). For $C, H : \mathbf{U_0}$,
