@@ -1,0 +1,126 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='TENSOR')
+        meta(property='og:description' content='Tensor Product for Cohesive Types')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/tensor/')
+
+block title
+    title TENSOR
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>TENSOR</a>
+    article.main
+        .exe
+            section
+                h1 TENSOR PRODUCT TYPE
+                span.
+        aside
+            time Published: 14 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{Tensor}(X, Y)$ type models the tensor product of types $X, Y : \mathbf{U_0}$,
+                    forming a new type $X \otimes Y$ that combines their structures bilinearly, used in
+                    quantum systems, smooth geometry, and stable homotopy theory.
+                +tex.
+                    In Urs, $\mathbf{Tensor}(X, Y)$ is a type-forming operation in $\mathbf{U_0}$,
+                    supporting constructions like multi-qubit states ($\mathbf{Qubit}$), sheaf products
+                    ($\mathbf{SmthSet}$), and homotopical compositions ($\mathbf{Sp}$).
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.9.1}$ ($\mathbf{Tensor}$-Formation). The type
+                    $\mathbf{Tensor}(X, Y)$ is a type in $\mathbf{U_0}$, formed for each
+                    $X, Y : \mathbf{U_0}$, representing their tensor product.
+                +tex(true).
+                    $$
+                        \mathbf{Tensor} : \prod_{X : \mathbf{U_0}} \prod_{Y : \mathbf{U_0}} \mathbf{U_0}.
+                    $$
+                +code('urs').
+                    def Tensor (X Y : U_0) : U_0
+                    (* Tensor product type *)
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.9.2}$ ($\mathbf{Tensor}$-Introduction). Terms of type
+                    $X \otimes Y$ are introduced via the $\mathbf{tensor}$ constructor, forming
+                    bilinear pairs from $X$ and $Y$.
+                +tex(true).
+                    $$
+                        \mathbf{tensor} : \prod_{X : \mathbf{U_0}} \prod_{Y : \mathbf{U_0}}
+                        \prod_{x : X} \prod_{y : Y} X \otimes Y.
+                    $$
+                +code('urs').
+                    def tensor (X Y : U_0) (x : X) (y : Y) : X ⊗ Y
+                    (* Construct tensor product term *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.9.3}$ ($\mathbf{Tensor}$-Elimination). The eliminator for
+                    $X \otimes Y$ maps tensor products to properties in $\mathbf{U_0}$, analyzing
+                    their bilinear structure.
+                +tex(true).
+                    $$
+                        \mathbf{TensorInd} :
+                    $$
+                    $$
+                        \prod_{X : \mathbf{U_0}} \prod_{Y : \mathbf{U_0}}
+                        \prod_{\beta : (X \otimes Y) \to \mathbf{U_0}}
+                        \left( \prod_{z : X \otimes Y} \beta\ z \right) \to
+                        \prod_{z : X \otimes Y} \beta\ z.
+                    $$
+                +code('urs').
+                    def tensor_ind (X Y : U_0) (beta : (X ⊗ Y) -> U_0) (h : Π (z : X ⊗ Y), beta z) : Π (z : X ⊗ Y), beta z
+                    (* Eliminator for tensor products *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.9.4}$ (Associativity). For $X, Y, Z : \mathbf{U_0}$, the tensor
+                    product is associative up to isomorphism.
+                +tex(true).
+                    $$
+                        \mathbf{tensor_assoc} :
+                    $$
+                    $$
+                        \prod_{X : \mathbf{U_0}} \prod_{Y : \mathbf{U_0}} \prod_{Z : \mathbf{U_0}}
+                        \mathbf{Path}\ ((X \otimes Y) \otimes Z)\ (X \otimes (Y \otimes Z)).
+                    $$
+                +code('urs').
+                    def tensor_assoc (X Y Z : U_0) : Path ((X ⊗ Y) ⊗ Z) (X ⊗ (Y ⊗ Z))
+                    (* Associativity of tensor product *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.9.5}$ (Tensor for Qubits). Qubits $\mathbf{Qubit}(C, H_1)$ and
+                    $\mathbf{Qubit}(C, H_2)$ form composite systems via tensor products.
+                +tex(true).
+                    $$
+                        \mathbf{tensor_qubit} :
+                    $$
+                    $$
+                        \prod_{C : \mathbf{U_0}} \prod_{H_1, H_2 : \mathbf{U_0}}
+                        \mathbf{Qubit}(C, H_1) \to \mathbf{Qubit}(C, H_2) \to \mathbf{Qubit}(C, H_1 \otimes H_2).
+                    $$
+                +code('urs').
+                    def tensor_qubit (C H_1 H_2 : U_0) : Qubit C H_1 -> Qubit C H_2 -> Qubit C (H_1 ⊗ H_2)
+                    (* Tensor product for qubits *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.9.6}$ (Tensor for Smooth Sets). For $X, Y : \mathbf{SmthSet}$,
+                    $X \otimes Y$ forms a smooth set, preserving sheaf structure.
+                +tex(true).
+                    $$
+                        \mathbf{tensor_smthset} :
+                    $$
+                    $$
+                        \prod_{X : \mathbf{SmthSet}} \prod_{Y : \mathbf{SmthSet}}
+                        \mathbf{SheafStr}(X \otimes Y, \mathbb{R}^m).
+                    $$
+                +code('urs').
+                    def tensor_smthset (X Y : SmthSet) : SheafStr (X ⊗ Y) ℝ^m
+                    (* Tensor product for smooth sets *)
+
+include ../../footer
