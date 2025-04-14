@@ -90,19 +90,19 @@ block content
                         \prod_{C, H : \mathbf{U_0}} (\Im \mathbf{Qubit}(C, H)) : \mathbf{U}_{i,1}.
                     $$
                 +code('urs').
-                    def fermionic_qubit (i : Nat) (g : Grade) (C H : U_0) : U i 1 := fermionic i g (Qubit C H)
-                    (* Fermionic qubits: fermionic Qubit(C, H) *)
+                    def fermionic_qubit (i : Nat) (g : Grade) (C H : U_0) : U i 1
+                     := fermionic i g (Qubit C H)
 
                 +tex.
                     $\mathbf{Theorem\ 4.16.6}$ (Fermionic and Braid Delooping). The $\Im$ modality
-                    relates to braid group delooping in \mathbf{Braid}.
+                    relates to braid group delooping in $\mathbf{Braid}$.
                 +tex(true).
                     $$
                         \mathbf{\Im\text{-}braid} : \prod_{i : \mathbb{N}} \prod_{g : \mathbf{Grade}}
                         \prod_{n : \mathbf{Nat}} (\Im (\mathbf{Braid}_n(\mathbb{R}^2))) : \mathbf{U}_{i,1}.
                     $$
                 +code('urs').
-                    def fermionic_braid (i : Nat) (g : Grade) (n : Nat) : U i 1 := fermionic i g (Braid n ℝ^2)
-                    (* Fermionic braid delooping *)
+                    def fermionic_braid (i : Nat) (g : Grade) (n : Nat) : U i 1
+                     := fermionic i g (Braid n ℝ^2)
 
 include ../../footer
