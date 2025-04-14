@@ -1,0 +1,130 @@
+include ../../header
+
+html
+    head
+        meta(property='og:title'       content='SMOOTH SETS')
+        meta(property='og:description' content='Smooth Sets and Plots for Cohesive Geometry')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/smthset/')
+
+block title
+    title SMOOTH SETS
+
+block content
+    nav
+        <a href='../../index.html'>URS</a>
+        <a href='#'>SMOOTH SETS</a>
+    article.main
+        .exe
+            section
+                h1 SMOOTH SETS TYPE
+                span.
+        aside
+            time Published: 13 APR 2025
+        .exe
+            section
+                +tex.
+                    The $\mathbf{SmthSet}$ type models smooth sets, sheaves on the site of Cartesian
+                    spaces $\{\mathbb{R}^n\}_{n : \mathbf{Nat}}$, representing generalized smooth
+                    manifolds. Smooth sets underpin differential geometry, gauge theory, and smooth
+                    homotopy in the cohesive type system.
+                +tex.
+                    The $\mathbf{SmthSet}$ type is a parameterless type in $\mathbf{U_1}$, with plots
+                    $\mathbf{plt}_n(X)$ defining smooth maps $\mathbb{R}^n \to X$ for a smooth set
+                    $X : \mathbf{SmthSet}$, capturing its smooth structure.
+
+                h2 Formation
+                +tex.
+                    $\mathbf{Definition\ 4.5.1}$ ($\mathbf{SmthSet}$-Formation). The type
+                    $\mathbf{SmthSet}$ is a base type in the universe $\mathbf{U_1}$, the category of
+                    sheaves on Cartesian spaces $\mathbb{R}^n$ for $n : \mathbf{Nat}$.
+                +tex(true).
+                    $$
+                        \mathbf{SmthSet} : \mathbf{U_1}.
+                    $$
+                +code('urs').
+                    def SmthSet : U_1
+
+                h2 Introduction
+                +tex.
+                    $\mathbf{Definition\ 4.5.2}$ ($\mathbf{plt}$-Introduction). The plot constructor
+                    $\mathbf{plt}$ introduces terms of type $\mathbf{Set}$ for a smooth set
+                    $X : \mathbf{SmthSet}$, representing smooth maps from $\mathbb{R}^n$ to $X$ for each
+                    $n : \mathbf{Nat}$.
+                +tex(true).
+                    $$
+                        \mathbf{plt} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}} \mathbf{Set}.
+                    $$
+                +code('urs').
+                    def plt (n : Nat) (X : SmthSet) : Set
+                    (* Smooth maps from ℝ^n to X *)
+
+                h2 Elimination
+                +tex.
+                    $\mathbf{Definition\ 4.5.3}$ ($\mathbf{plt}$-Elimination). The eliminator for plots
+                    $\mathbf{plt}_n(X)$ reasons about smooth maps by mapping them to properties in
+                    $\mathbf{Set}$, preserving the smooth structure of $X : \mathbf{SmthSet}$.
+                +tex(true).
+                    $$
+                        \mathbf{PltInd} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{\beta : \mathbf{plt}_n(X) \to \mathbf{Set}}
+                        \left( \prod_{\phi : \mathbf{plt}_n(X)} \beta\ \phi \right) \to
+                        \prod_{\phi : \mathbf{plt}_n(X)} \beta\ \phi.
+                    $$
+                +code('urs').
+                    def plt_ind (n : Nat) (X : SmthSet) (beta : plt n X -> Set) (h : Π (phi : plt n X), beta phi) : Π (phi : plt n X), beta phi
+                    (* Eliminator for plots *)
+
+                h2 Theorems
+                +tex.
+                    $\mathbf{Theorem\ 4.5.4}$ (Plot Composition). For $X : \mathbf{SmthSet}$, plots
+                    $\mathbf{plt}_n(X)$ compose with smooth maps $f : \mathbb{R}^m \to \mathbb{R}^n$ to
+                    yield plots $\mathbf{plt}_m(X)$, functorially.
+                +tex(true).
+                    $$
+                        \mathbf{precomp} :
+                    $$
+                    $$
+                        \prod_{m : \mathbf{Nat}} \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \prod_{f : \mathbb{R}^m \to \mathbb{R}^n}
+                        \mathbf{plt}_n(X) \to \mathbf{plt}_m(X).
+                    $$
+                +code('urs').
+                    def precomp (m n : Nat) (X : SmthSet) (f : ℝ^m -> ℝ^n) : plt n X -> plt m X
+                    (* Composition of plots *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.5.5}$ (Plot Evaluation). Plots $\mathbf{plt}_n(X)$ evaluate to
+                    terms of $X : \mathbf{SmthSet}$, recovering points of the smooth set.
+                +tex(true).
+                    $$
+                        \mathbf{eval} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{plt}_n(X) \to X.
+                    $$
+                +code('urs').
+                    def eval (n : Nat) (X : SmthSet) : plt n X -> X
+                    (* Evaluation to smooth set *)
+
+                +tex.
+                    $\mathbf{Theorem\ 4.5.6}$ (Yoneda Embedding). The plots $\mathbf{plt}_n(X)$ embed
+                    $X : \mathbf{SmthSet}$ into the presheaf of smooth maps, equating plots with
+                    natural transformations via the Yoneda lemma.
+                +tex(true).
+                    $$
+                        \mathbf{yoneda} :
+                    $$
+                    $$
+                        \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}}
+                        \mathbf{Path}\ (\mathbf{plt}_n(X))\ (\prod_{m : \mathbf{Nat}}
+                        \mathbf{Hom}_{\mathbf{SmthSet}}(\mathbb{R}^m, \mathbb{R}^n) \to \mathbf{plt}_m(X)).
+                    $$
+                +code('urs').
+                    def yoneda (n : Nat) (X : SmthSet)
+                      : Path (plt n X) (Π (m : Nat), Hom_SmthSet (ℝ^m, ℝ^n) -> plt m X)
+
+include ../../footer
