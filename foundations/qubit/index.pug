@@ -26,11 +26,12 @@ block content
                     The $\mathbf{Qubit}(C, H)$ type models quantum bits as spectra in stable homotopy
                     theory, parameterized by a coefficient type $C : \mathbf{U_0}$ (e.g., complex numbers)
                     and a space $H : \mathbf{U_0}$ (e.g., a Hilbert space or smooth set). Qubits formalize
-                    quantum systems in the cohesive type system, connecting to K-theory and geometry.
+                    quantum systems in the cohesive type system, supporting gates and entanglement.
                 +tex.
-                    In Urs, $\mathbf{Qubit}(C, H)$ is a type in $\mathbf{Sp}$, representing stabilized
-                    quantum states with operations like superposition and entanglement, potentially
-                    over smooth sets $H : \mathbf{SmthSet}$.
+                    In Urs, $\mathbf{Qubit}(C, H)$ is a type in $\mathbf{Sp}$, with operations like state
+                    formation ($\mathbf{qubit}$), gate application ($\mathbf{appQubit}$), entanglement
+                    ($\mathbf{fuseQubit}$), superposition, and tensor products, potentially over smooth
+                    sets $H : \mathbf{SmthSet}$.
 
                 h2 Formation
                 +tex.
@@ -48,16 +49,28 @@ block content
                 h2 Introduction
                 +tex.
                     $\mathbf{Definition\ 4.8.2}$ ($\mathbf{Qubit}$-Introduction). Terms of type
-                    $\mathbf{Qubit}(C, H)$ are quantum states, introduced via the $\mathbf{qubit}$
-                    constructor, parameterized by $C$ and $H$.
+                    $\mathbf{Qubit}(C, H)$ are quantum states, introduced via constructors for state
+                    formation, gate application, and entanglement.
                 +tex(true).
                     $$
                         \mathbf{qubit} : \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{U_0}}
-                        \prod_{s : C \times H} \mathbf{Qubit}(C, H).
+                        \prod_{s : C \times H} \mathbf{Qubit}(C, H),
+                    $$
+                    $$
+                        \mathbf{appQubit} : \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{U_0}}
+                        \prod_{A : H \to H} \prod_{Q : \mathbf{Qubit}(C, H)} \prod_{x : H}
+                        \mathbf{Qubit}(C, H),
+                    $$
+                    $$
+                        \mathbf{fuseQubit} : \prod_{C : \mathbf{U_0}} \prod_{H : \mathbf{U_0}}
+                        \prod_{q_1 : \mathbf{Qubit}(C, H)} \prod_{q_2 : \mathbf{Qubit}(C, H)}
+                        \prod_{\text{chan} : H \otimes H} \mathbf{Qubit}(C, H \otimes H).
                     $$
                 +code('urs').
                     def qubit (C H : U_0) (s : C * H) : Qubit C H
-                    (* Construct a qubit state *)
+                    def app_qubit (C H : U_0) (A : H -> H) (Q : Qubit C H) (x : H) : Qubit C H
+                    def fuse_qubit (C H : U_0) (q_1 q_2 : Qubit C H) (chan : H ⊗ H) : Qubit C (H ⊗ H)
+                    (* Constructors for qubits *)
 
                 h2 Elimination
                 +tex.
