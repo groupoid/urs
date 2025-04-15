@@ -64,7 +64,7 @@ block content
                         \mathbf{Grade} : \mathbf{Set} \equiv \{0, 1\},
                     $$
                     $$
-                        \mathbf{U}_{i,g} : \mathbf{Type} \equiv \mathbf{U}\ (i, g).
+                        \mathbf{U}_{i,g} : \mathbf{Type} \equiv \mathbf{U}\ (i, g) : \mathbf{U}_{i+1}.
                     $$
                 +code('urs').
                     def 𝒢 : Type := ℕ × ℤ/2ℤ  -- Levels (ℕ) and parity (ℤ/2ℤ: 𝟎 = Bose, 𝟏 = Fermi)
@@ -73,11 +73,10 @@ block content
                     def U (α : 𝒢) : Type := Universe α  -- Universe formation
                     def Grade : Set := {0, 1}  -- 0 for bosonic, 1 for fermionic
                     def U (i : Nat) (g : Grade) : Type := U (i, g)
-                    def U₀^g (g : Grade) : U (1, g) := U (0, g)
+                    def U₀ (g : Grade) : U (1, g) := U (0, g)
                     def U₀₀ : Type := U (0, 0)  -- Bosonic level 0
                     def U₁₀ : Type := U (1, 0)  -- Bosonic level 1
                     def U₀₁ : Type := U (0, 1)  -- Fermionic level 0
-                    (* Graded universe formation *)
 
                 h2 Introduction
                 +tex.

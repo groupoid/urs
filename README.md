@@ -23,7 +23,7 @@ type theory into a framework capable of capturing homotopy, cohesion, and superg
 
 Each layer builds on the previous, culminating in a system tailored to
 formalize superpoints `(ℝᵐ|ⁿ)`, supersymmetry, and equivariant structures,
-as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2012).
+as exemplified in Schreiber’s "Equivariant Super Homotopy Theory" (2019).
 
 ## Syntax
 
