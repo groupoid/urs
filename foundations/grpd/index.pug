@@ -34,7 +34,7 @@ block content
 
                 h2 Formation
                 +tex.
-                    $\mathbf{Definition\ 4.17.1}$ (Groupoid Formation). The type $\mathbf{Grpd}_n$
+                    $\mathbf{Definition\ 3.2.1}$ (Groupoid Formation). The type $\mathbf{Grpd}_n$
                     represents $n$-groupoids as Kan sheaves on $\Delta$, living in universe
                     $\mathbf{U}_{n+1}$. The type $\mathbf{Grpd}_\infty$ represents $\infty$-groupoids.
                 +tex(true).
@@ -55,7 +55,7 @@ block content
 
                 h2 Introduction
                 +tex.
-                    $\mathbf{Definition\ 4.17.2}$ (Groupoid Constructors). Terms of $\mathbf{Grpd}_n$
+                    $\mathbf{Definition\ 3.2.2}$ (Groupoid Constructors). Terms of $\mathbf{Grpd}_n$
                     are constructed via plots, composition, and horn-filling, reflecting the Kan complex structure.
                 +tex(true).
                     $$
@@ -79,7 +79,7 @@ block content
 
                 h2 Elimination
                 +tex.
-                    $\mathbf{Definition\ 4.17.3}$ (Groupoid Eliminators). Eliminators for $\mathbf{Grpd}_n$
+                    $\mathbf{Definition\ 3.2.3}$ (Groupoid Eliminators). Eliminators for $\mathbf{Grpd}_n$
                     include mapping plots to paths (homotopy) and reasoning about composition.
                 +tex(true).
                     $$
@@ -98,7 +98,7 @@ block content
 
                 h2 Theorems
                 +tex.
-                    $\mathbf{Theorem\ 4.17.4}$ (Horn-Filling Condition). The $\mathbf{fill}$ constructor
+                    $\mathbf{Theorem\ 3.2.4}$ (Horn-Filling Condition). The $\mathbf{fill}$ constructor
                     satisfies the Kan condition, ensuring horns restrict to the given data.
                 +tex(true).
                     $$
@@ -112,7 +112,7 @@ block content
                     (* Horn-filling condition *)
 
                 +tex.
-                    $\mathbf{Theorem\ 4.17.5}$ (Gauge Transformation in $BG$). For a set $G$,
+                    $\mathbf{Theorem\ 3.2.5}$ (Gauge Transformation in $BG$). For a set $G$,
                     $BG$ is a 1-groupoid, and gauge transformations induce loops, applicable to $\mathbf{Qubit}$.
                 +tex(true).
                     $$
@@ -132,7 +132,7 @@ block content
                     (* Gauge transformation in BG *)
 
                 +tex.
-                    $\mathbf{Theorem\ 4.17.6}$ (Kan Condition Test). For a 2-groupoid $X$,
+                    $\mathbf{Theorem\ 3.2.6}$ (Kan Condition Test). For a 2-groupoid $X$,
                     horn-filling constructs a 2-simplex, satisfying the Kan condition.
                 +tex(true).
                     $$
@@ -150,7 +150,7 @@ block content
                     (* Kan condition test *)
 
                 +tex.
-                    $\mathbf{Theorem\ 4.17.7}$ (Gauge Equivalence). For $\infty$-groupoids $X$ and $Y$,
+                    $\mathbf{Theorem\ 3.2.7}$ (Gauge Equivalence). For $\infty$-groupoids $X$ and $Y$,
                     a gauge equivalence establishes a homotopy equivalence.
                 +tex(true).
                     $$
@@ -161,7 +161,6 @@ block content
                     $$
                 +code('urs').
                     def gauge-eq (X Y : Grpd∞) (φ : Maps X Y) (φ' : Maps Y X) (g : Maps X X) (h : g = φ' ∘ φ)
-                      : Path (Grpd∞) X Y := idp _ _  -- Homotopy equivalence
-                    (* Gauge equivalence lemma *)
+                      : Path (Grpd∞) X Y := idp _ _  -- Homotopy equivalence, Gauge equivalence lemma
 
 include ../../footer

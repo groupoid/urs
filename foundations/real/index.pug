@@ -33,7 +33,7 @@ block content
 
                 h2 Formation
                 +tex.
-                    $\text{Definition 2.4.1}$ ($\text{Real}$-Formation). The real numbers are a type
+                    $\text{Definition 1.5.1}$ ($\text{Real}$-Formation). The real numbers are a type
                     $\mathbb{R} : U_0$, equipped with constants ($0$,$1$), casting functions $\text{NatToReal}$,
                     $\text{RationalToReal}$, $\text{RealConst}$
                     order ($<$, $\leq$, $>$, $\geq$, $=$) and arithmetic ($+$, $-$, $\times$, $\div$, $\ln$, $\exp$, $\sin$, $\cos$, $\neg$, $|\_|$, $x^y$),
@@ -114,14 +114,14 @@ block content
 
                 h2 Theorems
                 +tex.
-                    $\text{Theorem 2.4.2}$ (Completeness). Every non-empty, bounded above subset
+                    $\text{Theorem 1.5.2}$ (Completeness). Every non-empty, bounded above subset
                     $S \subseteq \mathbb{R}$ has a supremum, axiomatized via $\text{Sup}$.
                 +tex(true).
                     $$
                         S \neq \emptyset \land \exists M, \forall x \in S, x \leq M \implies \exists \sup S.
                     $$
                 +tex.
-                    $\text{Theorem 2.4.3}$ (Bolzano-Weierstrass). Every bounded sequence in $\mathbb{R}$
+                    $\text{Theorem 1.5.3}$ (Bolzano-Weierstrass). Every bounded sequence in $\mathbb{R}$
                     has a convergent subsequence, implicit in our limit axioms.
                 +code.
                     let bolzano_weierstrass (a : exp) : exp =

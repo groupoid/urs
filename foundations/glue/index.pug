@@ -29,7 +29,7 @@ block content
 
             h2 Formation
             +tex.
-                $\mathbf{Definition\ 6.1}$ (Glue Formation).
+                $\mathbf{Definition\ 1.7.1}$ (Glue Formation).
                 The Glue types take a partial family of types A that are equivalent
                 to the base type B. These types are then “glued” onto B and the
                 equivalence data gets packaged up into a new type.
@@ -44,7 +44,7 @@ block content
             br.
             h2 Introduction
             +tex.
-                $\mathbf{Definition\ 6.2}$ (Glue Introduction).
+                $\mathbf{Definition\ 1.7.2}$ (Glue Introduction).
             +tex(true).
                 $$
                     \mathbf{glue}\ \varphi\ u\ (\mathbf{ouc}\ a) : \mathbf{Glue}\ A\ [\varphi\mbox{=}1 \mapsto (T,f)].
@@ -57,7 +57,7 @@ block content
             br.
             h2 Elimination
             +tex.
-                $\mathbf{Definition\ 6.3}$ (Glue Elimination).
+                $\mathbf{Definition\ 1.7.3}$ (Glue Elimination).
             +tex(true).
                 $$
                     \mathbf{unglue}(b) : A\ [\varphi \mapsto f(b) ].
@@ -70,14 +70,14 @@ block content
             br.
             h2 Computation
             +tex.
-                $\mathbf{Definition\ 6.4}$ (Glue Computation).
+                $\mathbf{Definition\ 1.7.4}$ (Glue Computation).
             +tex(true).
                 $$
                       b = \mathbf{glue}\ [\varphi \mapsto b]\ (\mathbf{unglue}\ b).
                 $$
             h2 Uniqueness
             +tex.
-                $\mathbf{Definition\ 6.5}$ (Glue Uniqueness).
+                $\mathbf{Definition\ 1.7.5}$ (Glue Uniqueness).
             +tex(true).
                 $$
                       \mathbf{unglue}\ (\mathbf{glue}\ [\varphi \mapsto t]\ a) = a : A.
