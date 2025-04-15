@@ -126,25 +126,50 @@ block content
                 h1 SEMANTICS
                 br
 
-                h2 MLTT
-                +tex.
-                    $\mathbf{Definition\ 1.3.1}$ ($\forall$-Formation, Dependent Product). The
-                    $\forall$-type forms dependent function spaces $f : \forall\ (x : A), B(x)$ with
-                    domain $A$ and codomain a type family $B : A \to \mathbf{U}$.
-                +tex(true).
-                    $$
-                       \forall : \mathbf{U_0} =_{def} \prod_{A : \mathbf{U}} \prod_{x : A} B(x).
-                    $$
+                h2 Homotopy
 
-                h2 COHESIVE
                 +tex.
-                    $\mathbf{Definition\ 1.4.1}$ ($\mathbf{plt}$-Formation, Plots). The $\mathbf{plt}$
-                    constructor assigns to each $n : \mathbf{Nat}$ and $X : \mathbf{SmthSet}$ the set
-                    of smooth maps $\mathbb{R}^n \to X$, defining the smooth structure of $X$.
-                +tex(true).
-                    $$
-                       \mathbf{plt} : \prod_{n : \mathbf{Nat}} \prod_{X : \mathbf{SmthSet}} \mathbf{Set}.
-                    $$
+                    A foundational framework where types are ∞-groupoids,
+                    and propositions emerge as homotopical structures.
+                    Equality is a space of paths, extensible to higher
+                    dimensions, weaving homotopy theory into type-theoretic reasoning.
+                    With constructs like FORALL, SIGMA, EXISTS, REAL, PATH, and GLUE,
+                    it blends topological invariance with constructive logic.
+                    This system enables synthetic reasoning about continuity,
+                    deformation, and equivalence, treating mathematical spaces
+                    as dynamic objects rich with paths, homotopies, and higher
+                    coherences—a language for capturing the shape of mathematical truth.
+
+                h2 Gradeded Cohesion
+                +tex.
+                    A cohesive, graded extension of type theory infused with supergeometry,
+                    where types inhabit universes indexed by parity, symmetry, and smoothness.
+                    Using GRADED, FLAT, SHARP, BOSE, FERMI, TENSOR, SMTH, and SUPSMTH,
+                    it equips types with tensor structures, group actions, and super-modality
+                    operators to model differential cohesion, infinitesimal geometry,
+                    and graded symmetries. This system unifies the logic of supermanifolds,
+                    derived geometry, and higher smooth stacks, enabling type-theoretic
+                    reasoning about spaces enriched by quantum and differential symmetry.
+
+                h2 Differential K-Theory
+                +tex.
+                    A homotopy-theoretic framework augmented with differential structure,
+                    where types encode spectra, groupoids, and refined cohomological data.
+                    Leveraging SPECTRA, GRPD, FORM, KU, DIFF, and DIFFKU, it internalizes
+                    differential K-theory to provide a synthetic language for characteristic
+                    classes, index theory, and topological invariants. By integrating stable
+                    homotopy, smooth geometry, and categorical semantics, it articulates the
+                    interplay of curvature, bundles, and higher cohomological operations
+                    within a unified type system of paths and forms.
+                h2 Qunatum Linearity
+                +tex.
+                    A type-theoretic foundation for quantum systems, internalizing configuration spaces,
+                    braids, and higher categorical symmetries within a resource-sensitive linear logic.
+                    Built on CONFn, BRAID, QUBIT, and LINEAR, it captures quantum statistics via braided
+                    monoidal categories, quantum group actions, and path spaces of indistinguishable particles.
+                    This system supports quantum computation and field theory semantics, using
+                    linear types to model entanglement, interference, and non-classical information flow,
+                    ensuring quantum processes respect spatial and algebraic phase coherence.
 
             section
                 h1 Bibliography
