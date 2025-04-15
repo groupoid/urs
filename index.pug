@@ -108,17 +108,23 @@ block content
                 +tex(true).
                     $$
                     \begin{array}{c} \\
-                       \mathrm{Urs} := \mathrm{MLTT}\ |\ \mathrm{Cohesive}\ \\
+                       \mathrm{Urs} := \mathrm{MLTT}\ |\ \mathrm{Base}\ |\ \mathrm{Super}\ \\
                        \mathrm{MLTT} := \mathrm{Cosmos}\ |\ \mathrm{Var}\ |\ \mathrm{Forall}\ |\ \mathrm{Exists}\ \\
-                       \mathrm{Cohesive} := \mathrm{Base}\ |\ \mathrm{Smooth}\ |\ \mathrm{Spectra}\ |\ \mathrm{Quantum}\ \\
-                       \mathrm{Cosmos} := \mathbf{Prop}\ :\ \mathbf{U_0}\ :\ \mathbf{U_1}\ \\
+                       \mathrm{Cosmos} := \mathbf{U_n}\ |\ \mathbf{V_n}\ |\ \mathbf{U_n^{g \in \{Bose,Fermi\}}}\ \\
                        \mathrm{Var} := \mathbf{var}\ \mathrm{ident}\ |\ \mathbf{hole}\ \\
+                       \mathrm{Base} := \mathbf{ℕ}\ |\ \mathrm{ℤ}\ |\ \mathrm{ℚ}\ |\ \mathrm{ℝ}\ |\ \mathrm{ℂ}\ |\ \mathrm{ℍ}\ |\ \mathrm{𝕆}\ |\ \mathrm{𝕍}\ \\
+                       \mathrm{Super} := \mathrm{Smooth}\ |\ \mathrm{Spectra}\ |\ \mathrm{Grpd}\ \\
+                                      |\ \mathrm{Form}\ |\ \mathrm{Diff}\ |\ \mathrm{Quantum}\  \\
                        \mathrm{Forall} := \forall\ \mathrm{ident}\ \mathrm{E}\ \mathrm{E}\ |\ \lambda\ \mathrm{ident}\ \mathrm{E}\ \mathrm{E}\ |\ \mathrm{E}\ \mathrm{E}\ \\
+                       \mathrm{Sigma} := \Sigma\ \mathrm{ident}\ \mathrm{E}\ \mathrm{E}\ |\ (\mathrm{E}, \mathrm{E})\ |\ \mathrm{E}\mathbf{.1}\ |\ \mathrm{E}\mathbf{.2}\ \\
                        \mathrm{Exists} := \exists\ \mathrm{ident}\ \mathrm{E}\ \mathrm{E}\ |\ (\mathrm{E}, \mathrm{E})\ |\ \mathrm{E}\mathbf{.1}\ |\ \mathrm{E}\mathbf{.2}\ \\
-                       \mathrm{Base} := \mathbf{Nat}\ |\ \mathbf{Real}\ |\ \mathbf{Complex}\ \\
-                       \mathrm{Smooth} := \mathbf{SmthSet}\ |\ \mathbf{plt}\ |\ \mathbf{precomp}\ |\ \mathbf{eval}\ \\
-                       \mathrm{Spectra} := \mathbf{Sp}\ |\ \mathbf{susp}\ |\ \mathbf{wedge}\ |\ \mathbf{sp}\ \\
-                       \mathrm{Quantum} := \mathbf{Hilbert}\ |\ \mathbf{qubit}\ |\ \mathbf{KU_G}\ \\
+                       \mathrm{Smooth} := \mathbf{SmthSet}\ |\ \mathbf{plt}\ |\ \mathbf{\bigcirc}\ |\ \mathbf{\Im}\ |\ \mathbf{\sharp}\ |\ \mathbf{\flat}\ \\
+                       \mathrm{Spectra} := \mathbf{Sp}\ |\ \mathbf{\Sigma}\ |\ \mathbf{\wedge}\ |\ \mathbf{sp}\ \\
+                       \mathrm{Form} := \mathbf{Form}\ |\ \mathbf{f}\ |\ \mathbf{f_\wedge}\ |\ \mathbf{Form_{ind}}\\
+                       \mathrm{Diff} := \mathbf{Diff}\ |\ \mathbf{KU_\flat^G}\ |\ \mathbf{KU^G}\ \\
+                       \mathrm{Grpd} := \mathbf{Grpd}\ |\ \mathbf{\Delta^n}\ |\ \mathbf{Grpd^n_{Ind}}\ \\
+                       \mathrm{Quantum} := \mathbf{Conf^n}\ |\ \mathbf{Braid}\ |\ \mathbf{Linear}\ \\
+                                    \mathbf{Qubit}\ |\ \mathbf{appQubit}\ |\ \mathbf{fuseQubit}\ 
                        \\
                     \end{array}
                     $$
