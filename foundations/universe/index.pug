@@ -3,101 +3,202 @@ include ../../header
 html
     head
         meta(property='og:title'       content='UNIVERSE')
-        meta(property='og:description' content='Type Universes and Prop')
-        meta(property='og:url'         content='https://laurent.groupoid.space/foundations/universe/')
+        meta(property='og:description' content='Fibrational Universes and Cubical Interval Pretypes for Homotopy Type Theory')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/universe/')
 
 block title
     title UNIVERSE
 
 block content
     nav
-        <a href='../../index.html'>LAURENT</a>
+        <a href='../../index.html'>URS</a>
         <a href='#'>UNIVERSE</a>
     article.main
         .exe
             section
-                h1 TYPE UNIVERSES
+                h1 FIBRATIONAL UNIVERSES AND CUBICAL PRETYPES
                 span.
         aside
-            time Published: 21 MAR 2025
+            time Published: 14 APR 2025
         .exe
             section
                 +tex.
-                    The type system employs a limited hierarchy of universes, $U_0 : U_1$,
-                    alongside $\text{Prop}$, to manage types and propositions. This structure balances
-                    expressiveness with simplicity, drawing analogies to Coq and Lean while serving
-                    Schwartz’s analysis framework.
+                    The $\mathbf{U}_n$ type represents a fibrational universe hierarchy indexed by
+                    levels $n : \mathbb{N}$, supporting type formation and cumulativity in a predicative
+                    setting, following Cubical Agda. The $\mathbf{V}_n$ type represents cubical
+                    interval pretypes, indexed by $n : \mathbb{N}$, used to model cubical intervals
+                    for path types and glue types in homotopy type theory.
                 +tex.
-                    $U_0$ contains small types (e.g., $\mathbb{R}$, $\text{Set}(A)$), while $U_1$
-                    classifies $U_0$ and higher constructs (e.g., $\text{Power}(A)$). $\text{Prop}$
-                    is a distinct universe for 0-truncated propositions, supporting classical logic.
+                    In Urs, $\mathbf{U}_n$ and $\mathbf{V}_n$ provide the foundational type hierarchies for homotopy groups,
+                    supporting path types in $\mathbf{Path}$, glue types
+                    in $\mathbf{Glue}$, and enabling higher structures in $\mathbf{SupSmthSet}$.
 
                 h2 Formation
                 +tex.
-                    $\mathbf{Definition\ 1.2.1}$ (Universe Hierarchy). The system defines two universes:
-                    $U_0$, the type of small types, and $U_1$, the type of $U_0$, with $\text{Prop}$ as
-                    a separate propositional universe.
+                    $\mathbf{Definition\ 1.1.1}$ (Fibrational Universe Formation). The universe
+                    $\mathbf{U}_n$ is a type indexed by $n : \mathbb{N}$, containing types at level $n$.
                 +tex(true).
                     $$
-                        U_0 : U_1, \quad \text{Prop} : U_0.
+                        \mathbf{U} : \mathbb{N} \to \mathbf{Type},
                     $$
-                +code.
-                    type exp =
-                      | Univrse i (* i in [0,1] *)
-                      | Prop
+                    $$
+                        \mathbf{U}_n : \mathbf{Type} \equiv \mathbf{U}\ n.
+                    $$
+                +code('urs').
+                    def U (n : Nat) : Type := Universe n  -- Universe formation
+                    def U₀ : Type := U 0  -- Level 0 universe
+                    def U₁ : Type := U 1  -- Level 1 universe
+                    (* Fibrational universe formation *)
 
-                h2 Nuances of U<sub>0</sub> : U<sub>1</sub>
                 +tex.
-                    $U_0$ includes base types like $\mathbb{N}$, $\mathbb{R}$, and $\text{Set}(\mathbb{R})$,
-                    sufficient for most analysis constructs. $U_1$ enables higher types like
-                    $\text{Power}(\mathbb{R})$ or $\text{Measure}(A, \Sigma)$, but the hierarchy stops
-                    here to avoid Russell-style paradoxes and maintain decidability.
+                    $\mathbf{Definition\ 1.1.2}$ (Cubical Interval Pretype Formation). The cubical
+                    interval pretype $\mathbf{V}_n$ is a pretype indexed by $n : \mathbb{N}$, used to
+                    model cubical intervals with dimension $n$ for path types and glue types.
                 +tex(true).
                     $$
-                        \mathbb{R} : U_0, \quad \text{Set}(\mathbb{R}) : U_0, \quad \mathcal{P}(\mathbb{R}) : U_1.
+                        \mathbf{V} : \mathbb{N} \to \mathbf{PreType},
                     $$
-                +tex.
-                    Unlike Coq’s cumulative $U_i : U_{i+1}$ or Lean’s infinite hierarchy, this limited
-                    $U_0 : U_1$ avoids universe polymorphism, simplifying type checking while limiting
-                    higher inductive types or complex type families.
+                    $$
+                        \mathbf{V}_n : \mathbf{PreType} \equiv \mathbf{V}\ n,
+                    $$
+                    $$
+                        \mathbf{V}_0 : \mathbf{PreType} \equiv \{0, 1\},
+                    $$
+                    $$
+                        \mathbf{V}_1 : \mathbf{PreType} \equiv \{0 \to 1\},
+                    $$
+                    $$
+                        \mathbf{dim} : \prod_{n : \mathbb{N}} \mathbf{V}_n \to \mathbb{N},
+                    $$
+                    $$
+                        \mathbf{dim}\ n \equiv n.
+                    $$
+                +code('urs').
+                    def V (n : Nat) : PreType := Interval n  -- Cubical interval pretype
+                    def V₀ : PreType := {0, 1}  -- 0-dimensional interval
+                    def V₁ : PreType := {0 → 1}  -- 1-dimensional interval
+                    def dim (n : Nat) : V n → Nat := λ _ : V n, n  -- Dimension of interval
+                    (* Cubical interval pretype formation *)
 
-                h2 Prop and Classical Logic
+                h2 Introduction
                 +tex.
-                    $\text{Prop}$ is 0-truncated, meaning any $P : \text{Prop}$ has at most one proof,
-                    aligning with classical logic via Z3 integration. This contrasts with Coq’s
-                    constructive $\text{Prop}$ (proof-relevant) and Lean’s flexible $\text{Prop}$ with
-                    optional classical axioms.
+                    $\mathbf{Definition\ 1.1.3}$ (Fibrational Universe Rules). Fibrational universes
+                    support lifting, cumulativity, and product formation, ensuring type-theoretic consistency.
                 +tex(true).
                     $$
-                        P : \text{Prop}, \ p, q : P \implies p = q, \quad P \lor \neg P.
+                        \mathbf{lift} : \prod_{n, m : \mathbb{N}} \mathbf{U}_n \to (m \geq n) \to \mathbf{U}_m,
                     $$
-                +code.
-                    let prop_true : exp = Prop  (* Classical Prop *)
+                    $$
+                        \mathbf{univ} : \prod_{n : \mathbb{N}} \mathbf{U}_{n+1},
+                    $$
+                    $$
+                        \mathbf{cumul} : \prod_{n, m : \mathbb{N}} \prod_{A : \mathbf{U}_n} (m \geq n) \to \mathbf{U}_m,
+                    $$
+                    $$
+                        \mathbf{prod} : \prod_{n, m : \mathbb{N}} \prod_{A : \mathbf{U}_n} \prod_{B : A \to \mathbf{U}_m} \mathbf{U}_{\max(n,m)}.
+                    $$
+                +code('urs').
+                    def lift (n m : Nat) (A : U n) : m ≥ n → U m := λ ge : m ≥ n, transport (λ k : Nat, U k) ge A  -- Universe lifting
+                    def univ-type (n : Nat) : U (n + 1) := lift n (n + 1) (U n) (le_succ n)  -- Type-in-type formation
+                    def cumul (n m : Nat) (A : U n) : m ≥ n → U m := lift n m A  -- Cumulativity
+                    def prod-rule (n m : Nat) (A : U n) (B : A → U m) : U (max n m) := Π (x : A), B x  -- Product formation
+                    (* Fibrational universe rules *)
 
-                h2 Coq and Lean Analogies
                 +tex.
-                    In Coq, $\text{Prop}$ is impredicative and constructive, allowing $P : \text{Prop}$
-                    to define types inductively, whereas our $\text{Prop}$ is predicative within $U_0$
-                    and classical. Lean’s $\text{Prop}$ is similar but supports quotient types natively,
-                    which we defer to future extensions (e.g., Dedekind cuts in $\mathbb{R}$).
-                +tex.
-                    Our $U_0 : U_1$ mirrors Coq’s minimal hierarchy for analysis but avoids Lean’s
-                    full cumulativity, prioritizing Z3-driven decidability over proof complexity.
+                    $\mathbf{Definition\ 1.1.4}$ (Cubical Interval Introduction). Cubical interval pretypes
+                    introduce endpoints and paths for cubical type theory.
+                +tex(true).
+                    $$
+                        \mathbf{i0} : \prod_{n : \mathbb{N}} \mathbf{V}_n,
+                    $$
+                    $$
+                        \mathbf{i1} : \prod_{n : \mathbb{N}} \mathbf{V}_n,
+                    $$
+                    $$
+                        \mathbf{path} : \prod_{n : \mathbb{N}} \mathbf{V}_n \to \mathbf{V}_n \to \mathbf{V}_{n+1}.
+                    $$
+                +code('urs').
+                    def i0 (n : Nat) : V n := 0  -- Left endpoint
+                    def i1 (n : Nat) : V n := 1  -- Right endpoint
+                    def path (n : Nat) (a b : V n) : V (n + 1) := a → b  -- Path in higher dimension
+                    (* Cubical interval introduction *)
 
-                h2 Advantages and Limitations
+                h2 Elimination
                 +tex.
-                    $\mathbf{Advantages}$: The limited hierarchy ensures type checking is straightforward,
-                    and $\text{Prop}$’s classical nature aligns with Schwartz’s analysis, enabling
-                    efficient Z3 verification for real arithmetic and set equality.
-                +tex.
-                    $\mathbf{Limitations}$: Higher universes ($U_2, U_3, \ldots$) are absent, restricting
-                    nested type constructions beyond $U_1$ (e.g., $\text{Power}(\text{Power}(A))$ requires
-                    careful encoding). Impredicativity is sacrificed for simplicity.
+                    $\mathbf{Definition\ 1.1.5}$ (Cubical Interval Eliminators). Eliminators for cubical
+                    interval pretypes project to endpoints and evaluate paths.
+                +tex(true).
+                    $$
+                        \mathbf{eval\text{-}i0} : \prod_{n : \mathbb{N}} \prod_{p : \mathbf{V}_{n+1}} (p\ \mathbf{i0}) = \mathbf{i0},
+                    $$
+                    $$
+                        \mathbf{eval\text{-}i1} : \prod_{n : \mathbb{N}} \prod_{p : \mathbf{V}_{n+1}} (p\ \mathbf{i1}) = \mathbf{i1}.
+                    $$
+                +code('urs').
+                    def eval-i0 (n : Nat) (p : V (n + 1)) : Path (V n) (p (i0 n)) (i0 n) := refl  -- Evaluate at i0
+                    def eval-i1 (n : Nat) (p : V (n + 1)) : Path (V n) (p (i1 n)) (i1 n) := refl  -- Evaluate at i1
+                    (* Cubical interval eliminators *)
 
-                h2 Future Directions
+                h2 Theorems
                 +tex.
-                    Future support for quotient types (e.g., Lean-style $\text{Quotient}$) could enrich
-                    $U_0$, enabling constructions like Dedekind reals directly within the system, though
-                    current focus remains on Z3-backed real analysis without such granularity.
+                    $\mathbf{Theorem\ 1.1.6}$ (Universe Cumulativity Properties). Fibrational universes
+                    satisfy lifting and cumulativity laws.
+                +tex(true).
+                    $$
+                        \mathbf{lift\text{-}id} : \prod_{n : \mathbb{N}} \prod_{A : \mathbf{U}_n} (\mathbf{lift}\ n\ n\ A\ \mathbf{refl}) = A,
+                    $$
+                    $$
+                        \mathbf{cumul\text{-}trans} : \prod_{n, m, k : \mathbb{N}} \prod_{A : \mathbf{U}_n}
+                        (m \geq n) \to (k \geq m) \to (\mathbf{cumul}\ n\ k\ A) = (\mathbf{cumul}\ m\ k\ (\mathbf{cumul}\ n\ m\ A)).
+                    $$
+                +code('urs').
+                    def lift-id (n : Nat) (A : U n) : Path (U n) (lift n n A refl) A := refl  -- Lift identity
+                    def cumul-trans (n m k : Nat) (A : U n) (ge1 : m ≥ n) (ge2 : k ≥ m)
+                      : Path (U k) (cumul n k A (trans ge1 ge2)) (cumul m k (cumul n m A ge1) ge2) := refl
+                    (* Universe cumulativity properties *)
+
+                +tex.
+                    $\mathbf{Theorem\ 1.1.7}$ (Cubical Interval Properties). Cubical interval pretypes
+                    satisfy path and dimension laws, supporting path types in \mathbf{path.pug}.
+                +tex(true).
+                    $$
+                        \mathbf{path\text{-}dim} : \prod_{n : \mathbb{N}} \prod_{a, b : \mathbf{V}_n}
+                        (\mathbf{dim}\ (\mathbf{path}\ n\ a\ b)) = (n + 1),
+                    $$
+                    $$
+                        \mathbf{path\text{-}comp} : \prod_{n : \mathbb{N}} \prod_{a, b : \mathbf{V}_n}
+                        (\mathbf{path}\ n\ a\ b\ \mathbf{i0}) = a,
+                    $$
+                    $$
+                        (\mathbf{path}\ n\ a\ b\ \mathbf{i1}) = b.
+                    $$
+                +code('urs').
+                    def path-dim (n : Nat) (a b : V n) : Path Nat (dim (n + 1) (path n a b)) (n + 1) := refl  -- Path dimension
+                    def path-comp-i0 (n : Nat) (a b : V n) : Path (V n) ((path n a b) (i0 n)) a := refl  -- Path at i0
+                    def path-comp-i1 (n : Nat) (a b : V n) : Path (V n) ((path n a b) (i1 n)) b := refl  -- Path at i1
+                    (* Cubical interval properties *)
+
+                +tex.
+                    $\mathbf{Theorem\ 1.1.8}$ (Test Cases). Examples illustrate fibrational universes
+                    and cubical intervals, applicable to path types in $\mathbf{Path}$.
+                +tex(true).
+                    $$
+                        \mathbf{bool} : \mathbf{U}_0,
+                    $$
+                    $$
+                        \mathbf{bool\text{-}lift} : \mathbf{U}_1,
+                    $$
+                    $$
+                        \mathbf{interval} : \prod_{i : \mathbf{V}_1} \mathbf{V}_0,
+                    $$
+                    $$
+                        \mathbf{interval\text{-}eval} : (\mathbf{interval}\ \mathbf{i0}) = \mathbf{i0}.
+                    $$
+                +code('urs').
+                    def test-bool : U 0 := Bool  -- Bool in U₀
+                    def test-bool-lift : U 1 := lift 0 1 Bool (le_succ 0)  -- Lift Bool to U₁
+                    def test-interval (i : V 1) : V 0 := i  -- Interval path
+                    def test-interval-eval : Path (V 0) (test-interval (i0 0)) (i0 0) := refl  -- Evaluate interval at i0
+                    (* Test cases for universes and intervals *)
 
 include ../../footer

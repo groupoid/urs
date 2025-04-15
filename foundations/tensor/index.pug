@@ -3,7 +3,7 @@ include ../../header
 html
     head
         meta(property='og:title'       content='TENSOR')
-        meta(property='og:description' content='Tensor Product for Cohesive Types')
+        meta(property='og:description' content='Tensor Product for Graded Types')
         meta(property='og:url'         content='https://urs.groupoid.space/foundations/tensor/')
 
 block title
@@ -28,8 +28,8 @@ block content
                     quantum systems, smooth geometry, and stable homotopy theory.
                 +tex.
                     In Urs, $\mathbf{Tensor}(X, Y)$ is a type-forming operation in $\mathbf{U_0}$,
-                    supporting constructions like multi-qubit states ($\mathbf{Qubit}$), sheaf products
-                    ($\mathbf{SmthSet}$), and homotopical compositions ($\mathbf{Sp}$).
+                    supporting constructions like multi-qubit states $\mathbf{Qubit}$, sheaf products
+                    $\mathbf{SmthSet}$, and homotopical compositions $\mathbf{Sp}$.
 
                 h2 Formation
                 +tex.
@@ -42,7 +42,6 @@ block content
                     $$
                 +code('urs').
                     def Tensor (X Y : U_0) : U_0
-                    (* Tensor product type *)
 
                 h2 Introduction
                 +tex.
@@ -56,7 +55,6 @@ block content
                     $$
                 +code('urs').
                     def tensor (X Y : U_0) (x : X) (y : Y) : X ⊗ Y
-                    (* Construct tensor product term *)
 
                 h2 Elimination
                 +tex.
@@ -74,8 +72,9 @@ block content
                         \prod_{z : X \otimes Y} \beta\ z.
                     $$
                 +code('urs').
-                    def tensor_ind (X Y : U_0) (beta : (X ⊗ Y) -> U_0) (h : Π (z : X ⊗ Y), beta z) : Π (z : X ⊗ Y), beta z
-                    (* Eliminator for tensor products *)
+                    def tensor_ind (X Y : U_0) (beta : (X ⊗ Y) -> U_0)
+                        (h : Π (z : X ⊗ Y), beta z)
+                      : Π (z : X ⊗ Y), beta z
 
                 h2 Theorems
                 +tex.
@@ -90,8 +89,8 @@ block content
                         \mathbf{Path}\ ((X \otimes Y) \otimes Z)\ (X \otimes (Y \otimes Z)).
                     $$
                 +code('urs').
-                    def tensor_assoc (X Y Z : U_0) : Path ((X ⊗ Y) ⊗ Z) (X ⊗ (Y ⊗ Z))
-                    (* Associativity of tensor product *)
+                    def tensor_assoc (X Y Z : U_0)
+                      : Path ((X ⊗ Y) ⊗ Z) (X ⊗ (Y ⊗ Z))
 
                 +tex.
                     $\mathbf{Theorem\ 2.6.5}$ (Tensor for Qubits). Qubits $\mathbf{Qubit}(C, H_1)$ and
@@ -105,8 +104,8 @@ block content
                         \mathbf{Qubit}(C, H_1) \to \mathbf{Qubit}(C, H_2) \to \mathbf{Qubit}(C, H_1 \otimes H_2).
                     $$
                 +code('urs').
-                    def tensor_qubit (C H_1 H_2 : U_0) : Qubit C H_1 -> Qubit C H_2 -> Qubit C (H_1 ⊗ H_2)
-                    (* Tensor product for qubits *)
+                    def tensor_qubit (C H_1 H_2 : U_0)
+                      : Qubit C H_1 -> Qubit C H_2 -> Qubit C (H_1 ⊗ H_2)
 
                 +tex.
                     $\mathbf{Theorem\ 2.6.6}$ (Tensor for Smooth Sets). For $X, Y : \mathbf{SmthSet}$,
@@ -120,7 +119,7 @@ block content
                         \mathbf{SheafStr}(X \otimes Y, \mathbb{R}^m).
                     $$
                 +code('urs').
-                    def tensor_smthset (X Y : SmthSet) : SheafStr (X ⊗ Y) ℝ^m
-                    (* Tensor product for smooth sets *)
+                    def tensor_smthset (X Y : SmthSet)
+                      : SheafStr (X ⊗ Y) ℝ^m
 
 include ../../footer
