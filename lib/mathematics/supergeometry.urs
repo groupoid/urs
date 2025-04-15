@@ -40,7 +40,8 @@ def Grassmann^n (n : Nat) : U 0 1 := Vec FermionUnit n
 def BosonicCoord (m : Nat) : U 0 0 := Vec ℝ m
 def FermionicCoord (n : Nat) : U 0 1 := Grassmann^n n
 def ℝ^{m|n} (mn : SuperSpace) : U 0 0 := let (m, n) := mn in tensor 0 0 1 (BosonicCoord m) (FermionicCoord n)
-def superpoint (mn : SuperSpace) (x : BosonicCoord mn.1) (θ : FermionicCoord mn.2) : ℝ^{m|n} mn := pair-tensor 0 0 1 (BosonicCoord mn.1) (FermionicCoord mn.2) x θ
+def superpoint (mn : SuperSpace) (x : BosonicCoord mn.1) (θ : FermionicCoord mn.2) : ℝ^{m|n} mn
+ := pair-tensor 0 0 1 (BosonicCoord mn.1) (FermionicCoord mn.2) x θ
 def ℝ^{1|1} : U 0 0 := ℝ^{ (1, 1) }
 
 -- Super-Forms
