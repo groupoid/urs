@@ -4,14 +4,14 @@ html
     head
         meta(property='og:title'       content='REAL')
         meta(property='og:description' content='Real Numbers')
-        meta(property='og:url'         content='https://laurent.groupoid.space/foundations/real/')
+        meta(property='og:url'         content='https://urs.groupoid.space/foundations/real/')
 
 block title
     title REAL
 
 block content
     nav
-        <a href='../../index.html'>LAURENT</a>
+        <a href='../../index.html'>URS</a>
         <a href='#'>REAL</a>
     article.main
         .exe
@@ -23,24 +23,24 @@ block content
         .exe
             section
                 +tex.
-                    $\text{Real}$-type represents the real numbers $\mathbb{R}$ at an axiomatic level,
+                    $\mathbf{Real}$-type represents the real numbers $\mathbb{R}$ at an axiomatic level,
                     focusing on limit-based properties for functional analysis. It balances classical
                     completeness with computational efficiency, tailored to Schwartz’s framework.
                 +tex.
-                    This approach uses $\text{Limit}$, $\text{Sup}$, and $\text{Inf}$ axiomatically,
+                    This approach uses $\mathbf{Limit}$, $\mathbf{Sup}$, and $\mathbf{Inf}$ axiomatically,
                     with Z3 enforcing arithmetic and order properties, while leaving room for future
                     refinements like Dedekind cuts via quotient types.
 
                 h2 Formation
                 +tex.
-                    $\text{Definition 1.5.1}$ ($\text{Real}$-Formation). The real numbers are a type
-                    $\mathbb{R} : U_0$, equipped with constants ($0$,$1$), casting functions $\text{NatToReal}$,
-                    $\text{RationalToReal}$, $\text{RealConst}$
+                    $\mathbf{Definition\ 1.5.1}$ ($\mathbf{Real}$-Formation). The real numbers are a type
+                    $\mathbb{R} : U_0$, equipped with constants ($0$,$1$), casting functions $\mathbf{NatToReal}$,
+                    $\mathbf{RationalToReal}$, $\mathbf{RealConst}$
                     order ($<$, $\leq$, $>$, $\geq$, $=$) and arithmetic ($+$, $-$, $\times$, $\div$, $\ln$, $\exp$, $\sin$, $\cos$, $\neg$, $|\_|$, $x^y$),
                     satisfying completeness via limits.
                 +tex(true).
                     $$
-                        \mathbb{R} : U_0 =_{def} \text{Real}.
+                        \mathbb{R} : U_0 =_{def} \mathbf{Real}.
                     $$
                 +code.
                     type real_ineq = Lt | Gt | Lte | Gte | Eq | Neq
@@ -56,10 +56,10 @@ block content
                 +tex.
                     $\mathbb{R}$ is defined axiomatically with completeness: every bounded sequence
                     has a limit if Cauchy, and every non-empty bounded set has a supremum and infimum.
-                    Limits are handled via $\text{Limit}$, avoiding explicit construction.
+                    Limits are handled via $\mathbf{Limit}$, avoiding explicit construction.
                 +tex(true).
                     $$
-                        \forall a : \text{Seq}(\mathbb{R}),
+                        \forall a : \mathbf{Seq}(\mathbb{R}),
                     $$
                     $$
                         \forall \varepsilon > 0, \exists N, \forall m, n > N, |a_m - a_n| < \varepsilon
@@ -73,11 +73,11 @@ block content
 
                 h2 Advantages
                 +tex.
-                    $\text{Advantage 1}$: The limit-based approach simplifies analysis by assuming
-                    completeness axiomatically, enabling $\text{Lebesgue}$ integration and $\text{Measure}$
+                    $\mathbf{Advantage\ 1}$: The limit-based approach simplifies analysis by assuming
+                    completeness axiomatically, enabling $\mathbf{Lebesgue}$ integration and $\mathbf{Measure}$
                     without constructing $\mathbb{R}$ from scratch.
                 +tex.
-                    $\text{Advantage 2}$: Z3 integration verifies real arithmetic and inequalities
+                    $\mathbf{Advantage\ 2}$: Z3 integration verifies real arithmetic and inequalities
                     (e.g., $x^2 \geq 0$), aligning with classical analysis and Schwartz’s needs.
                 +tex(true).
                     $$
@@ -86,11 +86,11 @@ block content
 
                 h2 Limitations
                 +tex.
-                    $\text{Limitation 1}$: Lacking a constructive definition (e.g., Cauchy sequences
+                    $\mathbf{Limitation\ 1}$: Lacking a constructive definition (e.g., Cauchy sequences
                     or Dedekind cuts), $\mathbb{R}$ relies on external solvers (Z3) for decidability,
                     limiting proof-theoretic introspection.
                 +tex.
-                    $\text{Limitation 2}$: Fine-grained properties (e.g., distinguishing irrationality)
+                    $\mathbf{Limitation\ 2}$: Fine-grained properties (e.g., distinguishing irrationality)
                     are not natively supported, as the focus is on functional limits over structural detail.
                 +code.
                     let real_order (x : exp) : exp =
@@ -98,30 +98,30 @@ block content
 
                 h2 Future Support: Dedekind Cuts
                 +tex.
-                    Future extensions could introduce a $\text{Quotient}$ type, as in Lean, to define
+                    Future extensions could introduce a $\mathbf{Quotient}$ type, as in Lean, to define
                     $\mathbb{R}$ via Dedekind cuts: pairs $(L, U)$ of subsets of $\mathbb{Q}$ where
                     $L < U$ and $L \cup U = \mathbb{Q}$. This would enable constructive reals if needed.
                 +tex(true).
                     $$
-                        \mathbb{R} =_{def} \text{Quotient}(\{ (L, U) \mid L, U : \mathcal{P}(\mathbb{Q}),
+                        \mathbb{R} =_{def} \mathbf{Quotient}(\{ (L, U) \mid L, U : \mathcal{P}(\mathbb{Q}),
                     $$
                     $$
                         L < U, L \cup U = \mathbb{Q} \}, \sim).
                     $$
                 +tex.
                     Such detalisation is deferred, as current axiomatic $\mathbb{R}$ suffices for
-                    $\text{Lebesgue}$ and $\text{Limit}$ in Schwartz’s analysis, with Z3 handling precision.
+                    $\mathbf{Lebesgue}$ and $\mathbf{Limit}$ in Schwartz’s analysis, with Z3 handling precision.
 
                 h2 Theorems
                 +tex.
-                    $\text{Theorem 1.5.2}$ (Completeness). Every non-empty, bounded above subset
-                    $S \subseteq \mathbb{R}$ has a supremum, axiomatized via $\text{Sup}$.
+                    $\mathbf{Theorem\ 1.5.2}$ (Completeness). Every non-empty, bounded above subset
+                    $S \subseteq \mathbb{R}$ has a supremum, axiomatized via $\mathbf{Sup}$.
                 +tex(true).
                     $$
                         S \neq \emptyset \land \exists M, \forall x \in S, x \leq M \implies \exists \sup S.
                     $$
                 +tex.
-                    $\text{Theorem 1.5.3}$ (Bolzano-Weierstrass). Every bounded sequence in $\mathbb{R}$
+                    $\mathbf{Theorem\ 1.5.3}$ (Bolzano-Weierstrass). Every bounded sequence in $\mathbb{R}$
                     has a convergent subsequence, implicit in our limit axioms.
                 +code.
                     let bolzano_weierstrass (a : exp) : exp =
