@@ -6,6 +6,7 @@ def SmthSet : U₁ := Sh(CrtSp, Set)
 def CrtSp : U₀ := ℝ^n  -- Indexed by n : Nat
 
 -- Constructors
+def sup-plt (n q : Nat) (X : SupSmthSet) (g : Grade) : U 1 g := GradedPlt(ℝ^(n|q), X, g)
 def plt (n : Nat) (X : SmthSet) : Set := Plt(ℝ^n, X)
 def precomp (n m : Nat) (X : SmthSet) (f : ℝ^m → ℝ^n) (φ : plt n X) : plt m X := φ ∘ f
 def glue-φ (n : Nat) (X : SmthSet) (U : OpenCover n) (φs : Π (i : I), plt (U i) X)
