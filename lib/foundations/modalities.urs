@@ -10,6 +10,9 @@ def sharp           (i : Nat) (g : Grade) (A : U i g) : U i g := ♯ A
 def fermionic-modal (i : Nat) (g : Grade) (A : U i g) : U i 1 := ℑ A
 def bosonic-modal   (i : Nat) (g : Grade) (A : U i g) : U i 0 := ◯ A
 
+def ∫ (A : Uᵢᵍ) := Π (X : Uᵢᵍ), (♯ X → A) → ♭ X -- Shape Modality
+def ∇ (A : Uᵢᵍ) := Σ (X : Uᵢᵍ), (A → ♭ X) × (♯ X → A) -- Crisp Modality
+
 -- Constructors
 def intro-flat      (i : Nat) (g : Grade) (A : U i g) (a : A) : ♭ A := flat-intro a
 def intro-sharp     (i : Nat) (g : Grade) (A : U i g) (a : A) : ♯ A := sharp-intro a
