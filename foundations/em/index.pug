@@ -1,0 +1,168 @@
+include ../../header
+
+html
+  head
+    meta(property='og:title'       content='EM')
+    meta(property='og:description' content='Eilenberg-MacLane Spaces')
+    meta(property='og:url'         content='https://urs.groupoid.space/foundations/em/')
+
+block title
+  title EM
+
+block content
+  nav
+    <a href='../../index.html'>URS</a>
+    <a href='#'>EM</a>
+  article.main
+    .exe
+      section
+        h1 Eilenberg-MacLane Spaces
+        span.
+    aside
+      time Published: 10 MAY 2025
+    .exe
+      section
+        +tex.
+          Eilenberg-MacLane spaces $K(G, {n})$ are fundamental in homotopy theory, characterized by a single non-trivial homotopy group $\pi_{n}(K(G, {n})) \cong G$ for an abelian group $G$ and $\pi_{k}(K(G, {n})) = 0$ for $k \neq n$. In Homotopy Type Theory (HoTT), they are defined as higher inductive types (HITs) and serve as classifying spaces for cohomology, with $[X, K(G, {n})] \cong H^{n}(X; G)$. Synthetic cohomology in HoTT leverages $K(G, {n})$ to define cohomology groups synthetically, enabling computational approaches in systems like Cubical Agda.
+        +tex.
+          This page formalizes $K(G, {n})$ in HoTT, providing formation, introduction, elimination, computation, and uniqueness rules, along with theorems and applications in algebraic topology and orbifold cohomology.
+
+        h2 Formation
+        +tex.
+          $\mathbf{Definition\ 4.1.1}$ ($K(G, {n})$-Formation). For an abelian group $G : \mathbf{AbGroup}$ and $n : \mathbb{N}$, the type $K(G, {n})$ is a type in $\mathbf{U_{(0,0)}}$, representing the Eilenberg-MacLane space with $\pi_{n}(K(G, {n})) \cong G$.
+        +tex(true).
+          $$
+            \Gamma \vdash K(G, {n}) : \mathbf{U_{(0,0)}} \quad (G : \mathbf{AbGroup}, n : \mathbb{N}).
+          $$
+        +code('urs').
+          def K (G : AbGroup) (n : Nat) : U_{(0,0)}
+          (* Eilenberg-MacLane space type *)
+
+        h2 Introduction
+        +tex.
+          $\mathbf{Definition\ 4.1.2}$ ($K(G, {n})$-Introduction). Terms of $K(G, {n})$ are introduced via a higher inductive type (HIT) with a base point and loops corresponding to elements of $G$ in degree $n$, truncated to ensure $\pi_{k}(K(G, {n})) = 0$ for $k \neq n$.
+        +tex(true).
+          $$
+            \mathbf{HIT}\ K(G, {n}) :=
+            \begin{cases}
+              \mathbf{pt} : K(G, {n}), \\
+              \mathbf{loop} : \prod_{g : G} \mathbf{pt} =_{K(G, {n})} \mathbf{pt}, \\
+              \mathbf{trunc} : \text{is-}n\text{-type}(K(G, {n})).
+            \end{cases}
+          $$
+        +code('urs').
+          HIT K (G : AbGroup) (n : Nat) :=
+            | pt : K(G, n)
+            | loop : G -> (pt =_{K(G, n)} pt)
+            | trunc : is-n-type(K(G, n))
+          (* Constructors for K(G, n) *)
+
+        h2 Elimination
+        +tex.
+          $\mathbf{Definition\ 4.1.3}$ ($K(G, {n})$-Elimination). The eliminator maps terms of $K(G, {n})$ to an $n$-type $B$, preserving the homotopy group structure induced by $G$.
+        +tex(true).
+          $$
+            \mathbf{KInd} :
+            \prod_{B : \mathbf{U_{(0,0)}}} \prod_{\text{is-}n\text{-type}(B)}
+            \left( \prod_{b : B} \prod_{g : G} (b =_B b) \to B \right) \to
+            \prod_{x : K(G, {n})} B.
+          $$
+        +code('urs').
+          def K_ind (G : AbGroup) (n : Nat)
+                    (B : U_{(0,0)}) (B_n_type : is-n-type(B))
+                    (b : B) (l : G -> (b =_B b))
+                    : K(G, n) -> B
+          (* Eliminator for K(G, n) *)
+
+        h2 Computation
+        +tex.
+          $\mathbf{Definition\ 4.1.4}$ ($K(G, {n})$-Computation). The eliminator computes on constructors as follows: the base point maps to $b$, and loops map to paths in $B$.
+        +tex(true).
+          $$
+            \mathbf{KInd}(B, b, l, \mathbf{pt}) \equiv b,
+          $$
+          $$
+            \mathbf{KInd}(B, b, l, \mathbf{loop}(g)) \equiv l(g).
+          $$
+        +code('urs').
+          def K_comp (G : AbGroup) (n : Nat)
+                     (B : U_{(0,0)}) (B_n_type : is-n-type(B))
+                     (b : B) (l : G -> (b =_B b))
+                     : KInd(B, b, l, pt) ≡ b
+                     , KInd(B, b, l, loop(g)) ≡ l(g)
+          (* Computation rules *)
+
+        h2 Uniqueness
+        +tex.
+          $\mathbf{Definition\ 4.1.5}$ ($K(G, {n})$-Uniqueness). Any two eliminators for $K(G, {n})$ into an $n$-type $B$ are homotopic, ensuring uniqueness up to homotopy.
+        +tex(true).
+          $$
+            \mathbf{KUniq} :
+            \prod_{B : \mathbf{U_{(0,0)}}} \prod_{\text{is-}n\text{-type}(B)}
+            \prod_{f, g : \prod_{x : K(G, {n})} B}
+            \left( \prod_{b : B} \prod_{l : G \to (b =_B b)} (f(\mathbf{pt}) = g(\mathbf{pt})) \times \prod_{g : G} (f(\mathbf{loop}(g)) = g(\mathbf{loop}(g))) \right) \to
+            f \sim g.
+          $$
+        +code('urs').
+          def K_uniq (G : AbGroup) (n : Nat)
+                     (B : U_{(0,0)}) (B_n_type : is-n-type(B))
+                     (f g : Π (x : K(G, n)), B)
+                     (h_pt : f(pt) = g(pt))
+                     (h_loop : Π (g : G), f(loop(g)) = g(loop(g)))
+                     : f ~ g
+          (* Uniqueness rule *)
+
+        h2 Theorems
+        +tex.
+          $\mathbf{Theorem\ 4.1.6}$ (Cohomology Group). For a type $X : \mathbf{U_{(0,0)}}$, the $n$-th cohomology group with coefficients in $G$ is the 0-truncation of the mapping space to $K(G, {n})$.
+        +tex(true).
+          $$
+            \mathbf{cohomology} :
+            \prod_{X : \mathbf{U_{(0,0)}}} H^{n}(X; G) \equiv \| X \to K(G, {n}) \|_{0}.
+          $$
+        +code('urs').
+          def cohomology (X : U_{(0,0)}) (G : AbGroup) (n : Nat) : || X -> K(G, n) ||_0
+          (* Cohomology group *)
+
+        +tex.
+          $\mathbf{Theorem\ 4.1.7}$ (Cohomology Ring). For $G = \mathbb{Z}$, the cohomology groups $H^{*}(X; \mathbb{Z})$ form a graded ring, with cup product induced by the loop space structure of $K(\mathbb{Z}, {n})$.
+        +tex(true).
+          $$
+            \mathbf{cohomology_ring} :
+            \prod_{X : \mathbf{U_{(0,0)}}} \prod_{n, m : \mathbb{N}}
+            H^{n}(X; \mathbb{Z}) \times H^{m}(X; \mathbb{Z}) \to H^{n+m}(X; \mathbb{Z}).
+          $$
+        +code('urs').
+          def cohomology_ring (X : U_{(0,0)}) (n m : Nat)
+                              : H^n(X; ℤ) × H^m(X; ℤ) -> H^{n+m}(X; ℤ)
+          (* Cohomology ring structure *)
+
+        +tex.
+          $\mathbf{Theorem\ 4.1.8}$ (Computational Cohomology). In Cubical Agda, cohomology groups $H^{n}(X; G)$ for $X = S^{k}$ and $G = \mathbb{Z}$ or $\mathbb{Z}/p$ are computable using $K(G, {n})$.
+        +tex(true).
+          $$
+            \mathbf{computational_cohomology} :
+            \prod_{k, n : \mathbb{N}} \prod_{G : \{\mathbb{Z}, \mathbb{Z}/p\}}
+            H^{n}(S^{k}; G) \text{ is computable}.
+          $$
+        +code('urs').
+          def computational_cohomology (k n : Nat) (G : {ℤ, ℤ/p}) : H^n(S^k; G)
+          (* Computable cohomology *)
+
+        h2 Applications
+        +tex.
+          Eilenberg-MacLane spaces and synthetic cohomology have wide applications:
+          - **Algebraic Topology**: Computing cohomology groups and rings for spaces like tori and spheres, as shown in Cubical Agda implementations [2, 4, 5].
+          - **Orbifold Cohomology**: Defining proper orbifold cohomology using $K(G, {n})$ to capture group actions on manifolds [6].
+          - **Quantum Field Theory**: Modeling gauge theories via cohomology classes, connecting to synthetic approaches in HoTT [1, 3].
+
+        h2 Bibliography
+        p(style="font-size:14px;").
+          [1]. Cavallo, E. (2015). Synthetic Cohomology in Homotopy Type Theory.<br>
+          [2]. Ljungström, A., & Mörtberg, A. (2024). Computational Synthetic Cohomology Theory in Homotopy Type Theory.<br>
+          [3]. Graham, R. (2018). Synthetic Homology in Homotopy Type Theory.<br>
+          [4].Brunerie, G., Ljungström, A., & Mörtberg, A. Synthetic Cohomology Theory in Cubical Agda.<br>
+          [5]. Lamiaux, T., Ljungström, A., & Mörtberg, A. (2022). Computing Cohomology Rings in Cubical Agda.<br>
+          [6]. Sati, H., & Schreiber, U. Proper Orbifold Cohomology.<br>
+
+include ../../footer
