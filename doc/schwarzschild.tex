@@ -1,20 +1,13 @@
-\documentclass[12pt]{article}
-
-% Including standard LaTeX packages for math and formatting
+\documentclass{article}
 \usepackage{amsmath, amssymb, amsthm}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
 \usepackage{parskip}
 \usepackage{enumitem}
-\usepackage{xcolor}
 
-% Defining theorem environments
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 
-% Defining custom commands for mathematical notation
 \newcommand{\supercoords}{z^{M}}
 \newcommand{\boscoords}{x^{\mu}}
 \newcommand{\fermcoords}{\theta^{a}}
@@ -26,12 +19,12 @@
 \newcommand{\lie}[1]{\mathcal{L}_{#1}}
 \newcommand{\dvol}{\mathrm{dVol}}
 
-% Title and author
-\title{The Schwarzschild Metric in Supergeometry: Mathematical Properties and Algebraic Tools}
-\author{}
-\date{May 9, 2025}
 
 \begin{document}
+
+\title{The Schwarzschild Metric in Supergeometry}
+\author{Namdak Tonpa}
+\date{May 9, 2025}
 
 \maketitle
 
@@ -39,12 +32,11 @@
 This article explores the Schwarzschild metric within the framework of supergeometry, extending the classical solution of general relativity to a supersymmetric context. We define the metric on a $(4|2)$-dimensional supermanifold and derive its superline element using the supervielbein formalism. Key mathematical properties are established through theorems, including supersymmetric invariance and curvature properties. We employ algebraic tools such as Lie superalgebras, superdifferential forms, and BRST cohomology to study the geometry, and discuss integration techniques like the Berezin integral for fermionic coordinates.
 \end{abstract}
 
-\section{Introduction}
+\section{The Schwarzschild Metric in Supergeometry}
 
-% Introducing general relativity and supergeometry
 The Schwarzschild metric describes the spacetime geometry around a non-rotating, spherically symmetric mass in general relativity. Supergeometry, the mathematical foundation of supersymmetric theories like supergravity, extends spacetime to a supermanifold with bosonic and fermionic coordinates. This article formalizes the Schwarzschild metric in supergeometry, derives its properties, and applies algebraic tools to analyze its structure. We focus on theorems, derivations, integration, and BRST cohomology, providing a rigorous mathematical framework.
 
-\section{Supergeometry and the Schwarzschild Metric}
+\subsection{Supergeometry and the Schwarzschild Metric}
 
 % Defining the supermanifold
 A supermanifold of dimension $(m|n)$ has $m$ bosonic coordinates $\boscoords$ and $n$ fermionic coordinates $\fermcoords$. We consider a $(4|2)$-dimensional supermanifold with coordinates $\supercoords = (t, r, \theta, \phi, \theta^{1}, \theta^{2})$, where $(t, r, \theta, \phi)$ are bosonic and $(\theta^{1}, \theta^{2})$ are Grassmann-odd.
@@ -93,7 +85,7 @@ e^{2} &= r \, d\theta, \quad e^{3} = r \sin\theta \, d\phi.
 \end{align}
 The superline element \eqref{eq:superline} is recovered by computing $\supervielbein \eta_{AB} E^{B}$.
 
-\section{Mathematical Properties}
+\subsection{Mathematical Properties}
 
 % Establishing key theorems
 We present theorems to characterize the Schwarzschild supergeometry.
@@ -118,7 +110,7 @@ The Riemann curvature tensor of the bosonic sector of \eqref{eq:superline} match
 The bosonic metric $g_{\mu\nu}$ is identical to \eqref{eq:schwarzschild}. Standard computations of the Riemann tensor $R_{\mu\nu\rho\sigma}$ yield the known Schwarzschild curvature, unaffected by the flat fermionic sector.
 \end{proof}
 
-\section{Integration in Supergeometry}
+\subsection{Integration in Supergeometry}
 
 % Discussing the Berezin integral
 Integration over the supermanifold involves the Berezin integral for fermionic coordinates. For a superfield $f(x, \theta)$, the integral is:
@@ -144,7 +136,7 @@ The integral of the superfield $f(x, \theta) = g_{tt}(r) + \theta^{1} \theta^{2}
 The Berezin integral extracts the $\theta^{1} \theta^{2}$ coefficient, yielding $\int d\theta^{1} d\theta^{2} \, f = 1$. The bosonic integral $\int r^{2} \sin\theta \, dr \wedge d\theta \wedge d\phi$ is finite over a bounded region, confirming non-zero contributions only from fermionic terms.
 \end{proof}
 
-\section{BRST Cohomology}
+\subsection{BRST Cohomology}
 
 % Introducing BRST cohomology
 In supergravity, BRST cohomology quantizes gauge symmetries, including diffeomorphisms and supersymmetry transformations. The BRST operator $Q$ acts on fields, with $Q^{2} = 0$. For the Schwarzschild super metric, we consider the ghost fields $c^{\mu}$ (bosonic) and $c^{a}$ (fermionic) for diffeomorphisms and supersymmetry.
@@ -168,7 +160,7 @@ The variation $Q \superline = \lie{c} \superline$ is the Lie derivative of the m
 % Cohomology classes
 The BRST cohomology groups $H^{n}(Q)$ classify physical states. For the Schwarzschild supergeometry, non-trivial cohomology arises from supersymmetric Killing vectors, discussed below.
 
-\section{Algebraic Tools}
+\subsection{Algebraic Tools}
 
 % Lie superalgebras
 The symmetry algebra of the supermanifold is a Lie superalgebra, combining Poincaré transformations with supersymmetry generators. The super-Poincaré algebra includes bosonic generators $P_{\mu}, M_{\mu\nu}$ and fermionic generators $Q_{\alpha}$:
@@ -197,7 +189,7 @@ The bosonic sector of \eqref{eq:superline} admits four Killing vectors (time tra
 The Schwarzschild metric has Killing vectors $\partial_{t}, \partial_{\phi}, \sin\phi \partial_{\theta} + \cot\theta \cos\phi \partial_{\phi}, \cos\phi \partial_{\theta} - \cot\theta \sin\phi \partial_{\phi}$. The flat fermionic metric $\eta_{ab}$ admits no non-trivial Killing supervectors since $\theta^{a}$ transformations are constant.
 \end{proof}
 
-\section{Conclusion}
+\subsection{Conclusion}
 
 % Summarizing the contribution
 We have extended the Schwarzschild metric to supergeometry, deriving its superline element and exploring its mathematical properties through theorems, integration, BRST cohomology, and algebraic tools. The supervielbein formalism, Berezin integrals, and Lie superalgebras provide a rich framework for studying supersymmetric gravity. Future work could explore non-trivial superfield expansions or quantum corrections via BRST quantization.
