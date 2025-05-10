@@ -122,11 +122,9 @@ block content
                         \mathbf{KU^\tau_G}(\mathbf{Susp}\ X, G, \tau).
                     $$
                 +code.
-                    let KU^\tau_G_stability (x : exp) (g : exp) (tau : exp) : exp =
-                        Path (Universe (0, Bose),
-                              KU^\tau_G (x, g, tau),
-                              KU^\tau_G (Susp x, g, tau))
-                        (* Path type represents equality *)
+                    def stability-under-susp (X : Type) (G : Group) (τ : X → BPU)
+                      : Path Spectrum (KU_G^τ(X; G; τ)) (KU_G^τ(susp X; G; τ)))
+                     := idp Spectrum (KU_G^τ(X; G; τ))
 
                 +tex.
                     $\mathbf{Theorem\ 3.4.5}$ (Refinement to Differential K-Theory). The type
@@ -143,7 +141,8 @@ block content
                         \mathbf{KU^\tau_G}(X, G, \tau) \to \mathbf{KU^\tau_{\flat G}}(X, G, \tau, conn).
                     $$
                 +code.
-                    let KU^\tau_G-to-KU^\tau_{\flat G} (x : exp) (g : exp) (tau : exp) (conn : exp) : exp =
-                        KU^\tau_{\flat G} (x, g, tau, conn)
+                    def refinement (X : Type) (G : Group) (τ : X -> BPU) (conn : Ω^1(X))
+                      : KU(X; G; τ) -> KU_♭(X; G; τ; conn)
+                     := \ (x : KU(X; G; τ)), intro-ku_♭(x, conn)
 
 include ../../footer
