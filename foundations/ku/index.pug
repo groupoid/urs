@@ -54,7 +54,8 @@ block content
                         \prod_{\tau : \prod_{x : X} \mathbf{U_{(0,0)}}} \mathbf{U_{(0,0)}}.
                     $$
                 +code.
-                    type exp = | KU of exp * exp * exp
+                    def KU_G^τ (X : Type) (G : Group) (τ : X → BPU)
+                      : Spectra := KU_G^τ(X;G;τ)
 
                 h2 Introduction
                 +tex.
@@ -72,8 +73,9 @@ block content
                         \mathbf{KU^\tau_G}(X, G, \tau).
                     $$
                 +code.
-                    let KU^\tau_G_intro (x : exp) (g : exp) (tau : exp) : exp =
-                        KU^\tau_G (x, g, tau)
+                    def intro-ku (X : Type) (G : Group) (τ : X → BPU)
+                        (f : Maps X (Fred^0 H))
+                      : KU(X;G;τ) := ku-intro f
 
                 h2 Elimination
                 +tex.
@@ -95,9 +97,8 @@ block content
                         \prod_{k : \mathbf{KU^\tau_G}(X, G, \tau)} \beta\ k.
                     $$
                 +code.
-                    let KU^\tau_G_ind (x : exp) (g : exp) (tau : exp) (beta : exp) (h : exp) : exp =
-                        (* Hypothetical eliminator *)
-                        App (Var "KU^\tau_GInd", KU^\tau_G (x, g, tau))
+                    def elim-ku (X : Type) (G : Group) (τ : X → BPU) (k : KU_G^τ(X;G;τ))
+                      : Maps X (Fred^0 H) := ku-elim k
 
                 h2 Theorems
                 +tex.
