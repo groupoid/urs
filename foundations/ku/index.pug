@@ -100,6 +100,12 @@ block content
                     def elim-ku (X : Type) (G : Group) (τ : X → BPU) (k : KU_G^τ(X;G;τ))
                       : Maps X (Fred^0 H) := ku-elim k
 
+                h2 Computation
+                +code.
+                    def ku-β (X : Type) (G : Group) (τ : X → BPU) (f : Maps X (Fred^0 H))
+                      : Path (Maps X (Fred^0 H)) (elim-ku X G τ (intro-ku X G τ f)) f
+                     := idp _ f
+
                 h2 Theorems
                 +tex.
                     $\mathbf{Theorem\ 3.4.4}$ (K-Theory Stability). The type $\mathbf{KU^\tau_G}(X, G, \tau)$
