@@ -104,7 +104,7 @@ block content
                 +code.
                     def ku-β (X : Type) (G : Group) (τ : X → BPU) (f : Maps X (Fred^0 H))
                       : Path (Maps X (Fred^0 H)) (elim-ku X G τ (intro-ku X G τ f)) f
-                     := idp _ f
+                     := refl _ f
 
                 h2 Theorems
                 +tex.
@@ -123,8 +123,8 @@ block content
                     $$
                 +code.
                     def stability-under-susp (X : Type) (G : Group) (τ : X → BPU)
-                      : Path Spectrum (KU_G^τ(X; G; τ)) (KU_G^τ(susp X; G; τ)))
-                     := idp Spectrum (KU_G^τ(X; G; τ))
+                      : Path Spectra (KU_G^τ(X; G; τ)) (KU_G^τ(susp X; G; τ)))
+                     := refl Spectra (KU_G^τ(X; G; τ))
 
                 +tex.
                     $\mathbf{Theorem\ 3.4.5}$ (Refinement to Differential K-Theory). The type
