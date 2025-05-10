@@ -23,9 +23,17 @@ block content
     .exe
       section
         +tex.
-          Eilenberg-MacLane spaces $K(G, {n})$ are fundamental in homotopy theory, characterized by a single non-trivial homotopy group $\pi_{n}(K(G, {n})) \cong G$ for an abelian group $G$ and $\pi_{k}(K(G, {n})) = 0$ for $k \neq n$. In Homotopy Type Theory (HoTT), they are defined as higher inductive types (HITs) and serve as classifying spaces for cohomology, with $[X, K(G, {n})] \cong H^{n}(X; G)$. Synthetic cohomology in HoTT leverages $K(G, {n})$ to define cohomology groups synthetically, enabling computational approaches in systems like Cubical Agda.
+          Eilenberg-MacLane spaces $K(G, {n})$ are fundamental in unstable homotopy theory,
+          characterized by a single non-trivial homotopy group $\pi_{n}(K(G, {n})) \cong G$
+          for an abelian group $G$ and $\pi_{k}(K(G, {n})) = 0$ for $k \neq n$. In Homotopy
+          Type Theory (HoTT), they are defined as higher inductive types (HIT) and serve as
+          classifying spaces for cohomology, with $[X, K(G, {n})] \cong H^{n}(X; G)$. Synthetic
+          cohomology in HoTT leverages $K(G, {n})$ to define cohomology groups synthetically,
+          enabling computational approaches in systems like Cubical Agda.
         +tex.
-          This page formalizes $K(G, {n})$ in HoTT, providing formation, introduction, elimination, computation, and uniqueness rules, along with theorems and applications in algebraic topology and orbifold cohomology.
+          This page formalizes $K(G, {n})$ in HoTT, providing formation, introduction,
+          elimination, computation, and uniqueness rules, along with theorems and
+          applications in algebraic topology and orbifold cohomology.
 
         h2 Formation
         +tex.
