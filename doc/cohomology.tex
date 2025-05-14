@@ -1,0 +1,221 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\RP}{\mathbb{RP}}
+\newcommand{\CP}{\mathbb{CP}}
+\newcommand{\Tor}{\text{Tor}}
+\newcommand{\Ext}{\text{Ext}}
+\newcommand{\Hom}{\text{Hom}}
+\newcommand{\id}{\text{id}}
+\newcommand{\pt}{\text{pt}}
+\newcommand{\im}{\text{im}}
+
+\begin{document}
+
+\title{Cohomology and Spectra}
+\author{Namdak Tonpa}
+\date{May 2025}
+
+\maketitle
+
+\begin{abstract}
+This article presents formal definitions and theorems for ordinary and generalized cohomology theories, unstable and stable spectra, and spectral sequences in Abelian categories, including the Serre, Atiyah-Hirzebruch, Leray, Eilenberg-Moore, Hochschild-Serre, Filtered Complex, Chromatic, Adams, and Bockstein spectral sequences. We define slopes, sheets, coordinates, quadrants, complex filtrations, and double complexes within this framework.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+\section{Cohomology and Spectra}
+
+\subsection{Ordinary Cohomology}
+
+\begin{definition}
+An \emph{ordinary cohomology theory} on the category of topological spaces and pairs is a contravariant functor \( H^*(-; G): \text{Top}^{\text{op}} \to \text{GrAb} \), assigning to each pair \( (X, A) \) a sequence of abelian groups \( \{ H^n(X, A; G) \}_{n \in \Z} \), with coefficient group \( G \), satisfying:
+\begin{enumerate}
+    \item \emph{Homotopy}: If \( f \simeq g: (X, A) \to (Y, B) \), then \( f^* = g^*: H^n(Y, B; G) \to H^n(X, A; G) \).
+    \item \emph{Exactness}: For \( (X, A) \), there is a long exact sequence:
+    \[
+    \cdots \to H^n(X, A; G) \to H^n(X; G) \to H^n(A; G) \xrightarrow{\delta} H^{n+1}(X, A; G) \to \cdots
+    \]
+    \item \emph{Excision}: For \( U \subset A \) with \( \overline{U} \subset \text{int}(A) \), the inclusion \( (X \setminus U, A \setminus U) \hookrightarrow (X, A) \) induces isomorphisms \( H^n(X, A; G) \cong H^n(X \setminus U, A \setminus U; G) \).
+    \item \emph{Additivity}: For \( X = \bigsqcup X_i \), \( H^n(X; G) \cong \bigoplus H^n(X_i; G) \).
+    \item \emph{Dimension}: For a point \( \pt \), \( H^n(\pt; G) = \begin{cases} G & n = 0 \\ 0 & n \neq 0 \end{cases} \).
+\end{enumerate}
+\end{definition}
+
+\subsection{Generalized Cohomology Theories}
+
+\begin{definition}
+A \emph{generalized cohomology theory} is a contravariant functor \( h^*: \text{Top}^{\text{op}} \to \text{GrAb} \), assigning to each pair \( (X, A) \) a sequence \( \{ h^n(X, A) \}_{n \in \Z} \), satisfying:
+\begin{enumerate}
+    \item \emph{Homotopy}, \emph{Exactness}, \emph{Excision}, and \emph{Additivity} as in Definition 1.
+    \item \emph{Suspension}: There is a natural isomorphism \( h^n(X, A) \cong h^{n+1}(\Sigma X, \Sigma A) \), where \( \Sigma \) is the reduced suspension.
+\end{enumerate}
+The groups \( h^n(\pt) \) form a graded ring, the coefficients of \( h^* \).
+\end{definition}
+
+\begin{theorem}
+Every generalized cohomology theory \( h^* \) is representable by a spectrum \( E = \{ E_n, \sigma_n: \Sigma E_n \to E_{n+1} \} \), with \( h^n(X) \cong [X, E_n]_* \), where \( [-, -]_* \) denotes pointed homotopy classes.
+\end{theorem}
+
+\subsection{Unstable and Stable Spectra}
+
+\begin{definition}
+A \emph{spectrum} is a sequence of pointed spaces \( \{ E_n \}_{n \in I} \), where \( I \subseteq \Z \), with structure maps \( \sigma_n: \Sigma E_n \to E_{n+1} \). It is:
+\begin{itemize}
+    \item \emph{Unstable} if \( I \subseteq \Z_{\geq 0} \).
+    \item \emph{Stable} if \( I = \Z \) and each \( \sigma_n \) is a homotopy equivalence.
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+For an unstable spectrum \( E \), the functor \( X \mapsto [X, E_n]_* \) defines a cohomology theory on spaces of dimension \( \leq n \). For a stable spectrum \( E \), the functor \( h^n(X) = [X, E_n]_* \) defines a generalized cohomology theory.
+\end{theorem}
+
+\subsection{Spectral Sequences}
+
+\begin{definition}
+A \emph{spectral sequence} in an Abelian category \( \mathcal{A} \) is a collection of objects \( \{ E_r^{p,q} \}_{r \geq 1, p, q \in \Z} \), \( E_r^{p,q} \in \mathcal{A} \), with differentials:
+\[
+d_r^{p,q}: E_r^{p,q} \to E_r^{p + a_r, q + b_r},
+\]
+such that:
+\begin{enumerate}
+    \item \( d_r \circ d_r = 0 \).
+    \item \( E_{r+1}^{p,q} = H^{p,q}(E_r, d_r) = \ker(d_r^{p,q}) / \im(d_r^{p - a_r, q - b_r}) \).
+    \item There exists a graded object \( H^n \in \mathcal{A} \) with filtration \( F_p H^{p+q} \subseteq H^{p+q} \), such that:
+    \[
+    E_\infty^{p,q} \cong F_p H^{p+q} / F_{p-1} H^{p+q}.
+    \]
+\end{enumerate}
+The sequence is \emph{first-quadrant} if \( E_r^{p,q} = 0 \) for \( p < 0 \) or \( q < 0 \).
+\end{definition}
+
+\begin{definition}
+The \emph{\( r \)-th sheet} of a spectral sequence is the collection \( \{ E_r^{p,q} \}_{p,q} \). The indices \( (p, q) \) are \emph{coordinates}, with \( p \) the filtration degree and \( q \) the complementary degree, satisfying total degree \( n = p + q \). The \emph{slope} of \( d_r: E_r^{p,q} \to E_r^{p+r, q-r+1} \) is \( \frac{-r+1}{r} \).
+\end{definition}
+
+\begin{definition}
+A \emph{filtered complex} in \( \mathcal{A} = \text{Ab} \) is a chain complex \( (C_*, \partial) \) with a filtration \( \cdots \subseteq F_{p-1} C_n \subseteq F_p C_n \subseteq F_{p+1} C_n \subseteq \cdots \), compatible with \( \partial \). A \emph{double complex} is a bigraded object \( C_{p,q} \) with differentials \( d^h: C_{p,q} \to C_{p-1,q} \), \( d^v: C_{p,q} \to C_{p,q-1} \), satisfying \( d^h d^h = d^v d^v = d^h d^v + d^v d^h = 0 \). The total complex is \( \text{Tot}(C)_n = \bigoplus_{p+q=n} C_{p,q} \).
+\end{definition}
+
+\begin{theorem}
+A filtered complex \( (C_*, F_p) \) induces a spectral sequence with:
+\[
+E_0^{p,q} = F_p C_{p+q} / F_{p-1} C_{p+q}, \quad E_1^{p,q} = H_{p+q}(F_p C / F_{p-1} C) \implies H_{p+q}(C).
+\]
+A double complex \( C_{p,q} \) with filtration by \( p \)-index induces:
+\[
+E_1^{p,q} = H_q^v(C_{p,*}), \quad d_1 = H(d^h) \implies H_{p+q}(\text{Tot}(C)).
+\]
+\end{theorem}
+
+\subsection{Serre Spectral Sequence}
+
+\begin{theorem}
+For a fibration \( F \to E \to B \) with \( B \) path-connected, there exists a first-quadrant spectral sequence:
+\[
+E_2^{p,q} = H^p(B; H^q(F; \Z)) \implies H^{p+q}(E; \Z),
+\]
+with \( d_r: E_r^{p,q} \to E_r^{p+r, q-r+1} \).
+\end{theorem}
+
+\subsection{Atiyah-Hirzebruch Spectral Sequence}
+
+\begin{theorem}
+For a generalized cohomology theory \( h^* \) and a CW-complex \( X \), there exists a spectral sequence:
+\[
+E_2^{p,q} = H^p(X; h^q(\pt)) \implies h^{p+q}(X),
+\]
+with \( d_r: E_r^{p,q} \to E_r^{p+r, q-r+1} \).
+\end{theorem}
+
+\subsection{Leray Spectral Sequence}
+
+\begin{theorem}
+For a continuous map \( f: X \to Y \) and a sheaf \( \mathcal{F} \) on \( X \), there exists a spectral sequence:
+\[
+E_2^{p,q} = H^p(Y; R^q f_* \mathcal{F}) \implies H^{p+q}(X; \mathcal{F}),
+\]
+with \( d_r: E_r^{p,q} \to E_r^{p+r, q-r+1} \).
+\end{theorem}
+
+\subsection{Eilenberg-Moore Spectral Sequence}
+
+\begin{theorem}
+For a pullback diagram with fibration \( F \to E \to B \), there exists a spectral sequence:
+\[
+E_2^{p,q} = \Tor_{H_*(B)}^{p,q}(H_*(F), R) \implies H_{p+q}(F; R),
+\]
+with \( d_r: E_r^{p,q} \to E_r^{p-r, q+r-1} \).
+\end{theorem}
+
+\subsection{Hochschild-Serre Spectral Sequence}
+
+\begin{theorem}
+For a group extension \( 1 \to N \to G \to Q \to 1 \), there exists a spectral sequence:
+\[
+E_2^{p,q} = H^p(Q; H^q(N; R)) \implies H^{p+q}(G; R),
+\]
+with \( d_r: E_r^{p,q} \to E_r^{p+r, q-r+1} \).
+\end{theorem}
+
+\subsection{Spectral Sequence of a Filtered Complex}
+
+\begin{theorem}
+For a filtered complex \( (C_*, F_p) \), there exists a spectral sequence:
+\[
+E_1^{p,q} = H_{p+q}(F_p C / F_{p-1} C) \implies H_{p+q}(C),
+\]
+with \( d_r: E_r^{p,q} \to E_r^{p-r, q+r-1} \).
+\end{theorem}
+
+\subsection{Chromatic Spectral Sequence}
+
+\begin{theorem}
+For a spectrum \( X \), there exists a spectral sequence:
+\[
+E_1^{n,k} = \pi_{n-k}(L_{K(k)} X) \implies \pi_{n-k}(X),
+\]
+where \( L_{K(k)} X \) is the localization at the \( k \)-th Morava K-theory, with \( d_r: E_r^{n,k} \to E_r^{n+1,k-r} \).
+\end{theorem}
+
+\subsection{Adams Spectral Sequence}
+
+\begin{theorem}
+For a spectrum \( X \) and prime \( p \), there exists a spectral sequence:
+\[
+E_2^{s,t} = \Ext_A^{s,t}(\Hom_*(X, \Z/p), \Z/p) \implies \pi_{t-s}(X_{(p)}),
+\]
+where \( A \) is the Steenrod algebra, with \( d_r: E_r^{s,t} \to E_r^{s+r, t+r-1} \).
+\end{theorem}
+
+\subsection{Bockstein Spectral Sequence}
+
+\begin{theorem}
+For a short exact sequence \( 0 \to R \to R' \to R'' \to 0 \) of coefficient rings, there exists a spectral sequence:
+\[
+E_1^{p,q} = H^{p+q}(X; R'') \implies H^{p+q}(X; R),
+\]
+with \( d_r: E_r^{p,q} \to E_r^{p+1,q-r} \).
+\end{theorem}
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+\bibitem{hatcher} Hatcher, A., \emph{Algebraic Topology}, Cambridge University Press, 2002.
+\bibitem{switzer} Switzer, R., \emph{Algebraic Topology - Homology and Homotopy}, Springer, 1975.
+\bibitem{kato}    Kato, G.,    \emph{The Heart of Cohomology}, Springer, 2006
+\end{thebibliography}
+
+\end{document}
